@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/thevuong8000/express-backend#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^8.6.0"
   },
   "devDependencies": {
     "eslint": "^7.24.0",
