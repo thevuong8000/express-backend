@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const { HTTP_CODE } = require('../constants/global');
 
 const pool = new Pool({
   user: 'dante',
@@ -7,14 +8,13 @@ const pool = new Pool({
   password: 'Manh1749635@',
   port: 5432,
 });
-// pool.connect();
 
 const getUsers = (request, response) => {
   pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
     if (error) {
       throw error;
     }
-    response.status(200).json(results.rows);
+    response.status(HTTP_CODE.OK).json(results.rows);
   });
 };
 
@@ -25,7 +25,7 @@ const getUserById = (request, response) => {
     if (error) {
       throw error;
     }
-    response.status(200).json(results.rows);
+    response.status(HTTP_CODE.OK).json(results.rows);
   });
 };
 
@@ -38,7 +38,9 @@ const createUser = (request, response) => {
       if (error) {
         throw error;
       }
-      response.status(201).send(`User added with ID: ${results.id}`);
+      response
+        .status(HTTP_CODE.CREATED)
+        .send(`User added with ID: ${results.id}`);
     },
   );
 };
@@ -54,7 +56,7 @@ const updateUser = (request, response) => {
       if (error) {
         throw error;
       }
-      response.status(200).send(`User modified with ID: ${id}`);
+      response.status(HTTP_CODE.OK).send(`User modified with ID: ${id}`);
     },
   );
 };
@@ -66,8 +68,7 @@ const deleteUser = (request, response) => {
     if (error) {
       throw error;
     }
-    console.log(results);
-    response.status(200).send(`User deleted with ID: ${id}`);
+    response.status(HTTP_CODE.OK).send(`User deleted with ID: ${id}`);
   });
 };
 

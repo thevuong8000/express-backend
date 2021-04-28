@@ -1,4 +1,5 @@
 const express = require('express');
+const { ROUTE } = require('./src/constants/global');
 
 const db = require('./src/query/queries');
 
@@ -12,11 +13,12 @@ app.get('/', (req, res) => {
   res.json({ type: 'success', message: 'Hello World!' });
 });
 
-app.get('/users', db.getUsers);
-app.get('/users/:id', db.getUserById);
-app.post('/users', db.createUser);
-app.put('/users/:id', db.updateUser);
-app.delete('/users/:id', db.deleteUser);
+app.get(ROUTE.USERS.ROOT, db.getUsers);
+app.post(ROUTE.USERS.ROOT, db.createUser);
+
+app.get(ROUTE.USERS.ID, db.getUserById);
+app.put(ROUTE.USERS.ID, db.updateUser);
+app.delete(ROUTE.USERS.ID, db.deleteUser);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
