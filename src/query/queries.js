@@ -25,7 +25,6 @@ const getUserById = (request, response) => {
     if (error) {
       throw error;
     }
-    console.log(results);
     response.status(200).json(results.rows);
   });
 };
@@ -39,7 +38,6 @@ const createUser = (request, response) => {
       if (error) {
         throw error;
       }
-      console.log('update successfully', results);
       response.status(201).send(`User added with ID: ${results.id}`);
     },
   );
@@ -56,7 +54,6 @@ const updateUser = (request, response) => {
       if (error) {
         throw error;
       }
-      console.log(results);
       response.status(200).send(`User modified with ID: ${id}`);
     },
   );

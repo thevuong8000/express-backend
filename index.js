@@ -1,6 +1,6 @@
 const express = require('express');
 
-const db = require('./queries');
+const db = require('./src/query/queries');
 
 const app = express();
 const port = 8000;
