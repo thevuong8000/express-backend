@@ -21,5 +21,5 @@ app.put(ROUTE.USERS.ID, db.updateUser);
 app.delete(ROUTE.USERS.ID, db.deleteUser);
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Back-end is listening at http://localhost:${port}`);
 });
