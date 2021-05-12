@@ -1,25 +1,25 @@
 const express = require('express');
 const { ROUTE } = require('./src/constants/global');
 
-const db = require('./src/query/queries');
+const { getUsers, createUser, changePassword, deleteUser } = require('./src/api/users/users');
 
 const app = express();
 const port = 8000;
 
+/* middlewares */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  res.json({ type: 'success', message: 'Hello World!' });
+	res.json({ type: 'success', message: 'Hello World!' });
 });
 
-app.get(ROUTE.USERS.ROOT, db.getUsers);
-app.post(ROUTE.USERS.ROOT, db.createUser);
+app.get(ROUTE.USERS.ROOT, getUsers);
+app.post(ROUTE.USERS.ROOT, createUser);
+app.put(ROUTE.USERS.ID, changePassword);
+app.delete(ROUTE.USERS.ID, deleteUser);
 
-app.get(ROUTE.USERS.ID, db.getUserById);
-app.put(ROUTE.USERS.ID, db.updateUser);
-app.delete(ROUTE.USERS.ID, db.deleteUser);
-
+/* Start listening */
 app.listen(port, () => {
-  console.log(`Back-end is listening at http://localhost:${port}`);
+	console.log(`Back-end is listening at http://localhost:${port}`);
 });
