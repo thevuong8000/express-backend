@@ -1,7 +1,13 @@
 const express = require('express');
 const { ROUTE } = require('./src/constants/global');
 
-const { getUsers, createUser, changePassword, deleteUser } = require('./src/api/users/users');
+const {
+	getUsers,
+	createUser,
+	changePassword,
+	deleteUser,
+	verifyUser
+} = require('./src/api/users/users');
 
 const app = express();
 const port = 8000;
@@ -16,6 +22,7 @@ app.get('/', (req, res) => {
 
 app.get(ROUTE.USERS.ROOT, getUsers);
 app.post(ROUTE.USERS.ROOT, createUser);
+app.post(ROUTE.USERS.VERIFY, verifyUser);
 app.put(ROUTE.USERS.ID, changePassword);
 app.delete(ROUTE.USERS.ID, deleteUser);
 
