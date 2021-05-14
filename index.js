@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { ROUTE } = require('./src/constants/global');
 
 const {
@@ -13,6 +14,7 @@ const app = express();
 const port = 8000;
 
 /* middlewares */
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
