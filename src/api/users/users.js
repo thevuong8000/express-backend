@@ -18,11 +18,11 @@ const getUsers = (request, response) => {
 const createUser = (request, response) => {
 	const { username, password } = request.body;
 	pool.query(
-		`INSERT INTO ${USERS} (${COL.NAME}, ${COL.PASSWORD}) VALUES ($1, $2)`,
+		`INSERT INTO ${USERS} (${COL.NAME}, ${COL.PASSWORD}) VALUES ($1, $2) RETURNING *`,
 		[username, password],
 		(error, results) => {
 			if (error) return response.status(HTTP_CODE.BAD_REQUEST).send(error);
-			return response.status(HTTP_CODE.CREATED).send(`User added with ID: ${results.id}`);
+			return response.status(HTTP_CODE.CREATED).json(results.rows[0]);
 		}
 	);
 };
@@ -32,11 +32,11 @@ const changePassword = (request, response) => {
 	const { password } = request.body;
 
 	pool.query(
-		`UPDATE ${USERS} SET password = $1 WHERE id = $2`,
+		`UPDATE ${USERS} SET password = $1 WHERE id = $2 RETURN *`,
 		[password, id],
 		(error, results) => {
 			if (error) return response.status(HTTP_CODE.BAD_REQUEST).send(error);
-			return response.status(HTTP_CODE.OK).send(`User modified with ID: ${id}`);
+			return response.status(HTTP_CODE.OK).json(results.rows[0]);
 		}
 	);
 };
@@ -52,18 +52,14 @@ const deleteUser = (request, response) => {
 
 const verifyUser = (request, response) => {
 	const { username, password } = request.body;
-	pool.query(
-		`SELECT ${COL.NAME}, ${COL.PASSWORD} FROM ${USERS} WHERE username = $1`,
-		[username],
-		(error, results) => {
-			if (error) return response.status(HTTP_CODE.BAD_REQUEST).send(error);
+	pool.query(`SELECT * FROM ${USERS} WHERE username = $1`, [username], (error, results) => {
+		if (error) return response.status(HTTP_CODE.BAD_REQUEST).send(error);
 
-			const user = results.rows[0];
-			if (!user || user.password !== password)
-				return response.status(HTTP_CODE.BAD_REQUEST).json({ login: 'failed' });
-			return response.status(HTTP_CODE.OK).json({ login: 'succeed' });
-		}
-	);
+		const user = results.rows[0];
+		if (!user || user[COL.PASSWORD] !== password)
+			return response.status(HTTP_CODE.BAD_REQUEST).json({ login: 'failed' });
+		return response.status(HTTP_CODE.OK).json(user);
+	});
 };
 
 module.exports = {
