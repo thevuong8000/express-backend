@@ -1,4 +1,5 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
 const cors = require('cors');
 const { ROUTE } = require('./src/constants/global');
 
@@ -12,6 +13,15 @@ const {
 
 const app = express();
 const port = 8000;
+
+/* swagger docs */
+const SWAGGER_OPTIONS = {
+	explorer: true,
+	swaggerOptions: {
+		url: 'http://petstore.swagger.io/v2/swagger.json'
+	}
+};
+app.use('/docs', swaggerUi.serve, swaggerUi.setup({}, SWAGGER_OPTIONS));
 
 /* middlewares */
 app.use(cors());
