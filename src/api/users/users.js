@@ -32,7 +32,7 @@ const changePassword = (request, response) => {
 	const { password } = request.body;
 
 	pool.query(
-		`UPDATE ${USERS} SET password = $1 WHERE id = $2 RETURN *`,
+		`UPDATE ${USERS} SET password = $1 WHERE id = $2 RETURNING *`,
 		[password, id],
 		(error, results) => {
 			if (error) return response.status(HTTP_CODE.BAD_REQUEST).send(error);
