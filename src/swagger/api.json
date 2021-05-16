@@ -1,0 +1,87 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sample API",
+    "description": "Api docs for ninja_be",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Manh Tran",
+      "url": "https://thevuong8000.github.io/",
+      "email": "ducmanh.tran2904@gmail.com"
+    }
+  },
+
+  "server": [
+    {
+      "url": "http://localhost:{port}/{basePath}",
+      "description": "API server",
+      "variables": {
+        "port": {
+          "enum": ["8000", "6969"],
+          "default": "8000"
+        },
+        "basePath": {
+          "enum": ["", "v1", "v2"],
+          "default": ""
+        }
+      }
+    }
+  ],
+
+  "tag": [
+    {
+      "name": "foo",
+      "description": "foo api functions"
+    },
+    {
+      "name": "bar",
+      "description": "bar api functions"
+    }
+  ],
+
+  "paths": {
+    "/foo": {
+      "summary": "foo api",
+      "description": "",
+      "get": {
+        "tags": ["foo"],
+        "summary": "get foo",
+        "description": "",
+        "operationId": "fooGet",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Foo Get",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
+
+    "/bar": {
+      "summary": "bar api",
+      "description": "",
+      "get": {
+        "tags": ["bar"],
+        "summary": "get bar",
+        "description": "",
+        "operationId": "barGet",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Bar Get",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {}
+}
