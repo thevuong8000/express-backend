@@ -59,6 +59,29 @@
           }
         }
       }
+    },
+
+    "/bar": {
+      "summary": "bar api",
+      "description": "",
+      "get": {
+        "tags": ["bar"],
+        "summary": "get bar",
+        "description": "",
+        "operationId": "barGet",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Bar Get",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
     }
-  }
+  },
+
+  "components": {}
 }
