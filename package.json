@@ -19,6 +19,7 @@
   "homepage": "https://github.com/thevuong8000/express-backend#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "mongoose": "^5.12.9",
     "swagger-jsdoc": "^7.0.0-rc.6",
     "swagger-ui-express": "^4.1.6"
   },
