@@ -6,17 +6,16 @@ const apiDocs = require('./src/swagger/api.json');
 const app = express();
 const auth = require('./src/middlewares/auth');
 const userRoutes = require('./src/routes/api/users');
+const cors = require('./src/middlewares/cors');
+const devEnv = require('./src/middlewares/dev-env');
 
 const mongoUser = 'dante';
 const mongoPassword = 'fWd5BIGTlsmCwC2Q';
 const databaseName = 'userManagement';
 const MONGO_URI = `mongodb+srv://${mongoUser}:${mongoPassword}@test-mongo.e76gm.mongodb.net/${databaseName}?retryWrites=true&w=majority`;
-
 mongoose
 	.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-	.then(() => {
-		console.log('Connect mongoDB successfully!');
-	})
+	.then(() => console.log('Connect mongoDB successfully!'))
 	.catch((error) => console.log('Fail to connect mongoDB!'));
 
 // swagger api docs
@@ -27,29 +26,14 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(apiDocs, SWAGGER_OPTIONS));
 
 // DEVELOPMENT
 if (process.env.NODE_ENV === 'development') {
-	app.use((req, res, next) => {
-		req.headers.authorization =
-			'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbnRlIiwicGFzc3dvcmQiOiJQYXNzd29yMSEiLCJpYXQiOjE2MjEyNjcwMTgsImV4cCI6MzMxNDczMDk0MTh9.QVK4SKcPuPb1dwu1YUVlxfA836WpZkJhljHBfsmvbzg';
-		next();
-	});
+	app.use(devEnv);
 }
 
 // body-parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// CORS rules
-app.use((req, res, next) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
-	);
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-	next();
-});
-
-// Authentication
+app.use(cors);
 app.use(auth);
 
 // Rest-API
