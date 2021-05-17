@@ -14,9 +14,9 @@ const MONGO_URI = `mongodb+srv://${mongoUser}:${mongoPassword}@test-mongo.e76gm.
 mongoose
 	.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 	.then(() => {
-		console.log('mongo connected');
+		console.log('Connect mongoDB successfully!');
 	})
-	.catch((err) => console.log('err'));
+	.catch((error) => console.log('Fail to connect mongoDB!'));
 
 // swagger api docs
 const SWAGGER_OPTIONS = {
