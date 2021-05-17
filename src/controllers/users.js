@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const { generateToken } = require('../utils/helper');
 
 exports.getUsers = (req, res, next) => {
 	User.find()
@@ -50,7 +51,9 @@ exports.loginUser = async (req, res, next) => {
 
 		const validPassword = await bcrypt.compare(password, user.password);
 		return validPassword
-			? res.status(200).json({ userId: user._id, access_token: 'token' })
+			? res
+					.status(200)
+					.json({ userId: user._id, access_token: generateToken({ userId: user._id }) })
 			: res.status(401).json({ error: 'Incorrect password' });
 	} catch (error) {
 		return res.status(500).json({ error });
