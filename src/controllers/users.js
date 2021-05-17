@@ -11,7 +11,7 @@ exports.createUser = (req, res, next) => {
 	const user = new User({ username, password, email });
 	user
 		.save()
-		.then((result) => res.status(201).json({ user: result, message: 'ok' }))
+		.then((result) => res.status(201).json({ result, message: 'ok' }))
 		.catch((error) => res.status(400).json({ error }));
 };
 
@@ -37,5 +37,12 @@ exports.deleteUser = (req, res, next) => {
 
 	User.deleteOne({ _id: id })
 		.then((result) => res.status(200).json({ message: 'Successfully deleted' }))
+		.catch((error) => res.status(400).json({ error }));
+};
+
+exports.loginUser = (req, res, next) => {
+	const { username, password } = req.body;
+	User.findOne({ username, password })
+		.then((result) => res.status(200).json({ result }))
 		.catch((error) => res.status(400).json({ error }));
 };
