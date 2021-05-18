@@ -7,7 +7,6 @@ const app = express();
 const auth = require('./src/middlewares/auth');
 const userRoutes = require('./src/routes/api/users');
 const cors = require('./src/middlewares/cors');
-const devEnv = require('./src/middlewares/dev-env');
 
 const mongoUser = 'dante';
 const mongoPassword = 'fWd5BIGTlsmCwC2Q';
@@ -23,11 +22,6 @@ const SWAGGER_OPTIONS = {
 	explorer: true
 };
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(apiDocs, SWAGGER_OPTIONS));
-
-// DEVELOPMENT
-if (process.env.NODE_ENV === 'development') {
-	app.use(devEnv);
-}
 
 // body-parser
 app.use(express.json());
