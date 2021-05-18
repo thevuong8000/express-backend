@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { TOKEN } = require('../constants/global');
 const User = require('../models/User');
 const { generateToken, verifyToken } = require('../utils/helper');
 
@@ -53,8 +54,8 @@ exports.loginUser = async (req, res, next) => {
 		return validPassword
 			? res.status(200).json({
 					userId: user._id,
-					access_token: generateToken({ userId: user._id }),
-					refresh_token: generateToken({ userId: user._id }, { expiresIn: '2 days' })
+					access_token: generateToken({ userId: user._id }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
+					refresh_token: generateToken({ userId: user._id }, { expiresIn: TOKEN.REFRESH_EXPIRES })
 			  })
 			: res.status(401).json({ error: 'Incorrect password' });
 	} catch (error) {
