@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const { generateToken } = require('../utils/helper');
+const { generateToken, verifyToken } = require('../utils/helper');
 
 exports.getUsers = (req, res, next) => {
 	User.find()
@@ -51,11 +51,24 @@ exports.loginUser = async (req, res, next) => {
 
 		const validPassword = await bcrypt.compare(password, user.password);
 		return validPassword
-			? res
-					.status(200)
-					.json({ userId: user._id, access_token: generateToken({ userId: user._id }) })
+			? res.status(200).json({
+					userId: user._id,
+					access_token: generateToken({ userId: user._id }),
+					refresh_token: generateToken({ userId: user._id }, { expiresIn: '2 days' })
+			  })
 			: res.status(401).json({ error: 'Incorrect password' });
 	} catch (error) {
 		return res.status(500).json({ error });
+	}
+};
+
+exports.refreshToken = async (req, res, next) => {
+	const { refresh_token } = req.body;
+	try {
+		const { userId } = verifyToken(refresh_token);
+		const token = generateToken({ userId });
+		res.status(200).json({ access_token: token });
+	} catch (error) {
+		next(error);
 	}
 };
