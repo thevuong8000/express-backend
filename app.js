@@ -1,11 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const swaggerUI = require('swagger-ui-express');
-const apiDocs = require('./src/swagger/api.json');
-
 const app = express();
 const auth = require('./src/middlewares/auth');
 const userRoutes = require('./src/routes/api/users');
+const swaggerRoutes = require('./src/swagger/swagger');
 const cors = require('./src/middlewares/cors');
 
 const mongoUser = 'dante';
@@ -17,11 +15,8 @@ mongoose
 	.then(() => console.log('Connect mongoDB successfully!'))
 	.catch((error) => console.log('Fail to connect mongoDB!'));
 
-// swagger api docs
-const SWAGGER_OPTIONS = {
-	explorer: true
-};
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(apiDocs, SWAGGER_OPTIONS));
+/* Swagger REST-api document */
+app.use('/docs', swaggerRoutes);
 
 // body-parser
 app.use(express.json());
