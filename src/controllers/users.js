@@ -10,19 +10,19 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.createUser = async (req, res, next) => {
-	const { username, password, email } = req.body;
+	const { name, password, email } = req.body;
 	const hash = await bcrypt.hash(password, 10);
-	const user = new User({ username, password: hash, email });
+	const user = new User({ name, password: hash, email });
 	user
 		.save()
-		.then((result) => res.status(201).json({ result, message: 'ok' }))
+		.then((result) => res.status(201).json({ result }))
 		.catch((error) => res.status(400).json({ error }));
 };
 
 exports.getUsersById = (req, res, next) => {
 	const { id } = req.params;
 	User.findOne({ _id: id })
-		.then((user) => res.status(200).json({ user }))
+		.then((user) => res.status(200).json({ user: user.getPublicInfo() }))
 		.catch((error) => res.status(400).json({ error }));
 };
 
@@ -45,9 +45,9 @@ exports.deleteUser = (req, res, next) => {
 };
 
 exports.loginUser = async (req, res, next) => {
-	const { username, password } = req.body;
+	const { name, password } = req.body;
 	try {
-		const user = await User.findOne({ username });
+		const user = await User.findOne({ name });
 		if (!user) return res.status(401).json({ error: 'User not found!' });
 
 		const validPassword = await bcrypt.compare(password, user.password);

@@ -44,7 +44,7 @@ router.get('/', getUsers);
  * /users:
  *  post:
  *   summary: Create new user.
- *   description: Create a new user with username and password.
+ *   description: Create a new user with name and password.
  *   tags:
  *     - User
  *   responses:
@@ -66,10 +66,16 @@ router.post('/', createUser);
  *       in: path
  *       required: true
  *       schema:
- *         type: String
+ *         type: string
  *   responses:
  *     200:
- *       description: A list of users
+ *       description: Get user with specific id
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     400:
+ *       description: The specified user ID is not valid
  */
 router.get('/:id', getUsersById);
 

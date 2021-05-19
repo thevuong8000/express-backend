@@ -16,15 +16,15 @@ const uniqueValidator = require('mongoose-unique-validator');
  *         - name
  */
 const userSchema = mongoose.Schema({
-	username: { type: String, required: true, unique: true },
+	name: { type: String, required: true, unique: true },
 	password: { type: String, required: true }
 });
 
 userSchema.plugin(uniqueValidator);
 
 userSchema.methods.getPublicInfo = function () {
-	const { username, _id } = this;
-	return { username, _id };
+	const { name, _id } = this;
+	return { name, _id };
 };
 
 module.exports = mongoose.model('User', userSchema);
