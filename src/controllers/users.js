@@ -5,7 +5,7 @@ const { generateToken, verifyToken } = require('@utils/helper');
 
 exports.getUsers = (req, res, next) => {
 	User.find()
-		.then((users) => res.status(200).json({ users }))
+		.then((users) => res.status(200).json({ users: users.map((user) => user.getPublicInfo()) }))
 		.catch((error) => res.status(400).json({ error }));
 };
 

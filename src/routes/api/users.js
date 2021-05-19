@@ -1,5 +1,12 @@
 const express = require('express');
 const router = express.Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: User management and operations
+ */
 const {
 	createUser,
 	getUsers,
@@ -20,7 +27,15 @@ const {
  *     - User
  *   responses:
  *     200:
- *       decription: A list of users
+ *       description: A list of users
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/User'
+ *     400:
+ *       description: The specified user ID is not valid
  */
 router.get('/', getUsers);
 
@@ -34,7 +49,7 @@ router.get('/', getUsers);
  *     - User
  *   responses:
  *     201:
- *       decription: A list of users
+ *       description: A list of users
  */
 router.post('/', createUser);
 
@@ -46,9 +61,15 @@ router.post('/', createUser);
  *   description: Get the specific user with id.
  *   tags:
  *     - User
+ *   parameters:
+ *     - name: id
+ *       in: path
+ *       required: true
+ *       schema:
+ *         type: String
  *   responses:
  *     200:
- *       decription: A list of users
+ *       description: A list of users
  */
 router.get('/:id', getUsersById);
 
@@ -62,7 +83,7 @@ router.get('/:id', getUsersById);
  *     - User
  *   responses:
  *     200:
- *       decription: A list of users
+ *       description: A list of users
  */
 router.put('/:id', updateUser);
 
@@ -76,35 +97,35 @@ router.put('/:id', updateUser);
  *     - User
  *   responses:
  *     200:
- *       decription: A list of users
+ *       description: A list of users
  */
 router.delete('/:id', deleteUser);
 
 /**
  * @swagger
  * /users/login:
- *  put:
+ *  post:
  *   summary: User login
  *   description: Update user with new data.
  *   tags:
  *     - User
  *   responses:
  *     200:
- *       decription: A list of users
+ *       description: A list of users
  */
 router.post('/login', loginUser);
 
 /**
  * @swagger
  * /users/refresh:
- *  put:
+ *  post:
  *   summary: Refresh token.
  *   description: Update user with new data.
  *   tags:
  *     - User
  *   responses:
  *     200:
- *       decription: A list of users
+ *       description: A list of users
  */
 router.post('/refresh', refreshToken);
 
