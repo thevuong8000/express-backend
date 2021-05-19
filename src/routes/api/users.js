@@ -8,7 +8,7 @@ const {
 	deleteUser,
 	loginUser,
 	refreshToken
-} = require('../../controllers/users');
+} = require('@controllers/users');
 
 /**
  * @swagger

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { APP_CONFIG } = require('../constants/config');
+const { APP_CONFIG } = require('@constants/config');
 
 /**
  * Generate jwt token
