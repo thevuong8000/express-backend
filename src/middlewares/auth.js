@@ -1,4 +1,4 @@
-const { verifyToken } = require('../utils/helper');
+const { verifyToken } = require('@utils/helper');
 
 const notAuthPaths = ['/', '/login'];
 

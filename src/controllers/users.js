@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
-const { TOKEN } = require('../constants/global');
-const User = require('../models/User');
-const { generateToken, verifyToken } = require('../utils/helper');
+const { TOKEN } = require('@constants/global');
+const User = require('@models/User');
+const { generateToken, verifyToken } = require('@utils/helper');
 
 exports.getUsers = (req, res, next) => {
 	User.find()
