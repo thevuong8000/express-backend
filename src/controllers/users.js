@@ -53,7 +53,7 @@ exports.loginUser = async (req, res, next) => {
 		const validPassword = await bcrypt.compare(password, user.password);
 		return validPassword
 			? res.status(200).json({
-					userId: user._id,
+					...user.getPublicInfo(),
 					access_token: generateToken({ userId: user._id }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
 					refresh_token: generateToken({ userId: user._id }, { expiresIn: TOKEN.REFRESH_EXPIRES })
 			  })
