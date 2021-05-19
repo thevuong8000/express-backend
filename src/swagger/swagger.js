@@ -8,18 +8,26 @@ const swaggerUiOpts = {
 	explorer: true
 };
 
-const swaggerDocOpts = {
-	definition: {
-		openapi: '3.0.0',
-		info: {
-			title: 'Rest API',
-			version: '1.0.0'
+const swaggerDefinition = {
+	openapi: '3.0.0',
+	info: {
+		title: 'Rest API',
+		version: '1.0.0',
+		contact: {
+			name: 'Manh Tran',
+			url: 'https://thevuong8000.github.io/',
+			email: 'ducmanh.tran2904@gmail.com'
 		}
-	},
-	apis: ['../routes/api/*.js']
+	}
+};
+
+const swaggerDocOpts = {
+	swaggerDefinition,
+	apis: ['./src/routes/api/*.js']
 };
 
 const specs = swaggerJsdoc(swaggerDocOpts);
+console.log(specs);
 router.use('/', swaggerUI.serve, swaggerUI.setup(specs, swaggerUiOpts));
 
 module.exports = router;
