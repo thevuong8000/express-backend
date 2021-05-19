@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@constants/*": ["./src/constants/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@models/*": ["./src/models/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@api/*": ["./src/routes/api/*"],
+      "@swagger/*": ["./src/swagger/*"],
+      "@utils/*": ["./src/utils/*"]
+    }
+  },
+  "exclude": ["node_modules", ".env.*"]
+}
