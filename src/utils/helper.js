@@ -12,7 +12,7 @@ exports.generateToken = (payload, { expiresIn = '2h', ...restOptions } = {}) =>
 
 /**
  * Verify jwt token
- * @param {string} token 
+ * @param {string} token
  * @returns {object}
  */
 exports.verifyToken = (token) => jwt.verify(token, APP_CONFIG.JWT_KEY);
