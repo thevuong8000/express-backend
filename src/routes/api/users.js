@@ -47,9 +47,22 @@ router.get('/', getUsers);
  *   description: Create a new user with name and password.
  *   tags:
  *     - User
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *             password:
+ *               type: string
  *   responses:
  *     201:
  *       description: A list of users
+ *     400:
+ *       description: Can not create user
  */
 router.post('/', createUser);
 

@@ -10,9 +10,9 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.createUser = async (req, res, next) => {
-	const { name, password, email } = req.body;
+	const { name, password } = req.body;
 	const hash = await bcrypt.hash(password, 10);
-	const user = new User({ name, password: hash, email });
+	const user = new User({ name, password: hash });
 	user
 		.save()
 		.then((result) => res.status(201).json({ result }))
