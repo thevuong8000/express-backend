@@ -1,19 +1,10 @@
+require('./src/mongodb/mongodb-config');
 const express = require('express');
-const mongoose = require('mongoose');
 const app = express();
-const auth = require('./src/middlewares/auth');
-const userRoutes = require('./src/routes/api/users');
-const swaggerRoutes = require('./src/swagger/swagger');
-const cors = require('./src/middlewares/cors');
-
-const mongoUser = 'dante';
-const mongoPassword = 'fWd5BIGTlsmCwC2Q';
-const databaseName = 'userManagement';
-const MONGO_URI = `mongodb+srv://${mongoUser}:${mongoPassword}@test-mongo.e76gm.mongodb.net/${databaseName}?retryWrites=true&w=majority`;
-mongoose
-	.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-	.then(() => console.log('Connect mongoDB successfully!'))
-	.catch((error) => console.log('Fail to connect mongoDB!'));
+const auth = require('@middlewares/auth');
+const userRoutes = require('@api/users');
+const swaggerRoutes = require('@swagger/swagger');
+const cors = require('@middlewares/cors');
 
 /* Swagger REST-api document */
 app.use('/docs', swaggerRoutes);
