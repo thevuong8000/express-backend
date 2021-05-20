@@ -96,13 +96,37 @@ router.get('/:id', getUsersById);
  * @swagger
  * /users/{id}:
  *  put:
- *   summary: Update user.
- *   description: Update user with new data.
+ *   summary: Update user information.
+ *   description: Update user information.
  *   tags:
  *     - User
+ *   parameters:
+ *     - name: id
+ *       in: path
+ *       required: true
+ *       schema:
+ *         type: string
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
  *   responses:
  *     200:
- *       description: A list of users
+ *       description: Update status message
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *     400:
+ *       description: Can not update user
  */
 router.put('/:id', updateUser);
 
@@ -114,9 +138,17 @@ router.put('/:id', updateUser);
  *   description: Update user with new data.
  *   tags:
  *     - User
+ *   parameters:
+ *     - name: id
+ *       in: path
+ *       required: true
+ *       schema:
+ *         type: string
  *   responses:
  *     200:
- *       description: A list of users
+ *       description: Successfully delete user
+ *     400:
+ *       description: Can not delete user
  */
 router.delete('/:id', deleteUser);
 
