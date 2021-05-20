@@ -1,4 +1,4 @@
-const { loginUser, refreshToken } = require('@controllers/users');
+const { refreshToken, login } = require('@controllers/auth');
 const express = require('express');
 const router = express.Router();
 /**
@@ -46,7 +46,7 @@ const router = express.Router();
  *     400:
  *       description: Can not create user
  */
-router.post('/login', loginUser);
+router.post('/login', login);
 
 /**
  * @swagger
