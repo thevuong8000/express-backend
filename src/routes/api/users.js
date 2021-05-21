@@ -12,7 +12,8 @@ const {
 	getUsers,
 	getUsersById,
 	updateUser,
-	deleteUser
+	deleteUser,
+	changePassword
 } = require('@controllers/users');
 
 /**
@@ -149,5 +150,45 @@ router.put('/:id', updateUser);
  *       description: Can not delete user
  */
 router.delete('/:id', deleteUser);
+
+/**
+ * @swagger
+ * /users/{id}/change-password:
+ *  put:
+ *   summary: Update user password.
+ *   description: Update user password.
+ *   tags:
+ *     - User
+ *   parameters:
+ *     - name: id
+ *       in: path
+ *       required: true
+ *       schema:
+ *         type: string
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             current_password:
+ *               type: string
+ *             new_password:
+ *               type: string
+ *   responses:
+ *     200:
+ *       description: Update status message
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *     400:
+ *       description: Can not change password
+ */
+router.put('/:id/change-password', changePassword);
 
 module.exports = router;

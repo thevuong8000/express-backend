@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('@models/User');
+const { APP_CONFIG } = require('@constants/config');
 
 exports.getUsers = (req, res, next) => {
 	User.find()
@@ -40,4 +41,20 @@ exports.deleteUser = (req, res, next) => {
 	User.deleteOne({ _id: id })
 		.then(() => res.status(200).json({ message: 'Successfully deleted' }))
 		.catch((error) => res.status(400).json({ error }));
+};
+
+exports.changePassword = async (req, res, next) => {
+	const { id } = req.params;
+	const { current_password, new_password } = req.body;
+
+	const user = await User.getUserById(id);
+	if (!user) return res.status(401).json({ error: 'User not found!' });
+
+	const validPassword = await bcrypt.compare(current_password, user.password);
+	if (!validPassword) return res.status(401).json({ error: 'Password is not correct!' });
+
+	const hash = await bcrypt.hash(new_password, APP_CONFIG.JWT_SALT);
+	User.updateOne({ _id: id }, new User({ _id: id, password: hash }))
+		.then(() => res.status(200).json({ message: 'Password has been updated!' }))
+		.catch((error) => res.status(500).json({ error }));
 };

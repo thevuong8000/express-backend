@@ -27,4 +27,8 @@ userSchema.methods.getPublicInfo = function () {
 	return { name, _id };
 };
 
+userSchema.statics.getUserById = function (userId) {
+	return this.findOne({ _id: userId });
+};
+
 module.exports = mongoose.model('User', userSchema);
