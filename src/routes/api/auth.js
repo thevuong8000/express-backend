@@ -1,4 +1,4 @@
-const { refreshToken, login } = require('@controllers/auth');
+const { refreshToken, login, testToken } = require('@controllers/auth');
 const express = require('express');
 const router = express.Router();
 /**
@@ -81,5 +81,39 @@ router.post('/login', login);
  *       description: Refresh token is not valid
  */
 router.post('/refresh-token', refreshToken);
+
+/**
+ * @swagger
+ * /test-token:
+ *  post:
+ *   summary: Test access token.
+ *   description: Verify if access token is still valid.
+ *   tags:
+ *     - Authentication
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: string
+ *             access_token:
+ *               type: string
+ *   responses:
+ *     200:
+ *       description: Get new access_token
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *     400:
+ *       description: Access token is not valid
+ */
+router.post('/test-token', testToken);
 
 module.exports = router;

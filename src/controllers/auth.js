@@ -33,3 +33,18 @@ exports.refreshToken = async (req, res, next) => {
 		next(error);
 	}
 };
+
+exports.testToken = async (req, res, next) => {
+	const { access_token: token, id } = req.body;
+	try {
+		const { userId } = verifyToken(token);
+		if (userId !== id) return res.status(401).json({ message: 'Not authenticate!' });
+
+		const user = User.getUserById(userId);
+		if (!user) return res.status(401).json({ message: 'Not authenticate!' });
+
+		return res.status(200).json({ message: 'Authenticate' });
+	} catch (error) {
+		next(error);
+	}
+};
