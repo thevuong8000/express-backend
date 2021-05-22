@@ -7,12 +7,12 @@ const uniqueValidator = require('mongoose-unique-validator');
  *   schemas:
  *     User:
  *       properties:
- *         _id:
+ *         id:
  *           type: string
  *         name:
  *           type: string
  *       required:
- *         - _id
+ *         - id
  *         - name
  */
 const userSchema = mongoose.Schema({

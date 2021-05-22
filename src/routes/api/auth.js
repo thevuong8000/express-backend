@@ -35,7 +35,7 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               _id:
+ *               id:
  *                 type: string
  *               name:
  *                 type: string
@@ -73,7 +73,7 @@ router.post('/login', login);
  *           schema:
  *             type: object
  *             properties:
- *               _id:
+ *               id:
  *                 type: string
  *               access_token:
  *                 type: string
