@@ -23,8 +23,8 @@ const userSchema = mongoose.Schema({
 userSchema.plugin(uniqueValidator);
 
 userSchema.methods.getPublicInfo = function () {
-	const { name, _id } = this;
-	return { name, _id };
+	const { name, _id: id } = this;
+	return { id, name };
 };
 
 userSchema.statics.getUserById = function (userId) {
