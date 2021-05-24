@@ -3,14 +3,14 @@
     "module": "commonJS",
     "baseUrl": ".",
     "paths": {
-      "@constants/*": ["./src/constants/*"],
-      "@controllers/*": ["./src/controllers/*"],
-      "@middlewares/*": ["./src/middlewares/*"],
-      "@models/*": ["./src/models/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@api/*": ["./src/routes/api/*"],
-      "@swagger/*": ["./src/swagger/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@constants/*": ["./backend/constants/*"],
+      "@controllers/*": ["./backend/controllers/*"],
+      "@middlewares/*": ["./backend/middlewares/*"],
+      "@models/*": ["./backend/models/*"],
+      "@routes/*": ["./backend/routes/*"],
+      "@api/*": ["./backend/routes/api/*"],
+      "@swagger/*": ["./backend/swagger/*"],
+      "@utils/*": ["./backend/utils/*"]
     }
   },
   "exclude": ["node_modules", ".env.*"]

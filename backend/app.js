@@ -1,4 +1,4 @@
-require('./src/mongodb/mongodb-config');
+require('./mongodb/mongodb-config');
 const express = require('express');
 const app = express();
 const auth = require('@middlewares/auth');
