@@ -1,6 +1,6 @@
 FROM node:16.2-alpine3.11 as node-image
 
-WORKDIR /app
+WORKDIR /backend
 COPY . .
 
 RUN npm install
