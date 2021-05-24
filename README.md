@@ -9,3 +9,6 @@
 
 2. Set up environment:
 - Copy `.env.example` to `.env` and assign values.
+
+3. Run with docker:
+- Run command: `docker-compose up --build`
