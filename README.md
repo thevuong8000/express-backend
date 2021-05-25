@@ -11,8 +11,8 @@
 - Create `/backend/.env`
 - Copy `/backend/.env.example` to `/backend/.env` and assign values.
 
-3. Run with docker:
-- Run command: `SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa) docker-compose up --build`
+3. Get Started
+- Run command: `bash ./script/start.sh`
 
 4. Terminate application:
-- Run command: `SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa) docker-compose down`
+- Run command: `bash ./script/stop.sh`
