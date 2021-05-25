@@ -8,3 +8,16 @@ services:
       - '8000:8000'
     volumes:
       - '.:/backend'
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+      args: 
+        SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
+    container_name: react-frontend-container
+    restart: always
+    ports: 
+      - '3000:3000'
+    volumes: 
+      - ./frontend/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
