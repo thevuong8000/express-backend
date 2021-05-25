@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   backend:
-    # image: "${DOCKER_IMAGE_BACKEND?Variable not set}"
+    image: "${DOCKER_IMAGE_BACKEND?Variable not set}"
     build:
       context: ./backend
       dockerfile: Dockerfile.development
@@ -11,12 +11,12 @@ services:
       - '.:/backend'
 
   frontend:
-    # image: "${DOCKER_IMAGE_FRONTEND?Variable not set}"
+    image: "${DOCKER_IMAGE_FRONTEND?Variable not set}"
     build: 
       context: ./frontend
       dockerfile: Dockerfile
       args: 
-        SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
+        SSH_PRIVATE_KEY: "${SSH_PRIVATE_KEY}"
     restart: always
     ports: 
       - '3000:3000'
