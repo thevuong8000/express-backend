@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonJS",
+    "baseUrl": ".",
+    "paths": {
+      "@constants/*": ["./constants/*"],
+      "@controllers/*": ["./controllers/*"],
+      "@middlewares/*": ["./middlewares/*"],
+      "@models/*": ["./models/*"],
+      "@routes/*": ["./routes/*"],
+      "@api/*": ["./routes/api/*"],
+      "@swagger/*": ["./swagger/*"],
+      "@utils/*": ["./utils/*"]
+    }
+  },
+  "exclude": ["node_modules", ".env.*"]
+}
