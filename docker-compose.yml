@@ -1,21 +1,22 @@
 version: '3.9'
 services:
   backend:
-    build: .
-    container_name: express-backend-container
-    image: express-backend
+    image: "${DOCKER_IMAGE_BACKEND?Variable not set}"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.development
     ports:
       - '8000:8000'
     volumes:
       - '.:/backend'
 
   frontend:
+    image: "${DOCKER_IMAGE_FRONTEND?Variable not set}"
     build: 
       context: ./frontend
       dockerfile: Dockerfile
       args: 
-        SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
-    container_name: react-frontend-container
+        SSH_PRIVATE_KEY: "${SSH_PRIVATE_KEY}"
     restart: always
     ports: 
       - '3000:3000'
