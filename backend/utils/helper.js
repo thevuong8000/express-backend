@@ -1,4 +1,4 @@
-const { APP_CONFIG } = require('@constants/config');
+const { JWT_KEY } = require('@constants/config');
 const jwt = require('jsonwebtoken');
 
 /**
@@ -8,11 +8,11 @@ const jwt = require('jsonwebtoken');
  * @returns {string}
  */
 exports.generateToken = (payload, { expiresIn = '2h', ...restOptions } = {}) =>
-	jwt.sign(payload, APP_CONFIG.JWT_KEY, { expiresIn, ...restOptions });
+	jwt.sign(payload, JWT_KEY, { expiresIn, ...restOptions });
 
 /**
  * Verify jwt token
  * @param {string} token
  * @returns {object}
  */
-exports.verifyToken = (token) => jwt.verify(token, APP_CONFIG.JWT_KEY);
+exports.verifyToken = (token) => jwt.verify(token, JWT_KEY);
