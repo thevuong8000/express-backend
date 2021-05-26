@@ -1,6 +1,14 @@
+const {
+	MONGODB_USERNAME,
+	MONGODB_PASSWORD,
+	MONGODB_SERVICE,
+	MONGODB_SERVICE_PORT,
+	MONGO_INITDB_DATABASE
+} = require('@constants/config');
 const mongoose = require('mongoose');
 
-const MONGO_URI = 'mongodb://root:mongoadmin@mongodb:27017/express?authSource=admin&w=1';
+const MONGO_URI = `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}\
+@${MONGODB_SERVICE}:${MONGODB_SERVICE_PORT}/${MONGO_INITDB_DATABASE}?authSource=admin`;
 
 mongoose
 	.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })

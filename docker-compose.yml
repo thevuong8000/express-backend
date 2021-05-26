@@ -26,6 +26,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.development
+    env_file: 
+      - ./configs/api-server/.env.development
+      - ./configs/mongodb/.env.development
     ports:
       - 8000:8000
     depends_on:

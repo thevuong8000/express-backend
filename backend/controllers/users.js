@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('@models/User');
-const { APP_CONFIG } = require('@constants/config');
+const { JWT_SALT } = require('@constants/config');
 
 exports.getUsers = (req, res, next) => {
 	User.find()
@@ -53,7 +53,7 @@ exports.changePassword = async (req, res, next) => {
 	const validPassword = await bcrypt.compare(current_password, user.password);
 	if (!validPassword) return res.status(401).json({ error: 'Password is not correct!' });
 
-	const hash = await bcrypt.hash(new_password, APP_CONFIG.JWT_SALT);
+	const hash = await bcrypt.hash(new_password, JWT_SALT);
 	User.updateOne({ _id: id }, new User({ _id: id, password: hash }))
 		.then(() => res.status(200).json({ message: 'Password has been updated!' }))
 		.catch((error) => res.status(500).json({ error }));
