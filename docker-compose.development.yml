@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  mongodb:
+    env_file:
+      - ./configs/mongodb/.env.development
+
+  mongo-express:
+    env_file:
+      - ./configs/mongo-express/.env.development
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.development
+    env_file:
+      - ./configs/api-server/.env.development
+      - ./configs/mongodb/.env.development
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app/backend
