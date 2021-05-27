@@ -23,7 +23,7 @@ const swaggerDefinition = {
 
 const swaggerDocOpts = {
 	swaggerDefinition,
-	apis: ['./backend/routes/api/*.js', './backend/models/*.js']
+	apis: ['./routes/api/*.js', './models/*.js']
 };
 
 const specs = swaggerJsdoc(swaggerDocOpts);
