@@ -17,7 +17,7 @@ services:
       dockerfile: Dockerfile.test
     ports:
       - 8000:8000
-    env_file: 
+    env_file:
       - ./configs/api-server/.env.test
       - ./configs/mongodb/.env.test
 
