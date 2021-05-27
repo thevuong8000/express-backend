@@ -53,7 +53,7 @@ router.get('/', getUsers);
  *         schema:
  *           type: object
  *           properties:
- *             name:
+ *             username:
  *               type: string
  *             password:
  *               type: string
