@@ -1,2 +1,2 @@
 # Stop docker containers
-SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa) docker-compose down
+docker-compose -f docker-compose.base.yml -f docker-compose.development.yml down

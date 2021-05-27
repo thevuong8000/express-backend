@@ -1,2 +1,2 @@
 # Build docker-compose
-SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa) docker-compose up --build
+docker-compose -f docker-compose.base.yml -f docker-compose.development.yml up --build
