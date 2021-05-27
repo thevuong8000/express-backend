@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  mongodb:
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data-db:/data/db
+
+  mongo-express:
+    env_file:
+      - ./configs/mongo-express/.env.staging
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.staging
+    env_file: 
+      - ./configs/api-server/.env.staging
+      - ./configs/mongodb/.env.staging
+
+  frontend:
+    image: ${DOCKER_IMAGE_FRONTEND?Variable not set}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        SSH_PRIVATE_KEY: ${SSH_PRIVATE_KEY}
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
