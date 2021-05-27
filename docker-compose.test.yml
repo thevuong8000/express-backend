@@ -9,15 +9,17 @@ services:
 
   mongo-express:
     env_file:
-      - ./configs/mongo-express/.env.staging
+      - ./configs/mongo-express/.env.test
 
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile.staging
+      dockerfile: Dockerfile.test
+    ports:
+      - 8000:8000
     env_file: 
-      - ./configs/api-server/.env.staging
-      - ./configs/mongodb/.env.staging
+      - ./configs/api-server/.env.test
+      - ./configs/mongodb/.env.test
 
   frontend:
     image: ${DOCKER_IMAGE_FRONTEND?Variable not set}
