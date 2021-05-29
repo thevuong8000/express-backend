@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('@models/User');
 const { JWT_SALT } = require('@constants/config');
-const { UnauthorizedError } = require('schemas/error');
+const { BadRequestError } = require('schemas/error');
 
 exports.getUsers = async (req, res, next) => {
 	try {
@@ -61,10 +61,10 @@ exports.changePassword = async (req, res, next) => {
 	const { current_password, new_password } = req.body;
 
 	const user = await User.getUserById(id);
-	if (!user) return next(new UnauthorizedError('User not found!'));
+	if (!user) return next(new BadRequestError('User not found!'));
 
 	const validPassword = await bcrypt.compare(current_password, user.password);
-	if (!validPassword) return next(new UnauthorizedError('Password is not correct!'));
+	if (!validPassword) return next(new BadRequestError('Password is not correct!'));
 
 	const hash = await bcrypt.hash(new_password, JWT_SALT);
 	try {

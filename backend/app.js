@@ -23,7 +23,7 @@ app.use('/', authRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
-	res.status(err.code || 400).json({ message: err.message, code: err.code });
+	res.status(err.code || 400).send({ message: err.message, code: err.code });
 });
 
 module.exports = app;
