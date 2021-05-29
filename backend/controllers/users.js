@@ -2,10 +2,13 @@ const bcrypt = require('bcrypt');
 const User = require('@models/User');
 const { JWT_SALT } = require('@constants/config');
 
-exports.getUsers = (req, res, next) => {
-	User.find()
-		.then((users) => res.status(200).json({ users: users.map((user) => user.getPublicInfo()) }))
-		.catch((error) => res.status(400).json({ error }));
+exports.getUsers = async (req, res, next) => {
+	try {
+		const users = await User.find();
+		return res.status(200).json({ users: users.map((user) => user.getPublicInfo()) });
+	} catch (error) {
+		return next(error);
+	}
 };
 
 exports.createUser = async (req, res, next) => {
