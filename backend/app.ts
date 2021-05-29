@@ -1,12 +1,13 @@
-require('./mongodb/mongodb-config');
-const express = require('express');
+import './mongodb/mongodb-config';
+import express from 'express';
+import auth from './middlewares/auth';
+import authRoutes from './routes/api/auth';
+import userRoutes from './routes/api/users';
+import swaggerRoutes from './swagger/swagger';
+import cors from './middlewares/cors';
+import { errorHandler } from './middlewares/error-handler';
+
 const app = express();
-const auth = require('@middlewares/auth');
-const authRoutes = require('@api/auth');
-const userRoutes = require('@api/users');
-const swaggerRoutes = require('@swagger/swagger');
-const cors = require('@middlewares/cors');
-const { errorHandler } = require('@middlewares/error-handler');
 
 /* Swagger REST-api document */
 app.use('/docs', swaggerRoutes);

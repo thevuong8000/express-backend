@@ -1,10 +1,10 @@
-const {
+import {
 	MONGODB_USERNAME,
 	MONGODB_PASSWORD,
 	MONGODB_SERVICE,
 	MONGODB_SERVICE_PORT,
 	MONGO_INITDB_DATABASE
-} = require('@constants/config');
+} from '../constants/config';
 const mongoose = require('mongoose');
 
 const MONGO_URI = `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}\

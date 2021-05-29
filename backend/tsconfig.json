@@ -2,10 +2,20 @@
   "compilerOptions": {
     "allowJs": true,
     "module": "commonjs",
-    "baseUrl": ".",
     "noImplicitAny": true,
     "moduleResolution": "Node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@constants/*": ["./constants/*"],
+      "@controllers/*": ["./controllers/*"],
+      "@middlewares/*": ["./middlewares/*"],
+      "@models/*": ["./models/*"],
+      "@routes/*": ["./routes/*"],
+      "@api/*": ["./routes/api/*"],
+      "@swagger/*": ["./swagger/*"],
+      "@utils/*": ["./utils/*"]
+    }
   },
   "extends": "./jsconfig.json"
 }
