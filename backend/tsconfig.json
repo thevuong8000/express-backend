@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "noImplicitAny": true,
+    "isolatedModules": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true
+  },
+  "extends": "./jsconfig.json"
+}
