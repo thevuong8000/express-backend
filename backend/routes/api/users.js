@@ -40,7 +40,7 @@ router.get('/', getUsers);
 
 /**
  * @swagger
- * /users:
+ * /users/create:
  *  post:
  *   summary: Create new user.
  *   description: Create a new user with name and password.
@@ -63,7 +63,7 @@ router.get('/', getUsers);
  *     400:
  *       description: Can not create user
  */
-router.post('/', createUser);
+router.post('/create', createUser);
 
 /**
  * @swagger
