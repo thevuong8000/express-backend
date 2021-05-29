@@ -14,11 +14,12 @@ exports.getUsers = async (req, res, next) => {
 exports.createUser = async (req, res, next) => {
 	const { username, password } = req.body;
 	const hash = await bcrypt.hash(password, 10);
-	const user = new User({ name: username, password: hash });
-	user
-		.save()
-		.then((result) => res.status(201).json({ result: result.getPublicInfo() }))
-		.catch((error) => res.status(400).json({ error }));
+	try {
+		const newUser = await new User({ name: username, password: hash }).save();
+		return res.status(201).json({ result: newUser.getPublicInfo() });
+	} catch (error) {
+		return next(error);
+	}
 };
 
 exports.getUsersById = (req, res, next) => {
