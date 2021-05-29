@@ -1,4 +1,4 @@
-exports.CODE = {
+export const CODE = {
 	OK: 200,
 	CREATED: 201,
 	ACCEPTED: 202,
@@ -12,7 +12,7 @@ exports.CODE = {
 	BAD_GATEWAY: 502
 };
 
-exports.TOKEN = {
+export const TOKEN = {
 	ACCESS_EXPIRES: '2h',
 	REFRESH_EXPIRES: '1 days'
 };
