@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 
 /**
  * @swagger
@@ -7,14 +7,7 @@ const router = express.Router();
  *   name: User
  *   description: User management and operations
  */
-const {
-	createUser,
-	getUsers,
-	getUsersById,
-	updateUser,
-	deleteUser,
-	changePassword
-} = require('@controllers/users');
+import { createUser, getUsers, getUsersById, updateUser, deleteUser, changePassword } from '../../controllers/users';
 
 /**
  * @swagger
@@ -191,4 +184,4 @@ router.delete('/:id', deleteUser);
  */
 router.put('/:id/change-password', changePassword);
 
-module.exports = router;
+export default router;

@@ -3,7 +3,7 @@ import { verifyToken } from '../utils/helper';
 
 const notAuthPaths = ['/', '/login', '/refresh-token', '/users/create'];
 
-export default (req: Request, res: Response, next: NextFunction) => {
+export default (req: Request, res: Response, next: NextFunction): void => {
   /* ======== Need Delete ========= */
   return next();
   /* Skip authentication for non-authorized requests */
