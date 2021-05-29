@@ -11,3 +11,5 @@ class UnauthorizedError extends Error {
 		this.code = 401;
 	}
 }
+
+module.exports = { BadRequestError, UnauthorizedError };

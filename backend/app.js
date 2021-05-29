@@ -21,4 +21,9 @@ app.use(auth);
 app.use('/users', userRoutes);
 app.use('/', authRoutes);
 
+// Error handler
+app.use((err, req, res, next) => {
+	res.status(err.code || 400).json({ message: err.message });
+});
+
 module.exports = app;

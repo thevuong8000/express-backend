@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('@models/User');
 const { JWT_SALT } = require('@constants/config');
+const { UnauthorizedError } = require('schemas/error');
 
 exports.getUsers = async (req, res, next) => {
 	try {
