@@ -1,6 +1,6 @@
 const { verifyToken } = require('@utils/helper');
 
-const notAuthPaths = ['/', '/login', '/refresh-token'];
+const notAuthPaths = ['/', '/login', '/refresh-token', '/users/create'];
 
 module.exports = (req, res, next) => {
 	/* Skip authentication for login */
