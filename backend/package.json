@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -r ./babelRegister.js ./index.ts"
+    "dev": "nodemon -r ./babelRegister.ts ./index.ts"
   },
   "repository": {
     "type": "git",

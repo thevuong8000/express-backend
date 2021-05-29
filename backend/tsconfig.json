@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "module": "commonjs",
     "baseUrl": ".",
     "noImplicitAny": true,
     "moduleResolution": "Node",
