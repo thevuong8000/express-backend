@@ -27,7 +27,7 @@ exports.refreshToken = async (req, res, next) => {
 	const { refresh_token } = req.body;
 	try {
 		const { userId } = verifyToken(refresh_token);
-		const token = generateToken({ userId });
+		const token = generateToken({ userId }, { expiresIn: TOKEN.ACCESS_EXPIRES });
 		res.status(200).json({ access_token: token });
 	} catch (error) {
 		next(error);
@@ -35,16 +35,16 @@ exports.refreshToken = async (req, res, next) => {
 };
 
 exports.testToken = async (req, res, next) => {
-	const { access_token: token, id } = req.body;
+	const { id } = req.body;
 	try {
-		const { userId } = verifyToken(token);
+		const { userId } = req.authData;
 		if (userId !== id) return res.status(401).json({ message: 'Not authenticate!' });
 
-		const user = User.getUserById(userId);
+		const user = await User.getUserById(userId);
 		if (!user) return res.status(401).json({ message: 'Not authenticate!' });
 
-		return res.status(200).json({ message: 'Authenticate' });
+		return res.status(200).json({ message: 'Authenticated' });
 	} catch (error) {
-		next(error);
+		return next(error);
 	}
 };
