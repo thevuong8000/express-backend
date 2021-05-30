@@ -1,0 +1,7 @@
+**/.git
+.dockerignore
+Dockerfile.development
+Dockerfile.test
+dist/
+node_modules/
+types/
