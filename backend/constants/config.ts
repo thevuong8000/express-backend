@@ -1,5 +1,7 @@
+import { Secret } from 'jsonwebtoken';
+
 // Json-web-token
-export const JWT_KEY: string = process.env.JWT_SECRET_KEY;
+export const JWT_KEY: Secret = process.env.JWT_SECRET_KEY;
 export const JWT_SALT: number = 10;
 
 // MongoDB
