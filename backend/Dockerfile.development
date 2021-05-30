@@ -2,8 +2,6 @@ FROM node:12-alpine3.10 as node-image
 
 WORKDIR /app
 COPY . .
-
-WORKDIR /app/backend
 RUN npm install
 
 CMD ["npm", "run", "dev"]
