@@ -1,4 +1,4 @@
-import { Schema, model, Document, ObjectId, Model } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 export interface IUserPublicInfo {
