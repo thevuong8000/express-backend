@@ -1,6 +1,6 @@
-const { refreshToken, login, testToken } = require('@controllers/auth');
-const express = require('express');
-const router = express.Router();
+import { refreshToken, login, testToken } from '../../controllers/auth';
+import { Router } from 'express';
+const router = Router();
 /**
  * @swagger
  * tags:
@@ -116,4 +116,4 @@ router.post('/refresh-token', refreshToken);
  */
 router.post('/test-token', testToken);
 
-module.exports = router;
+export default router;

@@ -30,6 +30,11 @@ typings/
 
 # test js
 test.js
+test.ts
 
 #mongodb
 data-db/
+
+# typescript build
+dist/
+types/

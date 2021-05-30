@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "es6",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+
+    "declaration": true,
+    "declarationDir": "./types",
+
+    "rootDir": "./",
+    "outDir": "./dist",
+
+    "baseUrl": "./",
+    "paths": {
+      "@constants/*": ["constants/*"],
+      "@controllers/*": ["controllers/*"],
+      "@middlewares/*": ["./middlewares/*"],
+      "@models/*": ["./models/*"],
+      "@routes/*": ["./routes/*"],
+      "@api/*": ["./routes/api/*"],
+      "@swagger/*": ["./swagger/*"],
+      "@utils/*": ["./utils/*"]
+    }
+  },
+  "files": ["index.ts", "app.ts"]
+}
