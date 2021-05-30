@@ -1,15 +1,22 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "allowJs": true,
+    "target": "es6",
     "module": "commonjs",
     "noImplicitAny": true,
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "baseUrl": ".",
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+
+    "declaration": true,
+    "declarationDir": "./types",
+
+    "baseUrl": "./",
+    "outDir": "dist",
     "paths": {
-      "@constants/*": ["./constants/*"],
-      "@controllers/*": ["./controllers/*"],
+      "@constants/*": ["constants/*"],
+      "@controllers/*": ["controllers/*"],
       "@middlewares/*": ["./middlewares/*"],
       "@models/*": ["./models/*"],
       "@routes/*": ["./routes/*"],
@@ -18,5 +25,5 @@
       "@utils/*": ["./utils/*"]
     }
   },
-  "extends": "./jsconfig.json"
+  "files": ["index.ts", "app.ts"]
 }
