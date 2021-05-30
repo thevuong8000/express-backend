@@ -12,8 +12,10 @@
     "declaration": true,
     "declarationDir": "./types",
 
+    "rootDir": "./",
+    "outDir": "./dist",
+
     "baseUrl": "./",
-    "outDir": "dist",
     "paths": {
       "@constants/*": ["constants/*"],
       "@controllers/*": ["controllers/*"],

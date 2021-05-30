@@ -2,10 +2,11 @@
   "name": "express-backend",
   "version": "1.0.0",
   "description": "backend with express-js",
-  "main": "index.js",
+  "main": "./index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -r ./babelRegister.ts ./index.ts"
+    "dev": "nodemon -r ./babelRegister.ts ./index.ts",
+    "build": "tsc --project ./"
   },
   "repository": {
     "type": "git",
