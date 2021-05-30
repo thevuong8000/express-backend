@@ -34,3 +34,7 @@ test.ts
 
 #mongodb
 data-db/
+
+# typescript build
+dist/
+types/
