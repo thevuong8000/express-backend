@@ -4,16 +4,16 @@ import User from '../models/User';
 import { JWT_SALT } from '../constants/config';
 import { BadRequestError } from '../schemas/error';
 
-export async function getUsers(req: Request, res: Response, next: NextFunction) {
+export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await User.find();
     return res.status(200).json({ users: users.map((user) => user.getPublicInfo()) });
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function createUser(req: Request, res: Response, next: NextFunction) {
+export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
   const hash = await _hash(password, 10);
   try {
@@ -22,9 +22,9 @@ export async function createUser(req: Request, res: Response, next: NextFunction
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function getUsersById(req: Request, res: Response, next: NextFunction) {
+export const getUsersById = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     const targetUser = await User.findOne({ _id: id });
@@ -32,9 +32,9 @@ export async function getUsersById(req: Request, res: Response, next: NextFuncti
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function updateUser(req: Request, res: Response, next: NextFunction) {
+export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const { email } = req.body;
 
@@ -45,9 +45,9 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function deleteUser(req: Request, res: Response, next: NextFunction) {
+export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     await User.deleteOne({ _id: id });
@@ -55,9 +55,9 @@ export async function deleteUser(req: Request, res: Response, next: NextFunction
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function changePassword(req: Request, res: Response, next: NextFunction) {
+export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const { current_password, new_password } = req.body;
 
@@ -74,4 +74,4 @@ export async function changePassword(req: Request, res: Response, next: NextFunc
   } catch (error) {
     return next(error);
   }
-}
+};

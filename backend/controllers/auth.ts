@@ -6,7 +6,7 @@ import User from '../models/User';
 import { generateToken, verifyToken } from '../utils/helper';
 import { IUserDataToken } from '../types/schemas/user';
 
-export async function login(req: Request, res: Response, next: NextFunction) {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ name: username });
@@ -23,9 +23,9 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   } catch (error) {
     return res.status(500).json({ error });
   }
-}
+};
 
-export async function refreshToken(req: Request, res: Response, next: NextFunction) {
+export const refreshToken = (req: Request, res: Response, next: NextFunction) => {
   const { refresh_token } = req.body;
   try {
     const { userId } = <IUserDataToken>verifyToken(refresh_token);
@@ -34,7 +34,7 @@ export async function refreshToken(req: Request, res: Response, next: NextFuncti
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const testToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const { id } = req.body;
