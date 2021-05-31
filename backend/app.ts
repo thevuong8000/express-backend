@@ -1,5 +1,5 @@
 import './mongodb/mongodb-config';
-import express from 'express';
+import express, { Application } from 'express';
 import auth from './middlewares/auth';
 import authRoutes from './routes/api/auth';
 import userRoutes from './routes/api/users';
@@ -7,7 +7,7 @@ import swaggerRoutes from './swagger/swagger';
 import cors from './middlewares/cors';
 import { errorHandler } from './middlewares/error-handler';
 
-const app = express();
+const app: Application = express();
 
 /* Swagger REST-api document */
 app.use('/docs', swaggerRoutes);
