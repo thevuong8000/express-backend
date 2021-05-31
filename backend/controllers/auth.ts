@@ -4,6 +4,7 @@ import { compare } from 'bcrypt';
 import { TOKEN } from '../constants/global';
 import User from '../models/User';
 import { generateToken, verifyToken } from '../utils/helper';
+import { IUserDataToken } from '../types/schemas/user';
 
 export async function login(req: Request, res: Response, next: NextFunction) {
   const { username, password } = req.body;
@@ -20,7 +21,6 @@ export async function login(req: Request, res: Response, next: NextFunction) {
         })
       : res.status(401).json({ error: 'Incorrect password' });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error });
   }
 }
@@ -28,7 +28,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 export async function refreshToken(req: Request, res: Response, next: NextFunction) {
   const { refresh_token } = req.body;
   try {
-    const { userId } = verifyToken(refresh_token);
+    const { userId } = <IUserDataToken>verifyToken(refresh_token);
     const token = generateToken({ userId }, { expiresIn: TOKEN.ACCESS_EXPIRES });
     res.status(200).json({ access_token: token });
   } catch (error) {
