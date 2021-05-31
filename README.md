@@ -1,18 +1,11 @@
-# express-backend
+# Express Application with TypeScript Boilerplate
 
-1. Test by command line **curl**:
+### Set up environment:
+- Create `.env.development` and `.env.test` in folders `api-server`, `mongo-express`, and `mongodb`
+- Copy `example.env` to corresponding `.env.*` and assign values.
 
-- `/GET` : `curl url`
-- `/POST` : `curl --data {query} url`
-- `/DELETE` : `curl -X DELETE url`
-- `/PUT` : `curl -X PUT -d {query} url`
+###  Get Started:
+- Run command: `docker-compose -f docker-compose.base.yml -f docker-compose.development.yml up --build`
 
-2. Set up environment:
-- Create `/backend/.env`
-- Copy `/backend/.env.example` to `/backend/.env` and assign values.
-
-3. Get Started
-- Run command: `bash ./script/start.sh`
-
-4. Terminate application:
-- Run command: `bash ./script/stop.sh`
+### Terminate application:
+- Run command: `docker-compose -f docker-compose.base.yml -f docker-compose.development.yml down`

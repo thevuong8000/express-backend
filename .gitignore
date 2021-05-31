@@ -28,9 +28,8 @@ typings/
 # Serverless directories
 .serverless/
 
-# test js
-test.js
-test.ts
+# test file
+test.*
 
 #mongodb
 data-db/
