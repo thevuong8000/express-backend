@@ -15,7 +15,7 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
-  const hash = await _hash(password, 10);
+  const hash = await _hash(password, JWT_SALT);
   try {
     const newUser = await new User({ name: username, password: hash }).save();
     return res.status(201).json({ result: newUser.getPublicInfo() });
