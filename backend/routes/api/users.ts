@@ -7,7 +7,14 @@ const router = Router();
  *   name: User
  *   description: User management and operations
  */
-import { createUser, getUsers, getUsersById, updateUser, deleteUser, changePassword } from '../../controllers/users';
+import {
+  createUser,
+  getUsers,
+  getUsersById,
+  updateUser,
+  deleteUser,
+  changePassword
+} from '../../controllers/users';
 
 /**
  * @swagger

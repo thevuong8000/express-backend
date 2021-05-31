@@ -10,11 +10,12 @@ export interface IUserDocument extends Document {
   name: string;
   password: string;
   email?: string;
+
+  // methods
   getPublicInfo(): IUserPublicInfo;
 }
 
 export interface IUserModel extends Model<IUserDocument> {
-  // getPublicInfo(): IUserPublicInfo;
   getUserById(id: string): Promise<IUserDocument>;
 }
 

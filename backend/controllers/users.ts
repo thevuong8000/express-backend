@@ -3,6 +3,7 @@ import { hash as _hash, compare } from 'bcrypt';
 import User from '../models/User';
 import { JWT_SALT } from '../constants/config';
 import { BadRequestError } from '../schemas/error';
+import { IChangePassword, ICreateUser, IUserUpdate } from '../schemas/user';
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,7 +15,7 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 };
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { username, password } = req.body;
+  const { username, password } = <ICreateUser>req.body;
   const hash = await _hash(password, JWT_SALT);
   try {
     const newUser = await new User({ name: username, password: hash }).save();
@@ -36,7 +37,7 @@ export const getUsersById = async (req: Request, res: Response, next: NextFuncti
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { email } = req.body;
+  const { email } = <IUserUpdate>req.body;
 
   const newUser = new User({ _id: id, email });
   try {
@@ -59,7 +60,7 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 
 export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { current_password, new_password } = req.body;
+  const { current_password, new_password } = <IChangePassword>req.body;
 
   const user = await User.getUserById(id);
   if (!user) return next(new BadRequestError('User not found!'));
