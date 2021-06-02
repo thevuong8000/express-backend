@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -r ./babelRegister.ts ./index.ts",
+    "dev": "nodemon ./index.ts",
     "build": "tsc --project ./",
     "start": "node dist/index.js"
   },
@@ -20,9 +20,6 @@
   },
   "homepage": "https://github.com/thevuong8000/express-backend#readme",
   "dependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.2",
-    "@babel/register": "^7.13.16",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
@@ -32,7 +29,7 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.13.0",
+    "@/preset-typescript": "^7.13.0",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.12",
     "@types/jsonwebtoken": "^8.5.1",
