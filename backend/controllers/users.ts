@@ -30,7 +30,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 export const getUsersById = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
-    const targetUser = await User.getUserById(id);
+    const targetUser = await User.getById(id);
     return res.status(200).json({ result: targetUser.getPublicInfo() });
   } catch (error) {
     return next(error);
@@ -63,7 +63,7 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
   const { id } = req.params;
   const { current_password, new_password } = <IChangePassword>req.body;
 
-  const user = await User.getUserById(id);
+  const user = await User.getById(id);
   if (!user) return next(new BadRequestError('User not found!'));
 
   const validPassword = await compare(current_password, user.hashed_password);

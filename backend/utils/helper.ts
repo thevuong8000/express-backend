@@ -14,10 +14,10 @@ export const generateToken = (
 };
 
 /**
- * Verify JWT token. 
+ * Verify and decode JWT token.
  * @param token JWT token to be verified.
  * @returns Data by input token.
  */
-export const verifyToken = (token: string): string | object => {
+export const decodeToken = (token: string): string | object => {
   return verify(token, JWT_KEY);
 };

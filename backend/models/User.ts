@@ -31,7 +31,7 @@ export interface IUserModel extends Model<IUserDocument> {
    * Find user with specific id.
    * @param id id of target user
    */
-  getUserById(id: string): Promise<IUserDocument>;
+  getById(id: string): Promise<IUserDocument>;
 
   /**
    * Filter to only updatable props
@@ -59,7 +59,7 @@ userSchema.statics.getUpdatableProps = function (data: object): IUserUpdate {
   return { display_name, email };
 };
 
-userSchema.statics.getUserById = async function (id: string): Promise<IUserDocument> {
+userSchema.statics.getById = async function (id: string): Promise<IUserDocument> {
   return this.findOne({ _id: id });
 };
 

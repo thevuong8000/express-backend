@@ -16,3 +16,10 @@ export interface IUserUpdate {
   display_name?: string;
   email?: string;
 }
+
+type TokenType = 'Bearer';
+export interface UserToken {
+  access_token: string;
+  refresh_token: string;
+  token_type: TokenType;
+}
