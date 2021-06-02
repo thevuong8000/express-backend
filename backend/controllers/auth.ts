@@ -5,6 +5,7 @@ import { TOKEN } from '../constants/global';
 import User from '../models/User';
 import { generateToken, verifyToken } from '../utils/helper';
 import { IUserDataToken } from '../schemas/user';
+import { UnauthorizedError } from 'schemas/error';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
@@ -37,13 +38,10 @@ export const refreshToken = (req: Request, res: Response, next: NextFunction) =>
 };
 
 export const testToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
-  const { id } = req.body;
   try {
     const { userId } = req.authData;
-    if (userId !== id) return res.status(401).json({ message: 'Not authenticate!' });
-
     const user = await User.getUserById(userId);
-    if (!user) return res.status(401).json({ message: 'Not authenticate!' });
+    if (!user) return next(new UnauthorizedError('Not authenticated!'));
 
     return res.status(200).json({ message: 'Authenticated' });
   } catch (error) {
