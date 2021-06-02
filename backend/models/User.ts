@@ -3,22 +3,13 @@ import { Schema, model, Document, Model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import { JWT_SALT } from '../constants/config';
 import { NextFunction } from 'express';
-import { IUserUpdate } from '../schemas/user';
-
-export interface IUserPublicInfo {
-  id: string;
-  account: string;
-  display_name: string;
-  email: string | null;
-}
+import { IUserUpdate, IUserPublicInfo } from 'schemas/user';
 
 export interface IUserDocument extends Document {
   account: string;
   hashed_password: string;
   display_name: string;
   email?: string;
-
-  password?: string;
 
   /**
    * Get information to send.

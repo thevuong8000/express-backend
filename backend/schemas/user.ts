@@ -1,3 +1,10 @@
+export interface IUserPublicInfo {
+  id: string;
+  account: string;
+  display_name: string;
+  email: string | null;
+}
+
 export interface IUserDataToken {
   userId: string;
 }

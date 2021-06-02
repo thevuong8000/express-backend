@@ -94,7 +94,7 @@ router.get('/:id', getUsersById);
 /**
  * @swagger
  * /users/{id}:
- *  put:
+ *  patch:
  *   summary: Update user information.
  *   description: Update user information.
  *   tags:
@@ -114,6 +114,8 @@ router.get('/:id', getUsersById);
  *           properties:
  *             email:
  *               type: string
+ *             display_name:
+ *               type: string
  *   responses:
  *     200:
  *       description: Update status message
@@ -127,7 +129,7 @@ router.get('/:id', getUsersById);
  *     400:
  *       description: Can not update user
  */
-router.put('/:id', updateUser);
+router.patch('/:id', updateUser);
 
 /**
  * @swagger
