@@ -13,7 +13,6 @@ export interface ICreateUser {
 }
 
 export interface IUserUpdate {
-  name?: string;
-  password?: string;
+  display_name?: string;
   email?: string;
 }

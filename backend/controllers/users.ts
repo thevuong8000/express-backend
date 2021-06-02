@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { hash as _hash, compare } from 'bcrypt';
 import User from '../models/User';
-import { JWT_SALT } from '../constants/config';
 import { BadRequestError } from '../schemas/error';
 import { IChangePassword, ICreateUser, IUserUpdate } from '../schemas/user';
 
@@ -16,9 +15,12 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = <ICreateUser>req.body;
-  const hash = await _hash(password, JWT_SALT);
   try {
-    const newUser = await new User({ name: username, password: hash }).save();
+    const newUser = await User.create({
+      account: username,
+      hashed_password: password,
+      display_name: username
+    });
     return res.status(201).json({ result: newUser.getPublicInfo() });
   } catch (error) {
     return next(error);
@@ -28,7 +30,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 export const getUsersById = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
-    const targetUser = await User.findOne({ _id: id });
+    const targetUser = await User.getUserById(id);
     return res.status(200).json({ result: targetUser.getPublicInfo() });
   } catch (error) {
     return next(error);
@@ -37,11 +39,10 @@ export const getUsersById = async (req: Request, res: Response, next: NextFuncti
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { email } = <IUserUpdate>req.body;
+  const data: IUserUpdate = User.getUpdatableProps(req.body);
 
-  const newUser = new User({ _id: id, email });
   try {
-    await User.updateOne({ _id: id }, newUser);
+    await User.updateOne({ _id: id }, { ...data });
     return res.status(200).json({ message: 'Successfully modified' });
   } catch (error) {
     return next(error);
@@ -65,12 +66,14 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
   const user = await User.getUserById(id);
   if (!user) return next(new BadRequestError('User not found!'));
 
-  const validPassword = await compare(current_password, user.password);
+  const validPassword = await compare(current_password, user.hashed_password);
   if (!validPassword) return next(new BadRequestError('Password is not correct!'));
 
-  const hash = await _hash(new_password, JWT_SALT);
   try {
-    await User.updateOne({ _id: id }, new User({ _id: id, password: hash }));
+    /* Saving by assigning to hash password before saving to DB */
+    user.hashed_password = new_password;
+    await user.save();
+
     return res.status(200).json({ message: 'Password has been updated!' });
   } catch (error) {
     return next(error);

@@ -154,7 +154,7 @@ router.delete('/:id', deleteUser);
 /**
  * @swagger
  * /users/{id}/change-password:
- *  put:
+ *  patch:
  *   summary: Update user password.
  *   description: Update user password.
  *   tags:
@@ -189,6 +189,6 @@ router.delete('/:id', deleteUser);
  *     400:
  *       description: Can not change password
  */
-router.put('/:id/change-password', changePassword);
+router.patch('/:id/change-password', changePassword);
 
 export default router;

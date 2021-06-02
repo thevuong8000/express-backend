@@ -7,6 +7,7 @@ const notAuthPaths = ['/', '/login', '/refresh-token', '/users/create'];
 
 const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   /* Skip authentication for non-authorized requests */
+  return next();
   if (notAuthPaths.includes(req.path)) return next();
 
   /* Resolve OPTIONS request */

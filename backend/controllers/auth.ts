@@ -5,7 +5,7 @@ import { TOKEN } from '../constants/global';
 import User from '../models/User';
 import { generateToken, verifyToken } from '../utils/helper';
 import { IUserDataToken } from '../schemas/user';
-import { UnauthorizedError } from 'schemas/error';
+import { UnauthorizedError } from '../schemas/error';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
