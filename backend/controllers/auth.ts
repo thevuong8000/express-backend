@@ -4,7 +4,7 @@ import { compare } from 'bcrypt';
 import { TOKEN } from '../constants/global';
 import User from '../models/User';
 import { generateToken, verifyToken } from '../utils/helper';
-import { IUserDataToken } from '../types/schemas/user';
+import { IUserDataToken } from '../schemas/user';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
