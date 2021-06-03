@@ -51,12 +51,7 @@ router.get('/', getUsers);
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             username:
- *               type: string
- *             password:
- *               type: string
+ *           $ref: '#/components/schemas/UserAuthentication'
  *   responses:
  *     201:
  *       description: A list of users

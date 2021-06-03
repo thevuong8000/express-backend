@@ -34,6 +34,20 @@ export interface IChangePassword {
   new_password: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserAuthentication:
+ *       properties:
+ *         username:
+ *           type: string
+ *         password:
+ *           type: string
+ *       required:
+ *         - username
+ *         - password
+ */
 export interface ICreateUser {
   username: string;
   password: string;

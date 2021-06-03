@@ -21,12 +21,7 @@ const router = Router();
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             username:
- *               type: string
- *             password:
- *               type: string
+ *           $ref: '#/components/schemas/UserAuthentication'
  *   responses:
  *     200:
  *       description: A list of users
