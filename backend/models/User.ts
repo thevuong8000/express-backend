@@ -54,6 +54,9 @@ UserSchema.statics.getById = async function (id: string): Promise<IUserDocument>
   return this.findOne({ _id: id });
 };
 
+/**
+ * Hash password before saving into DB
+ */
 UserSchema.pre('save', async function (next: NextFunction) {
   if (!this.isModified('hashed_password')) return next();
   this.hashed_password = await hash(this.hashed_password, JWT_SALT);
