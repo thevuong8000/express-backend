@@ -13,7 +13,8 @@ import {
   getUsersById,
   updateUser,
   deleteUser,
-  changePassword
+  changePassword,
+  refreshToken
 } from '../../controllers/users';
 
 /**
@@ -181,5 +182,34 @@ router.delete('/:id', deleteUser);
  *       description: Can not change password
  */
 router.patch('/:id/change-password', changePassword);
+
+/**
+ * @swagger
+ * /users/refresh-token:
+ *  post:
+ *   summary: Refresh token.
+ *   description: Refresh access token using refresh token.
+ *   tags:
+ *     - User
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             refresh_token:
+ *               type: string
+ *   responses:
+ *     200:
+ *       description: Get new access_token
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserToken'
+ *     400:
+ *       description: Refresh token is not valid
+ */
+router.post('/refresh-token', refreshToken);
 
 export default router;

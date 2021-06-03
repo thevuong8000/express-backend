@@ -3,11 +3,11 @@ import { Response, NextFunction } from 'express';
 import { decodeToken } from '../utils/helper';
 import { IUserDataToken } from 'schemas/user';
 
-const notAuthPaths = ['/', '/login', '/refresh-token', '/users/create'];
+const AUTHENTICATION_EXCLUDES = ['/', '/login', '/users/refresh-token', '/users/create'];
 
 const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   /* Skip authentication for non-authorized requests */
-  if (notAuthPaths.includes(req.path)) return next();
+  if (AUTHENTICATION_EXCLUDES.includes(req.path)) return next();
 
   /* Resolve OPTIONS request */
   if (req.method === 'OPTIONS') return next();

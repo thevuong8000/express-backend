@@ -1,4 +1,4 @@
-import { refreshToken, login, testToken } from '../../controllers/auth';
+import { login, testToken } from '../../controllers/auth';
 import { Router } from 'express';
 const router = Router();
 /**
@@ -32,40 +32,11 @@ const router = Router();
  *     400:
  *       description: Failed to login
  */
-router.post('/login', login);
+router.post('/', login);
 
 /**
  * @swagger
- * /refresh-token:
- *  post:
- *   summary: Refresh token.
- *   description: Refresh access token using refresh token.
- *   tags:
- *     - Authentication
- *   requestBody:
- *     required: true
- *     content:
- *       application/json:
- *         schema:
- *           type: object
- *           properties:
- *             refresh_token:
- *               type: string
- *   responses:
- *     200:
- *       description: Get new access_token
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserToken'
- *     400:
- *       description: Refresh token is not valid
- */
-router.post('/refresh-token', refreshToken);
-
-/**
- * @swagger
- * /test-token:
+ * /login/test-token:
  *  post:
  *   summary: Test access token.
  *   description: Verify if access token is still valid.

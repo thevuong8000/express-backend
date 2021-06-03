@@ -3,8 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 import { compare } from 'bcrypt';
 import { TOKEN } from '../constants/global';
 import User from '../models/User';
-import { generateToken, decodeToken } from '../utils/helper';
-import { IUserDataToken, UserToken } from '../schemas/user';
+import { generateToken } from '../utils/helper';
+import { UserToken } from '../schemas/user';
 import { UnauthorizedError } from '../schemas/error';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -24,21 +24,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     res.status(200).json(tokens);
   } catch (error) {
     return res.status(500).json({ error });
-  }
-};
-
-export const refreshToken = (req: Request, res: Response, next: NextFunction) => {
-  const { refresh_token } = <{ refresh_token: string }>req.body;
-  try {
-    const { userId } = <IUserDataToken>decodeToken(refresh_token);
-    const tokens: UserToken = {
-      access_token: generateToken({ userId }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
-      refresh_token,
-      token_type: 'Bearer'
-    };
-    res.status(200).json(tokens);
-  } catch (error) {
-    next(error);
   }
 };
 
