@@ -171,12 +171,7 @@ router.delete('/:id', deleteUser);
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             current_password:
- *               type: string
- *             new_password:
- *               type: string
+ *           $ref: '#/components/schemas/UserChangePassword'
  *   responses:
  *     200:
  *       description: Update status message

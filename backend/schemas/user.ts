@@ -29,6 +29,20 @@ export interface IUserDataToken {
   userId: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserChangePassword:
+ *       properties:
+ *         current_password:
+ *           type: string
+ *         new_password:
+ *           type: string
+ *       required:
+ *         - current_password
+ *         - new_password
+ */
 export interface IChangePassword {
   current_password: string;
   new_password: string;
