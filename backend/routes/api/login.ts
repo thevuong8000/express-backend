@@ -32,11 +32,11 @@ const router = Router();
  *     400:
  *       description: Failed to login
  */
-router.post('/login', login);
+router.post('/', login);
 
 /**
  * @swagger
- * /refresh-token:
+ * /login/refresh-token:
  *  post:
  *   summary: Refresh token.
  *   description: Refresh access token using refresh token.
@@ -65,7 +65,7 @@ router.post('/refresh-token', refreshToken);
 
 /**
  * @swagger
- * /test-token:
+ * /login/test-token:
  *  post:
  *   summary: Test access token.
  *   description: Verify if access token is still valid.
