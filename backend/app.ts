@@ -1,11 +1,12 @@
 import './mongodb/mongodb-config';
 import express, { Application } from 'express';
+import cors from 'cors';
 import auth from './middlewares/auth';
 import authRoutes from './routes/api/auth';
 import userRoutes from './routes/api/users';
 import swaggerRoutes from './swagger/swagger';
-import cors from './middlewares/cors';
 import { errorHandler } from './middlewares/error-handler';
+import { CORS_CONFIGS } from './constants/config';
 
 const app: Application = express();
 
@@ -16,8 +17,10 @@ app.use('/docs', swaggerRoutes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+/* CORS allow */
+app.use(cors(CORS_CONFIGS));
+
 // middlewares
-app.use(cors);
 app.use(auth);
 
 // Rest-API
