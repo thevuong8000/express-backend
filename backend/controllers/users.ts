@@ -2,7 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import { hash as _hash, compare } from 'bcrypt';
 import User from '../models/User';
 import { BadRequestError } from '../schemas/error';
-import { IChangePassword, IUserCreate, IUserUpdate } from '../schemas/user';
+import {
+  IChangePassword,
+  IUserCreate,
+  IUserUpdate,
+  IUserDataToken,
+  UserToken
+} from '../schemas/user';
+import { decodeToken, generateToken } from '../utils/helper';
+import { TOKEN } from '../constants/global';
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -77,5 +85,20 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
     return res.status(200).json({ message: 'Password has been updated!' });
   } catch (error) {
     return next(error);
+  }
+};
+
+export const refreshToken = (req: Request, res: Response, next: NextFunction) => {
+  const { refresh_token } = <{ refresh_token: string }>req.body;
+  try {
+    const { userId } = <IUserDataToken>decodeToken(refresh_token);
+    const tokens: UserToken = {
+      access_token: generateToken({ userId }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
+      refresh_token,
+      token_type: 'Bearer'
+    };
+    res.status(200).json(tokens);
+  } catch (error) {
+    next(error);
   }
 };

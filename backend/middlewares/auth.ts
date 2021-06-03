@@ -3,7 +3,7 @@ import { Response, NextFunction } from 'express';
 import { decodeToken } from '../utils/helper';
 import { IUserDataToken } from 'schemas/user';
 
-const notAuthPaths = ['/', '/login', '/refresh-token', '/users/create'];
+const notAuthPaths = ['/', '/login', '/users/refresh-token', '/users/create'];
 
 const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   /* Skip authentication for non-authorized requests */
