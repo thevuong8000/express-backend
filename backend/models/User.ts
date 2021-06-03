@@ -61,18 +61,3 @@ UserSchema.pre('save', async function (next: NextFunction) {
 });
 
 export default model<IUserDocument, IUserModel>('User', UserSchema);
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       properties:
- *         id:
- *           type: string
- *         name:
- *           type: string
- *       required:
- *         - id
- *         - name
- */

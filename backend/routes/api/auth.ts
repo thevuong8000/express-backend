@@ -33,18 +33,9 @@ const router = Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: string
- *               name:
- *                 type: string
- *               access_token:
- *                 type: string
- *               refresh_token:
- *                 type: string
+ *             $ref: '#/components/schemas/UserToken'
  *     400:
- *       description: Can not create user
+ *       description: Failed to login
  */
 router.post('/login', login);
 
@@ -71,12 +62,7 @@ router.post('/login', login);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: string
- *               access_token:
- *                 type: string
+ *             $ref: '#/components/schemas/UserToken'
  *     400:
  *       description: Refresh token is not valid
  */
