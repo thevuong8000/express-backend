@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { hash as _hash, compare } from 'bcrypt';
 import User from '../models/User';
 import { BadRequestError } from '../schemas/error';
-import { IChangePassword, ICreateUser, IUserUpdate } from '../schemas/user';
+import { IChangePassword, IUserCreate, IUserUpdate } from '../schemas/user';
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,7 +14,7 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 };
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { username, password } = <ICreateUser>req.body;
+  const { username, password } = <IUserCreate>req.body;
   try {
     const newUser = await User.create({
       account: username,

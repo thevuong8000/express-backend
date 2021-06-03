@@ -48,7 +48,7 @@ export interface IChangePassword {
  *         - username
  *         - password
  */
-export interface ICreateUser {
+export interface IUserCreate {
   username: string;
   password: string;
 }
