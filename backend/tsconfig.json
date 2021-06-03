@@ -16,17 +16,17 @@
     "rootDir": "./",
     "outDir": "./dist",
 
-    "baseUrl": "./",
-    "paths": {
-      "@constants/*": ["constants/*"],
-      "@controllers/*": ["controllers/*"],
-      "@middlewares/*": ["./middlewares/*"],
-      "@models/*": ["./models/*"],
-      "@routes/*": ["./routes/*"],
-      "@api/*": ["./routes/api/*"],
-      "@swagger/*": ["./swagger/*"],
-      "@utils/*": ["./utils/*"]
-    }
+    "baseUrl": "."
+    // "paths": {
+    //   "@constants/*": ["constants/*"],
+    //   "@controllers/*": ["controllers/*"],
+    //   "@middlewares/*": ["./middlewares/*"],
+    //   "@models/*": ["./models/*"],
+    //   "@routes/*": ["./routes/*"],
+    //   "@api/*": ["./routes/api/*"],
+    //   "@swagger/*": ["./swagger/*"],
+    //   "@utils/*": ["./utils/*"]
+    // }
   },
-  "files": ["index.ts", "app.ts"]
+  // "files": ["index.ts", "app.ts"]
 }

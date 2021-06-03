@@ -1,53 +1,55 @@
 import { Request, Response, NextFunction } from 'express';
 import { hash as _hash, compare } from 'bcrypt';
 import User from '../models/User';
-import { JWT_SALT } from '../constants/config';
 import { BadRequestError } from '../schemas/error';
+import { IChangePassword, IUserCreate, IUserUpdate } from '../schemas/user';
 
-export async function getUsers(req: Request, res: Response, next: NextFunction) {
+export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await User.find();
     return res.status(200).json({ users: users.map((user) => user.getPublicInfo()) });
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function createUser(req: Request, res: Response, next: NextFunction) {
-  const { username, password } = req.body;
-  const hash = await _hash(password, 10);
+export const createUser = async (req: Request, res: Response, next: NextFunction) => {
+  const { username, password } = <IUserCreate>req.body;
   try {
-    const newUser = await new User({ name: username, password: hash }).save();
-    return res.status(201).json({ result: newUser.getPublicInfo() });
+    const newUser = await User.create({
+      account: username,
+      hashed_password: password,
+      display_name: username
+    });
+    return res.status(201).json(newUser.getPublicInfo());
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function getUsersById(req: Request, res: Response, next: NextFunction) {
+export const getUsersById = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
-    const targetUser = await User.findOne({ _id: id });
-    return res.status(200).json({ result: targetUser.getPublicInfo() });
+    const targetUser = await User.getById(id);
+    return res.status(200).json(targetUser.getPublicInfo());
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function updateUser(req: Request, res: Response, next: NextFunction) {
+export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { email } = req.body;
+  const data: IUserUpdate = User.getUpdatableProps(req.body);
 
-  const newUser = new User({ _id: id, email });
   try {
-    await User.updateOne({ _id: id }, newUser);
+    await User.updateOne({ _id: id }, data);
     return res.status(200).json({ message: 'Successfully modified' });
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function deleteUser(req: Request, res: Response, next: NextFunction) {
+export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     await User.deleteOne({ _id: id });
@@ -55,23 +57,25 @@ export async function deleteUser(req: Request, res: Response, next: NextFunction
   } catch (error) {
     return next(error);
   }
-}
+};
 
-export async function changePassword(req: Request, res: Response, next: NextFunction) {
+export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { current_password, new_password } = req.body;
+  const { current_password, new_password } = <IChangePassword>req.body;
 
-  const user = await User.getUserById(id);
+  const user = await User.getById(id);
   if (!user) return next(new BadRequestError('User not found!'));
 
-  const validPassword = await compare(current_password, user.password);
+  const validPassword = await compare(current_password, user.hashed_password);
   if (!validPassword) return next(new BadRequestError('Password is not correct!'));
 
-  const hash = await _hash(new_password, JWT_SALT);
   try {
-    await User.updateOne({ _id: id }, new User({ _id: id, password: hash }));
+    /* Saving by assigning to hash password before saving to DB */
+    user.hashed_password = new_password;
+    await user.save();
+
     return res.status(200).json({ message: 'Password has been updated!' });
   } catch (error) {
     return next(error);
   }
-}
+};

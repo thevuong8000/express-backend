@@ -1,52 +1,66 @@
+import { hash } from 'bcrypt';
 import { Schema, model, Document, Model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
-
-export interface IUserPublicInfo {
-  name: string;
-  id: string;
-}
+import { JWT_SALT } from '../constants/config';
+import { NextFunction } from 'express';
+import { IUserUpdate, IUserPublicInfo } from 'schemas/user';
 
 export interface IUserDocument extends Document {
-  name: string;
-  password: string;
+  account: string;
+  hashed_password: string;
+  display_name: string;
   email?: string;
+
+  /**
+   * Get information to send.
+   */
   getPublicInfo(): IUserPublicInfo;
 }
 
 export interface IUserModel extends Model<IUserDocument> {
-  // getPublicInfo(): IUserPublicInfo;
-  getUserById(id: string): Promise<IUserDocument>;
+  /**
+   * Find user with specific id.
+   * @param id id of target user
+   */
+  getById(id: string): Promise<IUserDocument>;
+
+  /**
+   * Filter to only updatable props
+   * @param data data to update
+   */
+  getUpdatableProps(data: object): IUserUpdate;
 }
 
-const userSchema = new Schema<IUserDocument, IUserModel>({
-  name: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+const UserSchema = new Schema<IUserDocument, IUserModel>({
+  account: { type: String, required: true, unique: true },
+  hashed_password: { type: String, required: true },
+  display_name: { type: String, required: true },
+  email: { type: String }
 });
 
-userSchema.plugin(uniqueValidator);
+UserSchema.plugin(uniqueValidator);
 
-userSchema.methods.getPublicInfo = function (): IUserPublicInfo {
-  const { name, _id: id } = this;
-  return { id, name };
+UserSchema.methods.getPublicInfo = function (): IUserPublicInfo {
+  const { account, display_name, email, _id: id } = this;
+  return { id, account, display_name, email: email ?? null };
 };
 
-userSchema.statics.getUserById = async function (id: string): Promise<IUserDocument> {
+UserSchema.statics.getUpdatableProps = function (data: object): IUserUpdate {
+  const { display_name, email } = <IUserUpdate>data;
+  return { display_name, email };
+};
+
+UserSchema.statics.getById = async function (id: string): Promise<IUserDocument> {
   return this.findOne({ _id: id });
 };
 
-export default model<IUserDocument, IUserModel>('User', userSchema);
-
 /**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       properties:
- *         id:
- *           type: string
- *         name:
- *           type: string
- *       required:
- *         - id
- *         - name
+ * Hash password before saving into DB
  */
+UserSchema.pre('save', async function (next: NextFunction) {
+  if (!this.isModified('hashed_password')) return next();
+  this.hashed_password = await hash(this.hashed_password, JWT_SALT);
+  next();
+});
+
+export default model<IUserDocument, IUserModel>('User', UserSchema);

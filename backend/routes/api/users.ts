@@ -7,7 +7,14 @@ const router = Router();
  *   name: User
  *   description: User management and operations
  */
-import { createUser, getUsers, getUsersById, updateUser, deleteUser, changePassword } from '../../controllers/users';
+import {
+  createUser,
+  getUsers,
+  getUsersById,
+  updateUser,
+  deleteUser,
+  changePassword
+} from '../../controllers/users';
 
 /**
  * @swagger
@@ -44,15 +51,14 @@ router.get('/', getUsers);
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             username:
- *               type: string
- *             password:
- *               type: string
+ *           $ref: '#/components/schemas/UserAuthentication'
  *   responses:
  *     201:
  *       description: A list of users
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
  *     400:
  *       description: Can not create user
  */
@@ -87,7 +93,7 @@ router.get('/:id', getUsersById);
 /**
  * @swagger
  * /users/{id}:
- *  put:
+ *  patch:
  *   summary: Update user information.
  *   description: Update user information.
  *   tags:
@@ -103,10 +109,7 @@ router.get('/:id', getUsersById);
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             email:
- *               type: string
+ *           $ref: '#/components/schemas/UserUpdate'
  *   responses:
  *     200:
  *       description: Update status message
@@ -120,7 +123,7 @@ router.get('/:id', getUsersById);
  *     400:
  *       description: Can not update user
  */
-router.put('/:id', updateUser);
+router.patch('/:id', updateUser);
 
 /**
  * @swagger
@@ -147,7 +150,7 @@ router.delete('/:id', deleteUser);
 /**
  * @swagger
  * /users/{id}/change-password:
- *  put:
+ *  patch:
  *   summary: Update user password.
  *   description: Update user password.
  *   tags:
@@ -163,12 +166,7 @@ router.delete('/:id', deleteUser);
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             current_password:
- *               type: string
- *             new_password:
- *               type: string
+ *           $ref: '#/components/schemas/UserChangePassword'
  *   responses:
  *     200:
  *       description: Update status message
@@ -182,6 +180,6 @@ router.delete('/:id', deleteUser);
  *     400:
  *       description: Can not change password
  */
-router.put('/:id/change-password', changePassword);
+router.patch('/:id/change-password', changePassword);
 
 export default router;

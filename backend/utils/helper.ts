@@ -1,14 +1,23 @@
-import { IUserDataToken } from './../schemas/user';
 import { JWT_KEY } from '../constants/config';
 import { sign, verify, SignOptions } from 'jsonwebtoken';
 
+/**
+ * Generate token with payload.
+ * @param payload The data would be hash.
+ * @param options JWT options.
+ */
 export const generateToken = (
-  payload: IUserDataToken,
+  payload: string | object | Buffer,
   { expiresIn = '2h', ...restOptions }: SignOptions = {}
 ): string => {
   return sign(payload, JWT_KEY, { expiresIn, ...restOptions });
 };
 
-export const verifyToken = (token: string): IUserDataToken => {
-  return <IUserDataToken>verify(token, JWT_KEY)
+/**
+ * Verify and decode JWT token.
+ * @param token JWT token to be verified.
+ * @returns Data by input token.
+ */
+export const decodeToken = (token: string): string | object => {
+  return verify(token, JWT_KEY);
 };

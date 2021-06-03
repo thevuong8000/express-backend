@@ -6,6 +6,7 @@ interface IHttpRequestError {
 class BadRequestError implements IHttpRequestError {
   message: string;
   code: number;
+
   constructor(message: string) {
     this.message = message;
     this.code = 400;
@@ -15,6 +16,7 @@ class BadRequestError implements IHttpRequestError {
 class UnauthorizedError implements IHttpRequestError {
   message: string;
   code: number;
+
   constructor(message: string) {
     this.message = message;
     this.code = 401;
