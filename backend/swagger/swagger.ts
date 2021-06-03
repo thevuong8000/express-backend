@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import swaggerJsdoc from 'swagger-jsdoc';
-import { serve, setup } from 'swagger-ui-express';
+import swaggerJsdoc, { Options, SwaggerDefinition } from 'swagger-jsdoc';
+import { serve, setup, SwaggerUiOptions } from 'swagger-ui-express';
 
 const router = Router();
 
-const swaggerUiOpts = {
+const swaggerUiOpts: SwaggerUiOptions = {
   explorer: true
 };
 
-const swaggerDefinition = {
+const swaggerDefinition: SwaggerDefinition = {
   openapi: '3.0.0',
   info: {
     title: 'Rest API',
@@ -34,7 +34,7 @@ const swaggerDefinition = {
   security: [{ bearerAuth: [] as string[] }]
 };
 
-const swaggerDocOpts: swaggerJsdoc.Options = {
+const swaggerDocOpts: Options = {
   swaggerDefinition,
   apis: ['./routes/api/*.ts', './models/*.ts']
 };
