@@ -42,7 +42,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
   const data: IUserUpdate = User.getUpdatableProps(req.body);
 
   try {
-    await User.updateOne({ _id: id }, { ...data });
+    await User.updateOne({ _id: id }, data);
     return res.status(200).json({ message: 'Successfully modified' });
   } catch (error) {
     return next(error);
