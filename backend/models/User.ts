@@ -31,36 +31,36 @@ export interface IUserModel extends Model<IUserDocument> {
   getUpdatableProps(data: object): IUserUpdate;
 }
 
-const userSchema = new Schema<IUserDocument, IUserModel>({
+const UserSchema = new Schema<IUserDocument, IUserModel>({
   account: { type: String, required: true, unique: true },
   hashed_password: { type: String, required: true },
   display_name: { type: String, required: true },
   email: { type: String }
 });
 
-userSchema.plugin(uniqueValidator);
+UserSchema.plugin(uniqueValidator);
 
-userSchema.methods.getPublicInfo = function (): IUserPublicInfo {
+UserSchema.methods.getPublicInfo = function (): IUserPublicInfo {
   const { account, display_name, email, _id: id } = this;
   return { id, account, display_name, email: email ?? null };
 };
 
-userSchema.statics.getUpdatableProps = function (data: object): IUserUpdate {
+UserSchema.statics.getUpdatableProps = function (data: object): IUserUpdate {
   const { display_name, email } = <IUserUpdate>data;
   return { display_name, email };
 };
 
-userSchema.statics.getById = async function (id: string): Promise<IUserDocument> {
+UserSchema.statics.getById = async function (id: string): Promise<IUserDocument> {
   return this.findOne({ _id: id });
 };
 
-userSchema.pre('save', async function (next: NextFunction) {
+UserSchema.pre('save', async function (next: NextFunction) {
   if (!this.isModified('hashed_password')) return next();
   this.hashed_password = await hash(this.hashed_password, JWT_SALT);
   next();
 });
 
-export default model<IUserDocument, IUserModel>('User', userSchema);
+export default model<IUserDocument, IUserModel>('User', UserSchema);
 
 /**
  * @swagger
