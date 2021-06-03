@@ -67,6 +67,17 @@ export interface IUserCreate {
   password: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserUpdate:
+ *       properties:
+ *         display_name:
+ *           type: string
+ *         email:
+ *           type: string
+ */
 export interface IUserUpdate {
   display_name?: string;
   email?: string;

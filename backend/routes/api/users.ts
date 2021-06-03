@@ -109,12 +109,7 @@ router.get('/:id', getUsersById);
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             email:
- *               type: string
- *             display_name:
- *               type: string
+ *           $ref: '#/components/schemas/UserUpdate'
  *   responses:
  *     200:
  *       description: Update status message
