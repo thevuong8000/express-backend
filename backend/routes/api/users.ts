@@ -55,6 +55,10 @@ router.get('/', getUsers);
  *   responses:
  *     201:
  *       description: A list of users
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
  *     400:
  *       description: Can not create user
  */

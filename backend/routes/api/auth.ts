@@ -71,27 +71,13 @@ router.post('/refresh-token', refreshToken);
  *   description: Verify if access token is still valid.
  *   tags:
  *     - Authentication
- *   requestBody:
- *     required: true
- *     content:
- *       application/json:
- *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *             access_token:
- *               type: string
  *   responses:
  *     200:
- *       description: Get new access_token
+ *       description: Verify stored access token
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               message:
- *                 type: string
+ *             $ref: '#/components/schemas/User'
  *     400:
  *       description: Access token is not valid
  */

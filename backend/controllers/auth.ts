@@ -21,7 +21,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       refresh_token: generateToken({ userId: user._id }, { expiresIn: TOKEN.REFRESH_EXPIRES }),
       token_type: 'Bearer'
     };
-    res.status(200).json({ result: tokens });
+    res.status(200).json(tokens);
   } catch (error) {
     return res.status(500).json({ error });
   }
@@ -31,12 +31,12 @@ export const refreshToken = (req: Request, res: Response, next: NextFunction) =>
   const { refresh_token } = <{ refresh_token: string }>req.body;
   try {
     const { userId } = <IUserDataToken>decodeToken(refresh_token);
-    const token: UserToken = {
+    const tokens: UserToken = {
       access_token: generateToken({ userId }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
       refresh_token,
       token_type: 'Bearer'
     };
-    res.status(200).json({ result: token });
+    res.status(200).json(tokens);
   } catch (error) {
     next(error);
   }
@@ -48,7 +48,7 @@ export const testToken = async (req: AuthRequest, res: Response, next: NextFunct
     const user = await User.getById(userId);
     if (!user) return next(new UnauthorizedError('Not authenticated!'));
 
-    return res.status(200).json({ result: user.getPublicInfo() });
+    return res.status(200).json(user.getPublicInfo());
   } catch (error) {
     return next(error);
   }

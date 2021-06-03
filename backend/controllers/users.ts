@@ -21,7 +21,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       hashed_password: password,
       display_name: username
     });
-    return res.status(201).json({ result: newUser.getPublicInfo() });
+    return res.status(201).json(newUser.getPublicInfo());
   } catch (error) {
     return next(error);
   }
@@ -31,7 +31,7 @@ export const getUsersById = async (req: Request, res: Response, next: NextFuncti
   const { id } = req.params;
   try {
     const targetUser = await User.getById(id);
-    return res.status(200).json({ result: targetUser.getPublicInfo() });
+    return res.status(200).json(targetUser.getPublicInfo());
   } catch (error) {
     return next(error);
   }
