@@ -13,8 +13,8 @@ moduleAlias.addAliases({
   routes: path.resolve(rootDir, 'routes'),
   '@routes': path.resolve(rootDir, 'routes'),
 
-  api: path.resolve(rootDir, '/routesapi'),
-  '@api': path.resolve(rootDir, '/routesapi'),
+  api: path.resolve(rootDir, 'routes/api'),
+  '@api': path.resolve(rootDir, 'routes/api'),
 
   '@schemas': path.resolve(rootDir, 'schemas'),
   '@utils': path.resolve(rootDir, 'utils')
