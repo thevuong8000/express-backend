@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    // "target": "es6",
+    "target": "es6",
     "noImplicitAny": true,
     "module": "CommonJS",
     "moduleResolution": "Node",
