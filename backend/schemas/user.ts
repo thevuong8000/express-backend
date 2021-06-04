@@ -29,8 +29,10 @@ export interface IUserBase {
  *         - id
  *         - email
  */
+
+export type UserID = string;
 export interface IUserAuthJSON extends IUserBase {
-  id: string;
+  id: UserID;
 }
 
 export interface IUserDataToken {

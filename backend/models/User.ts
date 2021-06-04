@@ -5,6 +5,7 @@ import { JWT_SALT } from '../constants/config';
 import { NextFunction } from 'express';
 import { IUserUpdatable, IUserAuthJSON } from 'schemas/user';
 import { IUserBase } from 'schemas/user';
+import { UserID } from '../schemas/user';
 
 export interface IUserDocument extends Document, IUserBase {
   hashed_password: string;
@@ -20,7 +21,7 @@ export interface IUserModel extends Model<IUserDocument> {
    * Find user with specific id.
    * @param id id of target user
    */
-  getById(id: string): Promise<IUserDocument>;
+  getById(id: UserID): Promise<IUserDocument>;
 
   /**
    * Filter to only updatable props
@@ -61,7 +62,7 @@ UserSchema.statics.getUpdatableProps = function (data: object): IUserUpdatable {
   return { display_name, email };
 };
 
-UserSchema.statics.getById = async function (id: string): Promise<IUserDocument> {
+UserSchema.statics.getById = async function (id: UserID): Promise<IUserDocument> {
   return this.findOne({ _id: id });
 };
 
