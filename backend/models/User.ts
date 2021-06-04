@@ -3,7 +3,7 @@ import { Schema, model, Document, Model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import { JWT_SALT } from '../constants/config';
 import { NextFunction } from 'express';
-import { IUserUpdatable, IUserPublicInfo } from 'schemas/user';
+import { IUserUpdatable, IUserAuthJSON } from 'schemas/user';
 import { IUserBase } from 'schemas/user';
 
 export interface IUserDocument extends Document, IUserBase {
@@ -12,7 +12,7 @@ export interface IUserDocument extends Document, IUserBase {
   /**
    * Get information to send.
    */
-  getPublicInfo(): IUserPublicInfo;
+  toAuthJSON(): IUserAuthJSON;
 }
 
 export interface IUserModel extends Model<IUserDocument> {
@@ -34,8 +34,8 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
     account: { type: String, required: true, unique: true },
     display_name: { type: String, required: true },
     hashed_password: { type: String, required: true },
-    email: { type: String },
-    avatar: { type: String },
+    email: { type: String, default: null },
+    avatar: { type: String, default: null },
     status: { type: String, default: 'active' }
   },
   { timestamps: { createdAt: 'create_at', updatedAt: 'update_at' }, minimize: false }
@@ -43,7 +43,7 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
 
 UserSchema.plugin(uniqueValidator);
 
-UserSchema.methods.getPublicInfo = function (): IUserPublicInfo {
+UserSchema.methods.toAuthJSON = function (): IUserAuthJSON {
   return {
     id: this._id,
     account: this.account,

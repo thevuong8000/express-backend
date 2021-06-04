@@ -29,7 +29,7 @@ export interface IUserBase {
  *         - id
  *         - email
  */
-export interface IUserPublicInfo extends IUserBase {
+export interface IUserAuthJSON extends IUserBase {
   id: string;
 }
 

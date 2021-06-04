@@ -15,7 +15,7 @@ import { TOKEN } from '../constants/global';
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await User.find();
-    return res.status(200).json({ users: users.map((user) => user.getPublicInfo()) });
+    return res.status(200).json(users.map((user) => user.toAuthJSON()));
   } catch (error) {
     return next(error);
   }
@@ -29,7 +29,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       hashed_password: password,
       display_name: username
     });
-    return res.status(201).json(newUser.getPublicInfo());
+    return res.status(201).json(newUser.toAuthJSON());
   } catch (error) {
     return next(error);
   }
@@ -39,7 +39,7 @@ export const getUsersById = async (req: Request, res: Response, next: NextFuncti
   const { id } = req.params;
   try {
     const targetUser = await User.getById(id);
-    return res.status(200).json(targetUser.getPublicInfo());
+    return res.status(200).json(targetUser.toAuthJSON());
   } catch (error) {
     return next(error);
   }
