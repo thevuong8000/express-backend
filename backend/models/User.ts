@@ -39,7 +39,7 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
     avatar: { type: String, default: null },
     status: { type: String, default: 'active' }
   },
-  { timestamps: { createdAt: 'create_at', updatedAt: 'update_at' }, minimize: false }
+  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }, minimize: false }
 );
 
 UserSchema.plugin(uniqueValidator);
