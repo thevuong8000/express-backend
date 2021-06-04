@@ -4,12 +4,10 @@ import uniqueValidator from 'mongoose-unique-validator';
 import { JWT_SALT } from '../constants/config';
 import { NextFunction } from 'express';
 import { IUserUpdate, IUserPublicInfo } from 'schemas/user';
+import { IUserBase } from 'schemas/user';
 
-export interface IUserDocument extends Document {
-  account: string;
+export interface IUserDocument extends Document, IUserBase {
   hashed_password: string;
-  display_name: string;
-  email?: string;
 
   /**
    * Get information to send.
@@ -31,18 +29,31 @@ export interface IUserModel extends Model<IUserDocument> {
   getUpdatableProps(data: object): IUserUpdate;
 }
 
-const UserSchema = new Schema<IUserDocument, IUserModel>({
-  account: { type: String, required: true, unique: true },
-  hashed_password: { type: String, required: true },
-  display_name: { type: String, required: true },
-  email: { type: String }
-});
+const UserSchema = new Schema<IUserDocument, IUserModel>(
+  {
+    account: { type: String, required: true, unique: true },
+    display_name: { type: String, required: true },
+    hashed_password: { type: String, required: true },
+    email: { type: String },
+    avatar: { type: String },
+    status: { type: String, default: 'active' }
+  },
+  { timestamps: { createdAt: 'create_at', updatedAt: 'update_at' }, minimize: false }
+);
 
 UserSchema.plugin(uniqueValidator);
 
 UserSchema.methods.getPublicInfo = function (): IUserPublicInfo {
-  const { account, display_name, email, _id: id } = this;
-  return { id, account, display_name, email: email ?? null };
+  return {
+    id: this._id,
+    account: this.account,
+    display_name: this.display_name,
+    email: this.email,
+    avatar: this.avatar,
+    created_at: this.created_at,
+    updated_at: this.updated_at,
+    status: this.status
+  };
 };
 
 UserSchema.statics.getUpdatableProps = function (data: object): IUserUpdate {

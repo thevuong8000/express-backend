@@ -1,3 +1,14 @@
+type UserStatus = 'active' | 'deactive' | 'locked';
+export interface IUserBase {
+  account?: string;
+  display_name?: string;
+  email?: string;
+  avatar?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  status?: UserStatus;
+}
+
 /**
  * @swagger
  * components:
@@ -18,11 +29,8 @@
  *         - id
  *         - email
  */
-export interface IUserPublicInfo {
+export interface IUserPublicInfo extends IUserBase {
   id: string;
-  account: string;
-  display_name: string;
-  email: string | null;
 }
 
 export interface IUserDataToken {
