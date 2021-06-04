@@ -23,11 +23,17 @@ export interface IUserBase {
  *           type: string
  *         email:
  *           type: string
+ *         avatar:
+ *           type: string
+ *         status:
+ *           type: string
  *       required:
  *         - account
  *         - display_name
  *         - id
  *         - email
+ *         - avatar
+ *         - status
  */
 
 export type UserID = string;
