@@ -2,7 +2,6 @@ import './mongodb/mongodb-config';
 import express, { Application } from 'express';
 import cors from 'cors';
 import swaggerRoutes from './swagger/swagger';
-import { errorHandler } from './middlewares/error-handler';
 import { CORS_CONFIGS } from './constants/config';
 import routes from './routes';
 
@@ -22,8 +21,5 @@ app.use(cors(CORS_CONFIGS));
 
 // Rest-API
 app.use(routes);
-
-// Error handler
-app.use(errorHandler);
 
 export default app;
