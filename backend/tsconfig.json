@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "target": "es6",
-    "module": "commonjs",
+    // "target": "es6",
     "noImplicitAny": true,
+    "module": "CommonJS",
     "moduleResolution": "Node",
+    "isolatedModules": true,
     "esModuleInterop": true,
 
     "noUnusedLocals": true,
@@ -18,7 +19,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@root": ["./"],
+      "@root": ["./*"],
       "@constants/*": ["./constants/*"],
       "@controllers/*": ["./controllers/*"],
       "@database/*": ["./database/*"],
