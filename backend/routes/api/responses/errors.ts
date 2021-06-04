@@ -1,4 +1,4 @@
-export class IHttpRequestError extends Error {
+export class BaseError extends Error {
   code: number;
 
   constructor(message: string, code: number) {
@@ -7,13 +7,13 @@ export class IHttpRequestError extends Error {
   }
 }
 
-export class BadRequestError extends IHttpRequestError {
+export class BadRequestError extends BaseError {
   constructor(message: string) {
     super(message, 400);
   }
 }
 
-export class UnauthorizedError extends IHttpRequestError {
+export class UnauthorizedError extends BaseError {
   constructor(message: string) {
     super(message, 401);
   }

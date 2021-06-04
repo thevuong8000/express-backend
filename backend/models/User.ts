@@ -1,34 +1,11 @@
 import { hash } from 'bcrypt';
-import { Schema, model, Document, Model } from 'mongoose';
-import uniqueValidator from 'mongoose-unique-validator';
+import { Schema, model } from 'mongoose';
 import { JWT_SALT } from '../constants/config';
 import { NextFunction } from 'express';
-import { IUserUpdatable, IUserAuthJSON } from 'schemas/user';
-import { IUserBase } from 'schemas/user';
-import { UserID } from '../schemas/user';
-
-export interface IUserDocument extends Document, IUserBase {
-  hashed_password: string;
-
-  /**
-   * Get information to send.
-   */
-  toAuthJSON(): IUserAuthJSON;
-}
-
-export interface IUserModel extends Model<IUserDocument> {
-  /**
-   * Find user with specific id.
-   * @param id id of target user
-   */
-  getById(id: UserID): Promise<IUserDocument>;
-
-  /**
-   * Filter to only updatable props
-   * @param data data to update
-   */
-  getUpdatableProps(data: object): IUserUpdatable;
-}
+import { IUserAuthJSON, UserID } from '../routes/api/responses/users';
+import { IUserUpdatable } from '../routes/api/requests/users';
+import { IUserDocument, IUserModel } from '../schemas/user';
+import uniqueValidator from 'mongoose-unique-validator';
 
 const UserSchema = new Schema<IUserDocument, IUserModel>(
   {
@@ -39,7 +16,7 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
     avatar: { type: String, default: null },
     status: { type: String, default: 'active' }
   },
-  { timestamps: { createdAt: 'create_at', updatedAt: 'update_at' }, minimize: false }
+  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }, minimize: false }
 );
 
 UserSchema.plugin(uniqueValidator);
