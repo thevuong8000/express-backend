@@ -86,7 +86,7 @@ export interface IUserCreate {
  *         email:
  *           type: string
  */
-export interface IUserUpdate {
+export interface IUserUpdatable {
   display_name?: string;
   email?: string;
 }

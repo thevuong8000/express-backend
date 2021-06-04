@@ -3,7 +3,7 @@ import { Schema, model, Document, Model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import { JWT_SALT } from '../constants/config';
 import { NextFunction } from 'express';
-import { IUserUpdate, IUserPublicInfo } from 'schemas/user';
+import { IUserUpdatable, IUserPublicInfo } from 'schemas/user';
 import { IUserBase } from 'schemas/user';
 
 export interface IUserDocument extends Document, IUserBase {
@@ -26,7 +26,7 @@ export interface IUserModel extends Model<IUserDocument> {
    * Filter to only updatable props
    * @param data data to update
    */
-  getUpdatableProps(data: object): IUserUpdate;
+  getUpdatableProps(data: object): IUserUpdatable;
 }
 
 const UserSchema = new Schema<IUserDocument, IUserModel>(
@@ -56,8 +56,8 @@ UserSchema.methods.getPublicInfo = function (): IUserPublicInfo {
   };
 };
 
-UserSchema.statics.getUpdatableProps = function (data: object): IUserUpdate {
-  const { display_name, email } = <IUserUpdate>data;
+UserSchema.statics.getUpdatableProps = function (data: object): IUserUpdatable {
+  const { display_name, email } = <IUserUpdatable>data;
   return { display_name, email };
 };
 

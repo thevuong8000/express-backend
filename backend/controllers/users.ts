@@ -5,7 +5,7 @@ import { BadRequestError } from '../schemas/error';
 import {
   IChangePassword,
   IUserCreate,
-  IUserUpdate,
+  IUserUpdatable,
   IUserDataToken,
   UserToken
 } from '../schemas/user';
@@ -47,7 +47,7 @@ export const getUsersById = async (req: Request, res: Response, next: NextFuncti
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const data: IUserUpdate = User.getUpdatableProps(req.body);
+  const data: IUserUpdatable = User.getUpdatableProps(req.body);
 
   try {
     await User.updateOne({ _id: id }, data);
