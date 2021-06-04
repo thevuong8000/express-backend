@@ -2,8 +2,8 @@ import './database/mongodb-config';
 import express, { Application } from 'express';
 import cors from 'cors';
 import swaggerRoutes from './swagger/swagger';
-import { CORS_CONFIGS } from './constants/config';
-import routes from './routes';
+import routes from 'routes';
+import { CORS_CONFIGS } from '@constants/config';
 
 const app: Application = express();
 

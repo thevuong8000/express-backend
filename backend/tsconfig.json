@@ -24,8 +24,13 @@
       "@controllers/*": ["./controllers/*"],
       "@database/*": ["./database/*"],
       "@models/*": ["./models/*"],
+
+      "routes": ["./routes"],
       "@routes/*": ["./routes/*"],
+
+      "api": ["./routes/api"],
       "@api/*": ["./routes/api/*"],
+
       "@schemas/*": ["./schemas/*"],
       "@utils/*": ["./utils/*"]
     }
