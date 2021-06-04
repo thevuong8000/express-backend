@@ -29,7 +29,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
 export const testToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const { userId } = req.authData;
+    const { userId } = req.auth;
     const user = await User.getById(userId);
     if (!user) return next(new UnauthorizedError('Not authenticated!'));
 

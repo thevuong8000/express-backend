@@ -14,7 +14,7 @@ const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
 
   try {
     const token = req.headers.authorization.split(' ').pop();
-    req.authData = <IUserDataToken>decodeToken(token);
+    req.auth = <IUserDataToken>decodeToken(token);
     return next();
   } catch (error) {
     return next(error);
