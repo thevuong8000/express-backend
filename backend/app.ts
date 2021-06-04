@@ -1,7 +1,6 @@
 import './mongodb/mongodb-config';
 import express, { Application } from 'express';
 import cors from 'cors';
-import auth from './middlewares/auth';
 import swaggerRoutes from './swagger/swagger';
 import { errorHandler } from './middlewares/error-handler';
 import { CORS_CONFIGS } from './constants/config';
@@ -20,9 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 
 /* CORS allow */
 app.use(cors(CORS_CONFIGS));
-
-// middlewares
-app.use(auth);
 
 // Rest-API
 app.use(routes);
