@@ -4,8 +4,8 @@ import { compare } from 'bcrypt';
 import { TOKEN } from '../constants/global';
 import User from '../models/User';
 import { generateToken } from '../utils/token';
-import { UserToken } from '../schemas/user';
-import { UnauthorizedError } from '../schemas/error';
+import { UserToken } from '../routes/api/responses/users';
+import { UnauthorizedError } from '../routes/api/responses/errors';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
