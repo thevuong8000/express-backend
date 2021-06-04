@@ -1,6 +1,6 @@
 import { AuthRequest } from 'schemas/http-request';
 import { Response, NextFunction } from 'express';
-import { decodeToken } from '../utils/helper';
+import { decodeToken } from '../utils/token';
 import { IUserDataToken } from 'schemas/user';
 
 const AUTHENTICATION_EXCLUDES = ['/', '/login', '/users/refresh-token', '/users/create'];

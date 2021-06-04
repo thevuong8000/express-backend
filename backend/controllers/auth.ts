@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { compare } from 'bcrypt';
 import { TOKEN } from '../constants/global';
 import User from '../models/User';
-import { generateToken } from '../utils/helper';
+import { generateToken } from '../utils/token';
 import { UserToken } from '../schemas/user';
 import { UnauthorizedError } from '../schemas/error';
 
