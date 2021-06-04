@@ -1,26 +1,20 @@
-interface IHttpRequestError {
-  message: string;
-  code: number;
-}
-
-class BadRequestError implements IHttpRequestError {
-  message: string;
+export class IHttpRequestError extends Error {
   code: number;
 
-  constructor(message: string) {
-    this.message = message;
-    this.code = 400;
+  constructor(message: string, code: number) {
+    super(message);
+    this.code = code;
   }
 }
 
-class UnauthorizedError implements IHttpRequestError {
-  message: string;
-  code: number;
-
+export class BadRequestError extends IHttpRequestError {
   constructor(message: string) {
-    this.message = message;
-    this.code = 401;
+    super(message, 400);
   }
 }
 
-export { IHttpRequestError, BadRequestError, UnauthorizedError };
+export class UnauthorizedError extends IHttpRequestError {
+  constructor(message: string) {
+    super(message, 401);
+  }
+}
