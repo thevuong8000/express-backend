@@ -7,6 +7,11 @@ import { TOKEN } from '@constants/global';
 import { IUserCreate, IUserUpdatable, IChangePassword } from '@api/requests/users';
 import { UserToken } from '@api/responses/users';
 import { BadRequestError } from '@api/responses/errors';
+import {
+  UpdateSuccessMessage,
+  DeleteSuccessMessage,
+  PasswordChangeSuccessMessage
+} from '@api/responses/message';
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -47,7 +52,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
 
   try {
     await User.updateOne({ _id: id }, data);
-    return res.status(200).json({ message: 'Successfully modified' });
+    return res.status(200).json(new UpdateSuccessMessage());
   } catch (error) {
     return next(error);
   }
@@ -57,7 +62,7 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
   const { id } = req.params;
   try {
     await User.deleteOne({ _id: id });
-    return res.status(200).json({ message: 'Successfully deleted' });
+    return res.status(200).json(new DeleteSuccessMessage());
   } catch (error) {
     return next(error);
   }
@@ -78,7 +83,7 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
     user.hashed_password = new_password;
     await user.save();
 
-    return res.status(200).json({ message: 'Password has been updated!' });
+    return res.status(200).json(new PasswordChangeSuccessMessage());
   } catch (error) {
     return next(error);
   }
