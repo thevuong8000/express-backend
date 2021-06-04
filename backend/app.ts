@@ -2,11 +2,10 @@ import './mongodb/mongodb-config';
 import express, { Application } from 'express';
 import cors from 'cors';
 import auth from './middlewares/auth';
-import loginRoutes from './routes/api/login';
-import userRoutes from './routes/api/users';
 import swaggerRoutes from './swagger/swagger';
 import { errorHandler } from './middlewares/error-handler';
 import { CORS_CONFIGS } from './constants/config';
+import routes from './routes';
 
 const app: Application = express();
 
@@ -26,8 +25,7 @@ app.use(cors(CORS_CONFIGS));
 app.use(auth);
 
 // Rest-API
-app.use('/login', loginRoutes);
-app.use('/users', userRoutes);
+app.use(routes);
 
 // Error handler
 app.use(errorHandler);
