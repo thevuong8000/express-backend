@@ -25,6 +25,7 @@ export const generateToken = (
 /**
  * Verify and decode JWT token.
  * @param token JWT token to be verified.
+ * @param getFullData return jwt-props if true
  * @returns Data by input token.
  */
 export const decodeToken = (token: string, getFullData: boolean = false): string | object => {
