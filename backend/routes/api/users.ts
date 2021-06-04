@@ -31,9 +31,12 @@ import {
  *       content:
  *         application/json:
  *           schema:
- *             type: array
- *             items:
- *               $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               users:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/User'
  *     400:
  *       description: The specified user ID is not valid
  */

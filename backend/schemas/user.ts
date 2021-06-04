@@ -1,3 +1,14 @@
+type UserStatus = 'active' | 'deactive' | 'locked';
+export interface IUserBase {
+  account?: string;
+  display_name?: string;
+  email?: string;
+  avatar?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  status?: UserStatus;
+}
+
 /**
  * @swagger
  * components:
@@ -12,21 +23,26 @@
  *           type: string
  *         email:
  *           type: string
+ *         avatar:
+ *           type: string
+ *         status:
+ *           type: string
  *       required:
  *         - account
  *         - display_name
  *         - id
  *         - email
+ *         - avatar
+ *         - status
  */
-export interface IUserPublicInfo {
-  id: string;
-  account: string;
-  display_name: string;
-  email: string | null;
+
+export type UserID = string;
+export interface IUserAuthJSON extends IUserBase {
+  id: UserID;
 }
 
 export interface IUserDataToken {
-  userId: string;
+  userId: UserID;
 }
 
 /**
@@ -78,7 +94,7 @@ export interface IUserCreate {
  *         email:
  *           type: string
  */
-export interface IUserUpdate {
+export interface IUserUpdatable {
   display_name?: string;
   email?: string;
 }

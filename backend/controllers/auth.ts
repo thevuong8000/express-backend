@@ -33,7 +33,7 @@ export const testToken = async (req: AuthRequest, res: Response, next: NextFunct
     const user = await User.getById(userId);
     if (!user) return next(new UnauthorizedError('Not authenticated!'));
 
-    return res.status(200).json(user.getPublicInfo());
+    return res.status(200).json(user.toAuthJSON());
   } catch (error) {
     return next(error);
   }
