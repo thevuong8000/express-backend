@@ -36,7 +36,7 @@ export interface IUserAuthJSON extends IUserBase {
 }
 
 export interface IUserDataToken {
-  userId: string;
+  userId: UserID;
 }
 
 /**
