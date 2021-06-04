@@ -9,7 +9,7 @@ import {
   IUserDataToken,
   UserToken
 } from '../schemas/user';
-import { decodeToken, generateToken } from '../utils/helper';
+import { decodeToken, generateToken } from '../utils/token';
 import { TOKEN } from '../constants/global';
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
@@ -91,9 +91,9 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
 export const refreshToken = (req: Request, res: Response, next: NextFunction) => {
   const { refresh_token } = <{ refresh_token: string }>req.body;
   try {
-    const { userId } = <IUserDataToken>decodeToken(refresh_token);
+    const payload = <IUserDataToken>decodeToken(refresh_token);
     const tokens: UserToken = {
-      access_token: generateToken({ userId }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
+      access_token: generateToken(payload, { expiresIn: TOKEN.ACCESS_EXPIRES }),
       refresh_token,
       token_type: 'Bearer'
     };

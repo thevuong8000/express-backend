@@ -1,4 +1,4 @@
-import './mongodb/mongodb-config';
+import './database/mongodb-config';
 import express, { Application } from 'express';
 import cors from 'cors';
 import swaggerRoutes from './swagger/swagger';

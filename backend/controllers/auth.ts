@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { compare } from 'bcrypt';
 import { TOKEN } from '../constants/global';
 import User from '../models/User';
-import { generateToken } from '../utils/helper';
+import { generateToken } from '../utils/token';
 import { UserToken } from '../schemas/user';
 import { UnauthorizedError } from '../schemas/error';
 
@@ -29,7 +29,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
 export const testToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const { userId } = req.authData;
+    const { userId } = req.auth;
     const user = await User.getById(userId);
     if (!user) return next(new UnauthorizedError('Not authenticated!'));
 
