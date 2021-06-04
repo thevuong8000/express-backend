@@ -3,9 +3,9 @@ import { Request, Response, NextFunction } from 'express';
 import { compare } from 'bcrypt';
 import { TOKEN } from '../constants/global';
 import User from '../models/User';
-import { generateToken } from '../utils/token';
-import { UserToken } from '../schemas/user';
 import { UnauthorizedError } from '../schemas/error';
+import { generateToken } from '../utils/token';
+import { UserToken } from '../routes/api/responses/users';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;

@@ -2,15 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { hash as _hash, compare } from 'bcrypt';
 import User from '../models/User';
 import { BadRequestError } from '../schemas/error';
-import {
-  IChangePassword,
-  IUserCreate,
-  IUserUpdatable,
-  IUserDataToken,
-  UserToken
-} from '../schemas/user';
+import { IUserDataToken } from '../schemas/user';
 import { decodeToken, generateToken } from '../utils/token';
 import { TOKEN } from '../constants/global';
+import { IUserCreate, IUserUpdatable, IChangePassword } from '../routes/api/requests/users';
+import { UserToken } from '../routes/api/responses/users';
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {

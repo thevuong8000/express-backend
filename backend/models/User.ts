@@ -3,9 +3,9 @@ import { Schema, model, Document, Model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import { JWT_SALT } from '../constants/config';
 import { NextFunction } from 'express';
-import { IUserUpdatable, IUserAuthJSON } from 'schemas/user';
 import { IUserBase } from 'schemas/user';
-import { UserID } from '../schemas/user';
+import { IUserAuthJSON, UserID } from '../routes/api/responses/users';
+import { IUserUpdatable } from '../routes/api/requests/users';
 
 export interface IUserDocument extends Document, IUserBase {
   hashed_password: string;
