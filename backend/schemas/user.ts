@@ -1,7 +1,7 @@
 import { UserID } from 'routes/api/responses/users';
-import { IUserAuthJSON } from '../routes/api/responses/users';
+import { IUserAuthJSON } from '@api/responses/users';
 import { Model, Document } from 'mongoose';
-import { IUserUpdatable } from '../routes/api/requests/users';
+import { IUserUpdatable } from '@api/requests/users';
 
 type UserStatus = 'active' | 'deactive' | 'locked';
 export interface IUserBase {

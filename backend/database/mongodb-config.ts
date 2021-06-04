@@ -4,7 +4,7 @@ import {
   MONGODB_SERVICE,
   MONGODB_SERVICE_PORT,
   MONGO_INITDB_DATABASE
-} from '../constants/config';
+} from '@constants/config';
 import mongoose from 'mongoose';
 
 const MONGO_URI = `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}\

@@ -1,11 +1,11 @@
-import { AuthRequest } from './../schemas/http-request';
+import { AuthRequest } from '@schemas/http-request';
 import { Request, Response, NextFunction } from 'express';
 import { compare } from 'bcrypt';
-import { TOKEN } from '../constants/global';
-import User from '../models/User';
-import { generateToken } from '../utils/token';
-import { UserToken } from '../routes/api/responses/users';
-import { UnauthorizedError } from '../routes/api/responses/errors';
+import { TOKEN } from '@constants/global';
+import User from '@models/User';
+import { generateToken } from '@utils/token';
+import { UserToken } from '@api/responses/users';
+import { UnauthorizedError } from '@api/responses/errors';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;

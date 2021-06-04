@@ -1,4 +1,4 @@
-import { login, testToken } from '../../controllers/auth';
+import { login, testToken } from '@controllers/auth';
 import { Router } from 'express';
 const router = Router();
 /**

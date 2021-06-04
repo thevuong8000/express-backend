@@ -1,4 +1,4 @@
-import { JWT_KEY } from '../constants/config';
+import { JWT_KEY } from '@constants/config';
 import { sign, verify, SignOptions } from 'jsonwebtoken';
 
 /**

@@ -15,7 +15,7 @@ import {
   deleteUser,
   changePassword,
   refreshToken
-} from '../../controllers/users';
+} from '@controllers/users';
 
 /**
  * @swagger
