@@ -22,4 +22,9 @@ app.use(cors(CORS_CONFIGS));
 // Rest-API
 app.use(routes);
 
+// Catch 404
+app.use((req, res, next) => {
+  res.status(404).send("You've called a non-existed endpoint!");
+});
+
 export default app;
