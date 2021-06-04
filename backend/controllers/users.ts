@@ -15,7 +15,7 @@ import { TOKEN } from '../constants/global';
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await User.find();
-    return res.status(200).json(users.map((user) => user.toAuthJSON()));
+    return res.status(200).json({ users: users.map((user) => user.toAuthJSON()) });
   } catch (error) {
     return next(error);
   }
