@@ -2,9 +2,10 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "target": "es6",
-    "module": "commonjs",
     "noImplicitAny": true,
+    "module": "CommonJS",
     "moduleResolution": "Node",
+    "isolatedModules": true,
     "esModuleInterop": true,
 
     "noUnusedLocals": true,
@@ -16,17 +17,23 @@
     "rootDir": "./",
     "outDir": "./dist",
 
-    "baseUrl": "."
-    // "paths": {
-    //   "@constants/*": ["constants/*"],
-    //   "@controllers/*": ["controllers/*"],
-    //   "@middlewares/*": ["./middlewares/*"],
-    //   "@models/*": ["./models/*"],
-    //   "@routes/*": ["./routes/*"],
-    //   "@api/*": ["./routes/api/*"],
-    //   "@swagger/*": ["./swagger/*"],
-    //   "@utils/*": ["./utils/*"]
-    // }
+    "baseUrl": ".",
+    "paths": {
+      "@root": ["./*"],
+      "@constants/*": ["./constants/*"],
+      "@controllers/*": ["./controllers/*"],
+      "@database/*": ["./database/*"],
+      "@models/*": ["./models/*"],
+
+      "routes": ["./routes"],
+      "@routes/*": ["./routes/*"],
+
+      "api": ["./routes/api"],
+      "@api/*": ["./routes/api/*"],
+
+      "@schemas/*": ["./schemas/*"],
+      "@utils/*": ["./utils/*"]
+    }
   },
-  // "files": ["index.ts", "app.ts"]
+  "files": ["index.ts", "app.ts"]
 }

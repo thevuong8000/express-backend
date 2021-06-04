@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { hash as _hash, compare } from 'bcrypt';
-import User from '../models/User';
-import { IUserDataToken } from '../schemas/user';
-import { decodeToken, generateToken } from '../utils/token';
-import { TOKEN } from '../constants/global';
-import { IUserCreate, IUserUpdatable, IChangePassword } from '../routes/api/requests/users';
-import { UserToken } from '../routes/api/responses/users';
-import { BadRequestError } from '../routes/api/responses/errors';
+import User from '@models/User';
+import { IUserDataToken } from '@schemas/user';
+import { decodeToken, generateToken } from '@utils/token';
+import { TOKEN } from '@constants/global';
+import { IUserCreate, IUserUpdatable, IChangePassword } from '@api/requests/users';
+import { UserToken } from '@api/responses/users';
+import { BadRequestError } from '@api/responses/errors';
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {

@@ -1,4 +1,4 @@
-import { IUserBase } from '../../../schemas/user';
+import { IUserBase } from '@schemas/user';
 
 /**
  * @swagger

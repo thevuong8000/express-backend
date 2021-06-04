@@ -1,10 +1,10 @@
 import { hash } from 'bcrypt';
 import { Schema, model } from 'mongoose';
-import { JWT_SALT } from '../constants/config';
+import { JWT_SALT } from '@constants/config';
 import { NextFunction } from 'express';
-import { IUserAuthJSON, UserID } from '../routes/api/responses/users';
-import { IUserUpdatable } from '../routes/api/requests/users';
-import { IUserDocument, IUserModel } from '../schemas/user';
+import { IUserAuthJSON, UserID } from '@api/responses/users';
+import { IUserUpdatable } from '@api/requests/users';
+import { IUserDocument, IUserModel } from '@schemas/user';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const UserSchema = new Schema<IUserDocument, IUserModel>(
