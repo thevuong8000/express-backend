@@ -1,4 +1,6 @@
 import { IUserBase } from '@schemas/user';
+import { BadRequestError } from './errors';
+import { Message } from '@schemas/message';
 
 /**
  * @swagger
@@ -54,4 +56,28 @@ export interface UserToken {
   access_token: string;
   refresh_token: string;
   token_type: TokenType;
+}
+
+export class UserErrorResponse {
+  static notFound() {
+    return new BadRequestError('User not found!');
+  }
+
+  static invalidPassword() {
+    return new BadRequestError('Password is not correct!');
+  }
+}
+
+export class UserSuccessResponse {
+  static updateAccount() {
+    return new Message('Successfully modified!');
+  }
+
+  static deleteAccount() {
+    return new Message('Successfully deleted!');
+  }
+
+  static changePassword() {
+    return new Message('Password has been updated!');
+  }
 }

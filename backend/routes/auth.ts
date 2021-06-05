@@ -1,4 +1,4 @@
-import { AuthRequest } from 'schemas/http-request';
+import { AuthRequest } from 'schemas/request';
 import { Response, NextFunction } from 'express';
 import { decodeToken } from '@utils/token';
 import { IUserDataToken } from 'schemas/user';
