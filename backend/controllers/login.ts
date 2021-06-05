@@ -5,16 +5,16 @@ import { TOKEN } from '@constants/global';
 import User from '@models/User';
 import { generateToken } from '@utils/token';
 import { UserToken } from '@api/responses/users';
-import { UnauthorizedError } from '@api/responses/errors';
+import { LoginErrorResponse } from '@api/responses/login';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ account: username });
-    if (!user) return next(new UnauthorizedError('User not found!'));
+    if (!user) return next(LoginErrorResponse.failedToVerify());
 
     const validPassword = await compare(password, user.hashed_password);
-    if (!validPassword) return next(new UnauthorizedError('Incorrect password'));
+    if (!validPassword) return next(LoginErrorResponse.failedToVerify());
 
     const tokens: UserToken = {
       access_token: generateToken({ userId: user._id }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
@@ -31,7 +31,7 @@ export const testToken = async (req: AuthRequest, res: Response, next: NextFunct
   try {
     const { userId } = req.auth;
     const user = await User.getById(userId);
-    if (!user) return next(new UnauthorizedError('Not authenticated!'));
+    if (!user) return next(LoginErrorResponse.invalidToken());
 
     return res.status(200).json(user.toAuthJSON());
   } catch (error) {
