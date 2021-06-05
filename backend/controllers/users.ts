@@ -46,7 +46,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
 
   try {
     await User.updateOne({ _id: id }, data);
-    return res.status(200).json(UserSuccessResponse.Update());
+    return res.status(200).json(UserSuccessResponse.updateAccount());
   } catch (error) {
     return next(error);
   }
@@ -56,7 +56,7 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
   const { id } = req.params;
   try {
     await User.deleteOne({ _id: id });
-    return res.status(200).json(UserSuccessResponse.Delete());
+    return res.status(200).json(UserSuccessResponse.deleteAccount());
   } catch (error) {
     return next(error);
   }
@@ -67,17 +67,17 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
   const { current_password, new_password } = <IChangePassword>req.body;
 
   const user = await User.getById(id);
-  if (!user) return next(UserErrorResponse.UserNotFound());
+  if (!user) return next(UserErrorResponse.notFound());
 
   const validPassword = await compare(current_password, user.hashed_password);
-  if (!validPassword) return next(UserErrorResponse.PasswordInvalid());
+  if (!validPassword) return next(UserErrorResponse.invalidPassword());
 
   try {
     /* Saving by assigning to hash password before saving to DB */
     user.hashed_password = new_password;
     await user.save();
 
-    return res.status(200).json(UserSuccessResponse.ChangePassword());
+    return res.status(200).json(UserSuccessResponse.changePassword());
   } catch (error) {
     return next(error);
   }

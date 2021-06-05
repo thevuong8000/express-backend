@@ -59,25 +59,25 @@ export interface UserToken {
 }
 
 export class UserErrorResponse {
-  static UserNotFound() {
+  static notFound() {
     return new BadRequestError('User not found!');
   }
 
-  static PasswordInvalid() {
+  static invalidPassword() {
     return new BadRequestError('Password is not correct!');
   }
 }
 
 export class UserSuccessResponse {
-  static Update() {
+  static updateAccount() {
     return new Message('Successfully modified!');
   }
 
-  static Delete() {
+  static deleteAccount() {
     return new Message('Successfully deleted!');
   }
 
-  static ChangePassword() {
+  static changePassword() {
     return new Message('Password has been updated!');
   }
 }
