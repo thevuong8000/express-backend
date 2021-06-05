@@ -1,4 +1,4 @@
-import { AuthRequest } from '@schemas/http-request';
+import { AuthRequest } from '@schemas/request';
 import { Request, Response, NextFunction } from 'express';
 import { compare } from 'bcrypt';
 import { TOKEN } from '@constants/global';
