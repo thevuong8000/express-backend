@@ -1,11 +1,4 @@
-export class BaseError extends Error {
-  code: number;
-
-  constructor(message: string, code: number) {
-    super(message);
-    this.code = code;
-  }
-}
+import { BaseError } from '@schemas/error';
 
 export class BadRequestError extends BaseError {
   constructor(message: string) {
@@ -16,5 +9,17 @@ export class BadRequestError extends BaseError {
 export class UnauthorizedError extends BaseError {
   constructor(message: string) {
     super(message, 401);
+  }
+}
+
+export class UnprocessableError extends BaseError {
+  constructor(message: string) {
+    super(message, 422);
+  }
+}
+
+export class ServerError extends BaseError {
+  constructor(message: string) {
+    super(message, 500);
   }
 }
