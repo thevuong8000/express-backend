@@ -6,9 +6,10 @@ import User from '@models/User';
 import { generateToken } from '@utils/token';
 import { UserToken } from '@api/responses/users';
 import { LoginErrorResponse } from '@api/responses/login';
+import { IUserLogin } from '@api/requests/login';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
-  const { username, password } = req.body;
+  const { username, password } = <IUserLogin>req.body;
   try {
     const user = await User.findOne({ account: username });
     if (!user) return next(LoginErrorResponse.failedToVerify());

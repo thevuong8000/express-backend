@@ -3,19 +3,23 @@
     "skipLibCheck": true,
     "target": "es6",
     "noImplicitAny": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
     "module": "CommonJS",
     "moduleResolution": "Node",
     "isolatedModules": true,
     "esModuleInterop": true,
 
+    "removeComments": false,
+
     "noUnusedLocals": true,
     "noUnusedParameters": false,
 
-    "declaration": true,
-    "declarationDir": "./types",
-
     "rootDir": "./",
     "outDir": "./dist",
+
+    "declaration": true,
+    "declarationDir": "./dist/types",
 
     "baseUrl": ".",
     "paths": {

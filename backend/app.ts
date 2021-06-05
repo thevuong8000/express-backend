@@ -8,7 +8,7 @@ import { CORS_CONFIGS } from '@constants/config';
 const app: Application = express();
 
 /* Swagger REST-api document in dev mode */
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   app.use('/docs', swaggerRoutes);
 }
 
