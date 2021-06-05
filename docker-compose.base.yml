@@ -20,5 +20,6 @@ services:
   backend:
     image: ${DOCKER_IMAGE_BACKEND?Variable not set}
     container_name: ${DOCKER_CONTAINER_BACKEND?Variable not set}
+    restart: unless-stopped
     depends_on:
       - mongodb

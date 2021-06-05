@@ -16,12 +16,14 @@ RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa && \
 RUN touch /root/.ssh/known_hosts
 RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
+# clone frontend repo
 WORKDIR /app
 RUN git clone git@github.com:thevuong8000/react-frontend.git
 WORKDIR /app/react-frontend
 RUN npm install
 RUN npm run build
 
+# copy app to nginx
 FROM nginx:1.19.10-alpine
 COPY --from=node-image /app/react-frontend/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf

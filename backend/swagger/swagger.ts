@@ -34,13 +34,17 @@ const swaggerDefinition: SwaggerDefinition = {
   security: [{ bearerAuth: [] as string[] }]
 };
 
+// docs api path for specified environment
+const apis =
+  process.env.NODE_ENV === 'development' ? ['./**/*.ts'] : ['./**/*.js', './types/**/*.d.ts'];
+
 const swaggerDocOpts: Options = {
   swaggerDefinition,
-  apis: ['./**/*.ts']
+  apis: apis
 };
 
 const specs = swaggerJsdoc(swaggerDocOpts);
-// console.log(specs);
+console.log(specs);
 router.use('/', serve, setup(specs, swaggerUiOpts));
 
 export default router;
