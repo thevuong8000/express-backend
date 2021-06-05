@@ -5,3 +5,4 @@ Dockerfile.test
 dist/
 node_modules/
 types/
+test.*
