@@ -64,17 +64,17 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 
 export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { current_password, new_password } = <IChangePassword>req.body;
+  const { currentPassword, newPassword } = <IChangePassword>req.body;
 
   const user = await User.getById(id);
   if (!user) return next(UserErrorResponse.notFound());
 
-  const validPassword = await compare(current_password, user.hashedPassword);
+  const validPassword = await compare(currentPassword, user.hashedPassword);
   if (!validPassword) return next(UserErrorResponse.invalidPassword());
 
   try {
     /* Saving by assigning to hash password before saving to DB */
-    user.hashedPassword = new_password;
+    user.hashedPassword = newPassword;
     await user.save();
 
     return res.status(200).json(UserSuccessResponse.changePassword());
