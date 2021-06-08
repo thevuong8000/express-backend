@@ -54,6 +54,10 @@ export interface UserToken {
 }
 
 export class UserErrorResponse {
+  static duplicatedUsername() {
+    return new BadRequestError('Username has already been taken!');
+  }
+
   static notFound() {
     return new BadRequestError('User not found!');
   }
@@ -64,6 +68,10 @@ export class UserErrorResponse {
 }
 
 export class UserSuccessResponse {
+  static createAccount() {
+    return new Message('Successfully created!');
+  }
+
   static updateAccount() {
     return new Message('Successfully modified!');
   }
