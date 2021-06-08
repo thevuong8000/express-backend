@@ -42,12 +42,12 @@ export interface IChangePassword {
  *   schemas:
  *     UserUpdate:
  *       properties:
- *         display_name:
+ *         displayName:
  *           type: string
  *         email:
  *           type: string
  */
 export interface IUserUpdatable {
-  display_name?: string;
+  displayName?: string;
   email?: string;
 }

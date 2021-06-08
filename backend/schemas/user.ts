@@ -6,7 +6,7 @@ import { IUserUpdatable } from '@api/requests/users';
 type UserStatus = 'active' | 'deactive' | 'locked';
 export interface IUserBase {
   account?: string;
-  display_name?: string;
+  displayName?: string;
   email?: string;
   avatar?: string;
   created_at?: Date;
@@ -19,7 +19,7 @@ export interface IUserDataToken {
 }
 
 export interface IUserDocument extends Document, IUserBase {
-  hashed_password: string;
+  hashedPassword: string;
 
   /**
    * Get information to send.
