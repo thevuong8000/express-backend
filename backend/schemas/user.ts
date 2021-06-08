@@ -9,8 +9,8 @@ export interface IUserBase {
   displayName?: string;
   email?: string;
   avatar?: string;
-  created_at?: Date;
-  updated_at?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   status?: UserStatus;
 }
 

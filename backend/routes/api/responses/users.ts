@@ -18,15 +18,10 @@ import { Message } from '@schemas/message';
  *           type: string
  *         avatar:
  *           type: string
- *         status:
+ *         updatedAt:
  *           type: string
- *       required:
- *         - account
- *         - displayName
- *         - id
- *         - email
- *         - avatar
- *         - status
+ *         createdAt:
+ *           type: string
  */
 
 export type UserID = string;

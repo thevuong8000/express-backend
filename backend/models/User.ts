@@ -16,7 +16,7 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
     avatar: { type: String, default: null },
     status: { type: String, default: 'active' }
   },
-  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }, minimize: false }
+  { timestamps: true, minimize: false }
 );
 
 UserSchema.plugin(uniqueValidator);
@@ -28,9 +28,8 @@ UserSchema.methods.toAuthJSON = function (): IUserAuthJSON {
     displayName: this.displayName,
     email: this.email,
     avatar: this.avatar,
-    created_at: this.created_at,
-    updated_at: this.updated_at,
-    status: this.status
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt,
   };
 };
 
