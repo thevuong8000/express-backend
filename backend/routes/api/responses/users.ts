@@ -41,10 +41,6 @@ export interface IUserAuthJSON extends IUserBase {
  *           type: string
  *         tokenType:
  *           type: string
- *       required:
- *         - account
- *         - displayName
- *         - tokenType
  */
 type TokenType = 'Bearer';
 export interface UserToken {
