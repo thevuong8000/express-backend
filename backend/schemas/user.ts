@@ -11,7 +11,6 @@ export interface IUserBase {
   avatar?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  status?: UserStatus;
 }
 
 export interface IUserDataToken {
@@ -19,10 +18,11 @@ export interface IUserDataToken {
 }
 
 export interface IUserDocument extends Document, IUserBase {
+  status: UserStatus;
   hashedPassword: string;
 
   /**
-   * Get information to send.
+   * Get auth information to send.
    */
   toAuthJSON(): IUserAuthJSON;
 }
