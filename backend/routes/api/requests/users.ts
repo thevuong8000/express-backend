@@ -23,17 +23,17 @@ export interface IUserCreate {
  *   schemas:
  *     UserChangePassword:
  *       properties:
- *         current_password:
+ *         currentPassword:
  *           type: string
- *         new_password:
+ *         newPassword:
  *           type: string
  *       required:
- *         - current_password
- *         - new_password
+ *         - currentPassword
+ *         - newPassword
  */
 export interface IChangePassword {
-  current_password: string;
-  new_password: string;
+  currentPassword: string;
+  newPassword: string;
 }
 
 /**
@@ -42,12 +42,12 @@ export interface IChangePassword {
  *   schemas:
  *     UserUpdate:
  *       properties:
- *         display_name:
+ *         displayName:
  *           type: string
  *         email:
  *           type: string
  */
 export interface IUserUpdatable {
-  display_name?: string;
+  displayName?: string;
   email?: string;
 }

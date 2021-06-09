@@ -21,8 +21,8 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
   try {
     const newUser = await User.create({
       account: username,
-      hashed_password: password,
-      display_name: username
+      hashedPassword: password,
+      displayName: username
     });
     return res.status(201).json(newUser.toAuthJSON());
   } catch (error) {
@@ -64,17 +64,17 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 
 export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { current_password, new_password } = <IChangePassword>req.body;
+  const { currentPassword, newPassword } = <IChangePassword>req.body;
 
   const user = await User.getById(id);
   if (!user) return next(UserErrorResponse.notFound());
 
-  const validPassword = await compare(current_password, user.hashed_password);
+  const validPassword = await compare(currentPassword, user.hashedPassword);
   if (!validPassword) return next(UserErrorResponse.invalidPassword());
 
   try {
     /* Saving by assigning to hash password before saving to DB */
-    user.hashed_password = new_password;
+    user.hashedPassword = newPassword;
     await user.save();
 
     return res.status(200).json(UserSuccessResponse.changePassword());
@@ -84,13 +84,13 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
 };
 
 export const refreshToken = (req: Request, res: Response, next: NextFunction) => {
-  const { refresh_token } = <{ refresh_token: string }>req.body;
+  const { refreshToken } = <{ refreshToken: string }>req.body;
   try {
-    const payload = <IUserDataToken>decodeToken(refresh_token);
+    const payload = <IUserDataToken>decodeToken(refreshToken);
     const tokens: UserToken = {
-      access_token: generateToken(payload, { expiresIn: TOKEN.ACCESS_EXPIRES }),
-      refresh_token,
-      token_type: 'Bearer'
+      accessToken: generateToken(payload, { expiresIn: TOKEN.ACCESS_EXPIRES }),
+      refreshToken,
+      tokenType: 'Bearer'
     };
     res.status(200).json(tokens);
   } catch (error) {

@@ -12,21 +12,16 @@ import { Message } from '@schemas/message';
  *           type: string
  *         account:
  *           type: string
- *         display_name:
+ *         displayName:
  *           type: string
  *         email:
  *           type: string
  *         avatar:
  *           type: string
- *         status:
+ *         updatedAt:
  *           type: string
- *       required:
- *         - account
- *         - display_name
- *         - id
- *         - email
- *         - avatar
- *         - status
+ *         createdAt:
+ *           type: string
  */
 
 export type UserID = string;
@@ -40,25 +35,25 @@ export interface IUserAuthJSON extends IUserBase {
  *   schemas:
  *     UserToken:
  *       properties:
- *         access_token:
+ *         accessToken:
  *           type: string
- *         refresh_token:
+ *         refreshToken:
  *           type: string
- *         token_type:
+ *         tokenType:
  *           type: string
- *       required:
- *         - account
- *         - display_name
- *         - token_type
  */
 type TokenType = 'Bearer';
 export interface UserToken {
-  access_token: string;
-  refresh_token: string;
-  token_type: TokenType;
+  accessToken: string;
+  refreshToken: string;
+  tokenType: TokenType;
 }
 
 export class UserErrorResponse {
+  static duplicatedUsername() {
+    return new BadRequestError('Username has already been taken!');
+  }
+
   static notFound() {
     return new BadRequestError('User not found!');
   }
@@ -69,6 +64,10 @@ export class UserErrorResponse {
 }
 
 export class UserSuccessResponse {
+  static createAccount() {
+    return new Message('Successfully created!');
+  }
+
   static updateAccount() {
     return new Message('Successfully modified!');
   }

@@ -6,12 +6,11 @@ import { IUserUpdatable } from '@api/requests/users';
 type UserStatus = 'active' | 'deactive' | 'locked';
 export interface IUserBase {
   account?: string;
-  display_name?: string;
+  displayName?: string;
   email?: string;
   avatar?: string;
-  created_at?: Date;
-  updated_at?: Date;
-  status?: UserStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface IUserDataToken {
@@ -19,10 +18,11 @@ export interface IUserDataToken {
 }
 
 export interface IUserDocument extends Document, IUserBase {
-  hashed_password: string;
+  status: UserStatus;
+  hashedPassword: string;
 
   /**
-   * Get information to send.
+   * Get auth information to send.
    */
   toAuthJSON(): IUserAuthJSON;
 }

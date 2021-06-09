@@ -10,13 +10,13 @@ import uniqueValidator from 'mongoose-unique-validator';
 const UserSchema = new Schema<IUserDocument, IUserModel>(
   {
     account: { type: String, required: true, unique: true },
-    display_name: { type: String, required: true },
-    hashed_password: { type: String, required: true },
+    displayName: { type: String, required: true },
+    hashedPassword: { type: String, required: true },
     email: { type: String, default: null },
     avatar: { type: String, default: null },
     status: { type: String, default: 'active' }
   },
-  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }, minimize: false }
+  { timestamps: true, minimize: false }
 );
 
 UserSchema.plugin(uniqueValidator);
@@ -25,18 +25,17 @@ UserSchema.methods.toAuthJSON = function (): IUserAuthJSON {
   return {
     id: this._id,
     account: this.account,
-    display_name: this.display_name,
+    displayName: this.displayName,
     email: this.email,
     avatar: this.avatar,
-    created_at: this.created_at,
-    updated_at: this.updated_at,
-    status: this.status
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt,
   };
 };
 
 UserSchema.statics.getUpdatableProps = function (data: object): IUserUpdatable {
-  const { display_name, email } = <IUserUpdatable>data;
-  return { display_name, email };
+  const { displayName, email } = <IUserUpdatable>data;
+  return { displayName, email };
 };
 
 UserSchema.statics.getById = async function (id: UserID): Promise<IUserDocument> {
@@ -47,8 +46,8 @@ UserSchema.statics.getById = async function (id: UserID): Promise<IUserDocument>
  * Hash password before saving into DB
  */
 UserSchema.pre('save', async function (next: NextFunction) {
-  if (!this.isModified('hashed_password')) return next();
-  this.hashed_password = await hash(this.hashed_password, JWT_SALT);
+  if (!this.isModified('hashedPassword')) return next();
+  this.hashedPassword = await hash(this.hashedPassword, JWT_SALT);
   next();
 });
 

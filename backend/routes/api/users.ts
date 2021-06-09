@@ -201,11 +201,11 @@ router.patch('/:id/change-password', changePassword);
  *         schema:
  *           type: object
  *           properties:
- *             refresh_token:
+ *             refreshToken:
  *               type: string
  *   responses:
  *     200:
- *       description: Get new access_token
+ *       description: Get new accessToken
  *       content:
  *         application/json:
  *           schema:

@@ -14,13 +14,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const user = await User.findOne({ account: username });
     if (!user) return next(LoginErrorResponse.failedToVerify());
 
-    const validPassword = await compare(password, user.hashed_password);
+    const validPassword = await compare(password, user.hashedPassword);
     if (!validPassword) return next(LoginErrorResponse.failedToVerify());
 
     const tokens: UserToken = {
-      access_token: generateToken({ userId: user._id }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
-      refresh_token: generateToken({ userId: user._id }, { expiresIn: TOKEN.REFRESH_EXPIRES }),
-      token_type: 'Bearer'
+      accessToken: generateToken({ userId: user._id }, { expiresIn: TOKEN.ACCESS_EXPIRES }),
+      refreshToken: generateToken({ userId: user._id }, { expiresIn: TOKEN.REFRESH_EXPIRES }),
+      tokenType: 'Bearer'
     };
     res.status(200).json(tokens);
   } catch (error) {
