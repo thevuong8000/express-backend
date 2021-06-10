@@ -23,13 +23,13 @@ UserSchema.plugin(uniqueValidator);
 
 UserSchema.methods.toAuthJSON = function (): IUserAuthJSON {
   return {
-    id: this._id,
+    userId: this._id,
     account: this.account,
     displayName: this.displayName,
     email: this.email,
     avatar: this.avatar,
     createdAt: this.createdAt,
-    updatedAt: this.updatedAt,
+    updatedAt: this.updatedAt
   };
 };
 

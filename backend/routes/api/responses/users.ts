@@ -26,7 +26,7 @@ import { Message } from '@schemas/message';
 
 export type UserID = string;
 export interface IUserAuthJSON extends IUserBase {
-  id: UserID;
+  userId: UserID;
 }
 
 /**
