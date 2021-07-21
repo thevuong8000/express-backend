@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import upload from 'middlewares/multer-config';
-import { uploadImage } from 'controllers/files';
+import { uploadImage } from '@controllers/files';
+import upload from '@middlewares/multer-config';
 const router = Router();
 
 /**

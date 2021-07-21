@@ -9,6 +9,7 @@ moduleAlias.addAliases({
   '@controllers': path.resolve(rootDir, 'controllers'),
   '@database': path.resolve(rootDir, 'database'),
   '@models': path.resolve(rootDir, 'models'),
+  '@middlewares': path.resolve(rootDir, 'middlewares'),
 
   routes: path.resolve(rootDir, 'routes'),
   '@routes': path.resolve(rootDir, 'routes'),

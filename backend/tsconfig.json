@@ -28,6 +28,7 @@
       "@controllers/*": ["./controllers/*"],
       "@database/*": ["./database/*"],
       "@models/*": ["./models/*"],
+      "@middlewares/*": ["./middlewares/*"],
 
       "routes": ["./routes"],
       "@routes/*": ["./routes/*"],
