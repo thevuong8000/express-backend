@@ -10,6 +10,6 @@ const router = Router();
  *   description: File management and operations
  */
 
-router.get('/', upload.single('image'), uploadImage);
+router.post('/avatar', upload.single('image'), uploadImage);
 
 export default router;
