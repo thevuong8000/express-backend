@@ -1,3 +1,4 @@
+import { FILE_EXTENSIONS } from './../constants/code_executor';
 import { RequestHandler } from 'express';
 import { ICodeExecutorInput } from '../routes/api/requests/code_executor';
 import { execSync } from 'child_process';
@@ -8,7 +9,7 @@ export const compileAndExecuteCode: RequestHandler = (req, res, next) => {
   const { typedCode, input, language } = <ICodeExecutorInput>req.body;
   console.log('dummy', input, language);
   console.log('dirname', __dirname);
-  const tempFile = path.resolve(__dirname, '../tmp/test.js');
+  const tempFile = path.resolve(__dirname, `../tmp/test.${FILE_EXTENSIONS[language]}`);
   fs.writeFileSync(tempFile, typedCode);
 
   let data: { code: number; result: any };
