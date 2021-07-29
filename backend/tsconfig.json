@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "es6",
+    "noImplicitAny": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "isolatedModules": true,
+    "esModuleInterop": true,
+
+    "removeComments": false,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+
+    "rootDir": "./",
+    "outDir": "./dist",
+
+    "declaration": true,
+    "declarationDir": "./dist/types",
+
+    "baseUrl": ".",
+    "paths": {
+      "@root": ["./*"],
+      "@constants/*": ["./constants/*"],
+      "@controllers/*": ["./controllers/*"],
+      "@database/*": ["./database/*"],
+      "@models/*": ["./models/*"],
+
+      "routes": ["./routes"],
+      "@routes/*": ["./routes/*"],
+
+      "api": ["./routes/api"],
+      "@api/*": ["./routes/api/*"],
+
+      "@schemas/*": ["./schemas/*"],
+      "@utils/*": ["./utils/*"]
+    }
+  },
+  "files": ["index.ts", "app.ts"]
+}

@@ -1,0 +1,7 @@
+FROM node:12-alpine3.10 as node-image
+
+WORKDIR /backend
+COPY . .
+RUN npm install
+
+CMD ["npm", "run", "dev"]
