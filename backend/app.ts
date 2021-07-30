@@ -1,11 +1,11 @@
 import './database/mongodb-config';
-import express, { Application } from 'express';
+import express from 'express';
 import cors from 'cors';
 import swaggerRoutes from './swagger/swagger';
 import routes from 'routes';
 import { CORS_CONFIGS } from '@constants/config';
 
-const app: Application = express();
+const app = express();
 
 /* Disable swagger-ui REST-api document in production mode */
 if (process.env.NODE_ENV !== 'production') {
