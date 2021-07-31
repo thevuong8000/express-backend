@@ -12,7 +12,7 @@
 
     "removeComments": false,
 
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": false,
 
     "rootDir": "./",
