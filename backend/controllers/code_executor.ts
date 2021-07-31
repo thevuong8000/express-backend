@@ -1,7 +1,7 @@
 import { FILE_EXTENSIONS } from './../constants/code_executor';
 import { RequestHandler } from 'express';
 import { ICodeExecutorInput, Language } from '../routes/api/requests/code_executor';
-import { execSync } from 'child_process';
+import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { getCodeExecuteScript } from '../utils/code-executor';
@@ -20,16 +20,25 @@ interface ICodeExecutorOutPut {
  * @param language The language of the code
  * @returns status code and result
  */
-const executeCode = (dir: string, typedCode: string, language: Language): ICodeExecutorOutPut => {
+const executeCode = (dir: string, typedCode: string, language: Language, outputDir: string) => {
+  const inputsDir = path.resolve(dir, 'inputs');
   const fileName = path.resolve(dir, `test.${FILE_EXTENSIONS[language]}`);
   fs.writeFileSync(fileName, typedCode);
-  try {
-    const script = getCodeExecuteScript(language)(fileName);
-    const result = execSync(script, { encoding: 'utf-8' });
-    return { code: 200, result };
-  } catch (e) {
-    return { code: 400, result: e.stderr };
-  }
+
+  // Only for c++
+  const executableFile = path.resolve(dir, 'test');
+  execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
+  const files = fs.readdirSync(inputsDir);
+  files.forEach((file, idx) => {
+    console.log('file', file);
+    exec(`${executableFile} < ${inputsDir}/${file}`, (err, stdout, stderr) => {
+      const output = stderr ? stderr : stdout;
+      const outputFile = path.resolve(outputDir, idx.toString());
+      fs.writeFile(outputFile, output, (err) => {
+        console.log(err);
+      });
+    });
+  });
 };
 
 /**
@@ -67,5 +76,8 @@ export const submitCode: RequestHandler = async (req, res, next) => {
 
   fs.mkdirSync(targetDir);
   await setupTests(targetDir, inputs);
-  executeCode(targetDir, typedCode, language);
+
+  const outputDir = path.resolve(targetDir, 'output');
+  fs.mkdirSync(outputDir);
+  executeCode(targetDir, typedCode, language, outputDir);
 };
