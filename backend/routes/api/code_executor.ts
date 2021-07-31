@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { compileAndExecuteCode } from '../../controllers/code_executor';
+import { submitCode } from '../../controllers/code_executor';
 const router = Router();
 
-router.post('/', compileAndExecuteCode);
+router.post('/', submitCode);
 
 export default router;
