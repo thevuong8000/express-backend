@@ -4,14 +4,8 @@ import { ICodeExecutorInput, Language } from '../routes/api/requests/code_execut
 import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { getCodeExecuteScript } from '../utils/code-executor';
 import { v4 as uuidv4 } from 'uuid';
 import { BadRequestError } from '../routes/api/responses/errors';
-
-interface ICodeExecutorOutPut {
-  code: number;
-  result: any;
-}
 
 /**
  * Execute the submitted code.
