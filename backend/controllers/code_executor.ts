@@ -39,7 +39,7 @@ const executeCode = (
       const output = stderr ? stderr : stdout;
       const outputFile = path.resolve(outputDir, file.toString());
       fs.writeFile(outputFile, output, (err) => {
-        if (err) console.log(err);
+        if (err) console.log('\tError write output', file, err);
         else console.log('\tWrite output', file, 'successfully!');
       });
     });
