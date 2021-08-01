@@ -20,8 +20,13 @@ interface ICodeExecutorOutPut {
  * @param language The language of the code
  * @returns status code and result
  */
-const executeCode = (dir: string, typedCode: string, language: Language, outputDir: string) => {
-  const inputDir = path.resolve(dir, 'input');
+const executeCode = (
+  dir: string,
+  typedCode: string,
+  language: Language,
+  inputDir: string,
+  outputDir: string
+) => {
   const fileName = path.resolve(dir, `test.${FILE_EXTENSIONS[language]}`);
   fs.writeFileSync(fileName, typedCode);
 
@@ -29,13 +34,13 @@ const executeCode = (dir: string, typedCode: string, language: Language, outputD
   const executableFile = path.resolve(dir, 'test');
   execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
   const files = fs.readdirSync(inputDir);
-  files.forEach((file, idx) => {
-    console.log('file', file);
+  files.forEach((file) => {
     exec(`${executableFile} < ${inputDir}/${file}`, (err, stdout, stderr) => {
       const output = stderr ? stderr : stdout;
-      const outputFile = path.resolve(outputDir, idx.toString());
+      const outputFile = path.resolve(outputDir, file.toString());
       fs.writeFile(outputFile, output, (err) => {
-        console.log(err);
+        if (err) console.log(err);
+        else console.log('\tWrite output', file, 'successfully!');
       });
     });
   });
@@ -47,14 +52,11 @@ const executeCode = (dir: string, typedCode: string, language: Language, outputD
  * @param inputs
  * @returns
  */
-const setupTests = (targetDir: string, inputs: string[]) => {
-  const inputDir = path.resolve(targetDir, 'input');
-
-  fs.mkdirSync(inputDir);
+const setupInputs = (dir: string, inputs: string[]) => {
   return Promise.all(
     inputs.map((input, idx) => {
-      console.log(input);
-      const filename = path.resolve(inputDir, idx.toString());
+      const filename = path.resolve(dir, idx.toString());
+      console.log('\tWrite input', idx, 'successfully!');
       return fs.promises.writeFile(filename, input);
     })
   );
@@ -66,8 +68,6 @@ const setupTests = (targetDir: string, inputs: string[]) => {
 export const submitCode: RequestHandler = async (req, res, next) => {
   const { typedCode, inputs, language } = <ICodeExecutorInput>req.body;
   const submissionId = uuidv4();
-  console.log('dummy', inputs, language);
-  console.log('dirname', __dirname);
 
   // working with directory /backend/tmp/{submissionId}
   const targetDir = path.resolve(__dirname, `../tmp/${submissionId}`);
@@ -78,11 +78,17 @@ export const submitCode: RequestHandler = async (req, res, next) => {
   res.status(200).json({ submissionId });
 
   fs.mkdirSync(targetDir);
-  await setupTests(targetDir, inputs);
+  console.log('Create submission directory:', targetDir);
+
+  const inputDir = path.resolve(targetDir, 'input');
+  fs.mkdirSync(inputDir);
+  console.log('Create input directory:', inputDir);
+  await setupInputs(inputDir, inputs);
 
   const outputDir = path.resolve(targetDir, 'output');
   fs.mkdirSync(outputDir);
-  executeCode(targetDir, typedCode, language, outputDir);
+  console.log('Create output directory:', outputDir);
+  executeCode(targetDir, typedCode, language, inputDir, outputDir);
 };
 
 /**
@@ -90,7 +96,7 @@ export const submitCode: RequestHandler = async (req, res, next) => {
  */
 export const checkCodeResult: RequestHandler = (req, res, next) => {
   const { submissionId, numTests } = req.body;
-  console.log('id:', submissionId);
+  console.log('Check submission', submissionId);
   const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
   const outputDir = path.resolve(submissionDir, 'output');
 
