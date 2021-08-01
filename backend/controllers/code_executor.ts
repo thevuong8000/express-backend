@@ -93,9 +93,9 @@ export const checkCodeResult: RequestHandler = (req, res, next) => {
   console.log('id:', submissionId);
   const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
   const outputDir = path.resolve(submissionDir, 'output');
-  if (!fs.existsSync(outputDir)) res.status(200).json({ result: [] });
 
   const result = Array(numTests);
+  if (!fs.existsSync(outputDir)) return res.status(200).json({ result });
 
   const files = fs.readdirSync(outputDir);
   files.forEach((file) => {
