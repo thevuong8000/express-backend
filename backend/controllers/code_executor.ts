@@ -21,17 +21,17 @@ interface ICodeExecutorOutPut {
  * @returns status code and result
  */
 const executeCode = (dir: string, typedCode: string, language: Language, outputDir: string) => {
-  const inputsDir = path.resolve(dir, 'inputs');
+  const inputDir = path.resolve(dir, 'input');
   const fileName = path.resolve(dir, `test.${FILE_EXTENSIONS[language]}`);
   fs.writeFileSync(fileName, typedCode);
 
   // Only for c++
   const executableFile = path.resolve(dir, 'test');
   execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
-  const files = fs.readdirSync(inputsDir);
+  const files = fs.readdirSync(inputDir);
   files.forEach((file, idx) => {
     console.log('file', file);
-    exec(`${executableFile} < ${inputsDir}/${file}`, (err, stdout, stderr) => {
+    exec(`${executableFile} < ${inputDir}/${file}`, (err, stdout, stderr) => {
       const output = stderr ? stderr : stdout;
       const outputFile = path.resolve(outputDir, idx.toString());
       fs.writeFile(outputFile, output, (err) => {
@@ -48,18 +48,21 @@ const executeCode = (dir: string, typedCode: string, language: Language, outputD
  * @returns
  */
 const setupTests = (targetDir: string, inputs: string[]) => {
-  const inputsDir = path.resolve(targetDir, 'inputs');
+  const inputDir = path.resolve(targetDir, 'input');
 
-  fs.mkdirSync(inputsDir);
+  fs.mkdirSync(inputDir);
   return Promise.all(
     inputs.map((input, idx) => {
       console.log(input);
-      const filename = path.resolve(inputsDir, idx.toString());
+      const filename = path.resolve(inputDir, idx.toString());
       return fs.promises.writeFile(filename, input);
     })
   );
 };
 
+/**
+ * Process submitted code
+ */
 export const submitCode: RequestHandler = async (req, res, next) => {
   const { typedCode, inputs, language } = <ICodeExecutorInput>req.body;
   const submissionId = uuidv4();
@@ -80,4 +83,25 @@ export const submitCode: RequestHandler = async (req, res, next) => {
   const outputDir = path.resolve(targetDir, 'output');
   fs.mkdirSync(outputDir);
   executeCode(targetDir, typedCode, language, outputDir);
+};
+
+/**
+ * Check output of specific submission ID
+ */
+export const checkCodeResult: RequestHandler = (req, res, next) => {
+  const { submissionId, numTests } = req.body;
+  console.log('id:', submissionId);
+  const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
+  const outputDir = path.resolve(submissionDir, 'output');
+  if (!fs.existsSync(outputDir)) res.status(200).json({ result: [] });
+
+  const result = Array(numTests);
+
+  const files = fs.readdirSync(outputDir);
+  files.forEach((file) => {
+    const filePath = path.resolve(outputDir, file);
+    const idx = parseInt(file);
+    result[idx] = fs.readFileSync(filePath, { encoding: 'utf-8' });
+  });
+  res.status(200).json({ result });
 };
