@@ -31,7 +31,7 @@ const executeCode = (
   files.forEach((file) => {
     exec(`${executableFile} < ${inputDir}/${file}`, (err, stdout, stderr) => {
       const output = stderr ? stderr : stdout;
-      const outputFile = path.resolve(outputDir, file.toString());
+      const outputFile = path.resolve(outputDir, file);
       fs.writeFile(outputFile, output, (err) => {
         if (err) console.log('\tError write output', file, err);
         else console.log('\tWrite output', file, 'successfully!');
@@ -46,12 +46,12 @@ const executeCode = (
  * @param inputs
  * @returns
  */
-const setupInputs = (dir: string, inputs: string[]) => {
+const setupInputs = (dir: string, inputs: ICodeExecutorInput['inputs']) => {
   return Promise.all(
-    inputs.map((input, idx) => {
-      const filename = path.resolve(dir, idx.toString());
-      console.log('\tWrite input', idx, 'successfully!');
-      return fs.promises.writeFile(filename, input);
+    inputs.map(testCase => {
+      const filename = path.resolve(dir, testCase.testId);
+      console.log('\tWrite input', testCase.testId, 'successfully!');
+      return fs.promises.writeFile(filename, testCase.input);
     })
   );
 };
