@@ -51,7 +51,7 @@ router.post('/', submitCode);
  *           $ref: '#/components/schemas/ICheckSubmission'
  *   responses:
  *     201:
- *       description: Object with keys are testId and values are corresponding output.
+ *       description: Object with keys are test-id and values are corresponding output.
  *       content:
  *         application/json:
  *           schema:

@@ -1,7 +1,7 @@
 export type Language = 'javascript' | 'typescript' | 'cpp' | 'python' | 'java';
 
 export interface ITestInput {
-  testId: string;
+  id: string;
   input: string;
 }
 

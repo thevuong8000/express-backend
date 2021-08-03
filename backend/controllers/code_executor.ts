@@ -53,8 +53,8 @@ const executeCode = (
 const setupInputs = (dir: string, inputs: ISubmission['inputs']) => {
   return Promise.all(
     inputs.map(testCase => {
-      const filename = path.resolve(dir, testCase.testId);
-      console.log('\tWrite input', testCase.testId, 'successfully!');
+      const filename = path.resolve(dir, testCase.id);
+      console.log('\tWrite input', testCase.id, 'successfully!');
       return fs.promises.writeFile(filename, testCase.input);
     })
   );
