@@ -5,7 +5,7 @@ export interface ITestInput {
   input: string;
 }
 
-export interface ICodeExecutorInput {
+export interface ISubmission {
   typedCode: string;
   language: Language;
   inputs: ITestInput[];

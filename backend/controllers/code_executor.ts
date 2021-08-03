@@ -1,6 +1,6 @@
 import { FILE_EXTENSIONS } from './../constants/code_executor';
 import { RequestHandler } from 'express';
-import { ICodeExecutorInput, Language } from '../routes/api/requests/code_executor';
+import { ISubmission, Language } from '../routes/api/requests/code_executor';
 import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
@@ -46,7 +46,7 @@ const executeCode = (
  * @param inputs
  * @returns
  */
-const setupInputs = (dir: string, inputs: ICodeExecutorInput['inputs']) => {
+const setupInputs = (dir: string, inputs: ISubmission['inputs']) => {
   return Promise.all(
     inputs.map(testCase => {
       const filename = path.resolve(dir, testCase.testId);
@@ -60,7 +60,7 @@ const setupInputs = (dir: string, inputs: ICodeExecutorInput['inputs']) => {
  * Process submitted code
  */
 export const submitCode: RequestHandler = async (req, res, next) => {
-  const { typedCode, inputs, language } = <ICodeExecutorInput>req.body;
+  const { typedCode, inputs, language } = <ISubmission>req.body;
   const submissionId = uuidv4();
 
   // working with directory /backend/tmp/{submissionId}
