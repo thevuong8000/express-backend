@@ -1,11 +1,12 @@
 import { FILE_EXTENSIONS } from './../constants/code_executor';
 import { RequestHandler } from 'express';
-import { ISubmission, Language } from '../routes/api/requests/code_executor';
+import { ISubmission, Language, ICheckSubmission } from '../routes/api/requests/code_executor';
 import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { BadRequestError } from '../routes/api/responses/errors';
+import { ISubmissionResults } from '../routes/api/responses/code_executor';
 
 /**
  * Execute the submitted code.
@@ -92,12 +93,12 @@ export const submitCode: RequestHandler = async (req, res, next) => {
  * Check output of specific submission ID
  */
 export const checkCodeResult: RequestHandler = (req, res, next) => {
-  const { submissionId } = req.body;
+  const { submissionId } = <ICheckSubmission>req.body;
   console.log('Check submission', submissionId);
   const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
   const outputDir = path.resolve(submissionDir, 'output');
 
-  const result: Record<string, string> = {};
+  const result: ISubmissionResults = {};
   if (!fs.existsSync(outputDir)) return res.status(200).json({ result });
 
   const outputFiles = fs.readdirSync(outputDir);

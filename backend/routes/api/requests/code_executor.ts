@@ -28,3 +28,17 @@ export interface ISubmission {
   inputs: ITestInput[];
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ICheckSubmission:
+ *       properties:
+ *         submissionId:
+ *           type: string
+ *       required:
+ *         - submissionId
+ */
+export interface ICheckSubmission {
+  submissionId: string;
+}

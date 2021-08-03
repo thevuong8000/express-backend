@@ -40,7 +40,7 @@ router.post('/', submitCode);
  * /code-executor/check-result:
  *  post:
  *   summary: Check code execution process.
- *   description: Request the process of the result of specific sumission
+ *   description: Request the process of the result of specific sumission.
  *   tags:
  *     - Code Executor
  *   requestBody:
@@ -48,16 +48,16 @@ router.post('/', submitCode);
  *     content:
  *       application/json:
  *         schema:
- *           $ref: '#/components/schemas/UserAuthentication'
+ *           $ref: '#/components/schemas/ICheckSubmission'
  *   responses:
  *     201:
- *       description: A list of users
+ *       description: Object with keys are testId and values are corresponding output.
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/ISubmissionResults'
  *     400:
- *       description: Can not create user
+ *       description: Can not achieve output.
  */
 router.post('/check-result', checkCodeResult);
 
