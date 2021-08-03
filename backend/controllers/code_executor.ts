@@ -27,10 +27,13 @@ const executeCode = (
   // Only for c++
   const executableFile = path.resolve(dir, 'test');
   execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
-  const files = fs.readdirSync(inputDir);
-  files.forEach((file) => {
+
+  const inputFiles = fs.readdirSync(inputDir);
+  inputFiles.forEach((file) => {
     exec(`${executableFile} < ${inputDir}/${file}`, (err, stdout, stderr) => {
       const output = stderr ? stderr : stdout;
+
+      // corresponding output would have the same name
       const outputFile = path.resolve(outputDir, file);
       fs.writeFile(outputFile, output, (err) => {
         if (err) console.log('\tError write output', file, err);
@@ -89,19 +92,18 @@ export const submitCode: RequestHandler = async (req, res, next) => {
  * Check output of specific submission ID
  */
 export const checkCodeResult: RequestHandler = (req, res, next) => {
-  const { submissionId, numTests } = req.body;
+  const { submissionId } = req.body;
   console.log('Check submission', submissionId);
   const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
   const outputDir = path.resolve(submissionDir, 'output');
 
-  const result = Array(numTests);
+  const result: Record<string, string> = {};
   if (!fs.existsSync(outputDir)) return res.status(200).json({ result });
 
-  const files = fs.readdirSync(outputDir);
-  files.forEach((file) => {
+  const outputFiles = fs.readdirSync(outputDir);
+  outputFiles.forEach((file) => {
     const filePath = path.resolve(outputDir, file);
-    const idx = parseInt(file);
-    result[idx] = fs.readFileSync(filePath, { encoding: 'utf-8' });
+    result[file] = fs.readFileSync(filePath, { encoding: 'utf-8' });
   });
   res.status(200).json({ result });
 };
