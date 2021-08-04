@@ -108,7 +108,7 @@ export const checkCodeResult: RequestHandler = (req, res, next) => {
   const compileErrorFile = path.resolve(submissionDir, 'compile_error');
   if (fs.existsSync(compileErrorFile)) {
     const error = fs.readFileSync(compileErrorFile, { encoding: 'utf-8' });
-    return res.status(400).json({ error });
+    return res.status(200).json({ result: { error } });
   }
 
   const outputDir = path.resolve(submissionDir, 'output');
