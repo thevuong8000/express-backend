@@ -27,7 +27,14 @@ const executeCode = (
 
   // Only for c++
   const executableFile = path.resolve(dir, 'test');
-  execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
+  try {
+    execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
+  } catch (err) {
+    console.log('Compile Error:', Object.keys(err));
+    const errFileName = path.resolve(dir, `compile_error`);
+    fs.writeFileSync(errFileName, err.stderr, { encoding: 'utf-8' });
+    return;
+  }
 
   const inputFiles = fs.readdirSync(inputDir);
   inputFiles.forEach((file) => {
@@ -52,7 +59,7 @@ const executeCode = (
  */
 const setupInputs = (dir: string, inputs: ISubmission['inputs']) => {
   return Promise.all(
-    inputs.map(testCase => {
+    inputs.map((testCase) => {
       const filename = path.resolve(dir, testCase.id);
       console.log('\tWrite input', testCase.id, 'successfully!');
       return fs.promises.writeFile(filename, testCase.input);
@@ -96,6 +103,14 @@ export const checkCodeResult: RequestHandler = (req, res, next) => {
   const { submissionId } = <ICheckSubmission>req.body;
   console.log('Check submission', submissionId);
   const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
+
+  // Check if compilation error
+  const compileErrorFile = path.resolve(submissionDir, 'compile_error');
+  if (fs.existsSync(compileErrorFile)) {
+    const error = fs.readFileSync(compileErrorFile, { encoding: 'utf-8' });
+    return res.status(200).json({ result: { error } });
+  }
+
   const outputDir = path.resolve(submissionDir, 'output');
 
   const result: ISubmissionResults = {};
