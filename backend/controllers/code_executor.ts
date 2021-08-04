@@ -1,11 +1,12 @@
 import { FILE_EXTENSIONS } from './../constants/code_executor';
 import { RequestHandler } from 'express';
-import { ISubmission, Language } from '../routes/api/requests/code_executor';
+import { ISubmission, Language, ICheckSubmission } from '../routes/api/requests/code_executor';
 import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { BadRequestError } from '../routes/api/responses/errors';
+import { ISubmissionResults } from '../routes/api/responses/code_executor';
 
 /**
  * Execute the submitted code.
@@ -27,10 +28,13 @@ const executeCode = (
   // Only for c++
   const executableFile = path.resolve(dir, 'test');
   execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
-  const files = fs.readdirSync(inputDir);
-  files.forEach((file) => {
+
+  const inputFiles = fs.readdirSync(inputDir);
+  inputFiles.forEach((file) => {
     exec(`${executableFile} < ${inputDir}/${file}`, (err, stdout, stderr) => {
       const output = stderr ? stderr : stdout;
+
+      // corresponding output would have the same name
       const outputFile = path.resolve(outputDir, file);
       fs.writeFile(outputFile, output, (err) => {
         if (err) console.log('\tError write output', file, err);
@@ -49,8 +53,8 @@ const executeCode = (
 const setupInputs = (dir: string, inputs: ISubmission['inputs']) => {
   return Promise.all(
     inputs.map(testCase => {
-      const filename = path.resolve(dir, testCase.testId);
-      console.log('\tWrite input', testCase.testId, 'successfully!');
+      const filename = path.resolve(dir, testCase.id);
+      console.log('\tWrite input', testCase.id, 'successfully!');
       return fs.promises.writeFile(filename, testCase.input);
     })
   );
@@ -89,19 +93,18 @@ export const submitCode: RequestHandler = async (req, res, next) => {
  * Check output of specific submission ID
  */
 export const checkCodeResult: RequestHandler = (req, res, next) => {
-  const { submissionId, numTests } = req.body;
+  const { submissionId } = <ICheckSubmission>req.body;
   console.log('Check submission', submissionId);
   const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
   const outputDir = path.resolve(submissionDir, 'output');
 
-  const result = Array(numTests);
+  const result: ISubmissionResults = {};
   if (!fs.existsSync(outputDir)) return res.status(200).json({ result });
 
-  const files = fs.readdirSync(outputDir);
-  files.forEach((file) => {
+  const outputFiles = fs.readdirSync(outputDir);
+  outputFiles.forEach((file) => {
     const filePath = path.resolve(outputDir, file);
-    const idx = parseInt(file);
-    result[idx] = fs.readFileSync(filePath, { encoding: 'utf-8' });
+    result[file] = fs.readFileSync(filePath, { encoding: 'utf-8' });
   });
   res.status(200).json({ result });
 };
