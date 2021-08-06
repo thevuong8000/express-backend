@@ -15,7 +15,11 @@ export const MONGO_INITDB_DATABASE: string = process.env.MONGO_INITDB_DATABASE;
 export const IS_STANDALONE = process.env.IS_STANDALONE.toLowerCase() === 'true';
 
 // CORS allow
-const CORS_ORIGINS = ['http://localhost:3000', 'http://localhost:8000'];
+const CORS_ORIGINS = [
+  'https://candra-standalone.herokuapp.com/',
+  'http://localhost:3000',
+  'http://localhost:8000'
+];
 export const CORS_CONFIGS: cors.CorsOptions = {
   origin: CORS_ORIGINS,
   optionsSuccessStatus: 200
