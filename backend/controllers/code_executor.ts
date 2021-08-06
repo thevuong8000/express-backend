@@ -74,8 +74,18 @@ export const submitCode: RequestHandler = async (req, res, next) => {
   const { typedCode, inputs, language } = <ISubmission>req.body;
   const submissionId = uuidv4();
 
+  console.log('Working directory:', __dirname);
+
+  const parentDir = path.resolve(__dirname, `../tmp`);
+  if (!fs.existsSync(parentDir)) {
+    console.log('Creating tmp directory');
+    fs.mkdirSync(parentDir);
+    console.log('Successfully created tmp directory');
+  }
+
   // working with directory /backend/tmp/{submissionId}
-  const targetDir = path.resolve(__dirname, `../tmp/${submissionId}`);
+  const targetDir = path.resolve(__dirname, `${parentDir}/${submissionId}`);
+  console.log('Creating submission directory:', targetDir);
 
   if (fs.existsSync(targetDir))
     next(new BadRequestError('Submission ID duplicated, please try again!'));
