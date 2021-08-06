@@ -1,3 +1,7 @@
 build:
+  config:
+    NODE_ENV: production
+    JWT_SECRET_KEY: random-string
+    IS_STANDALONE: true
   docker:
-    web: backend/Dockerfile.development
+    web: backend/Dockerfile.heroku.app

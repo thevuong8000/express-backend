@@ -1,20 +1,21 @@
 import express from 'express';
 import cors from 'cors';
-import swaggerRoutes from './swagger/swagger';
+// import swaggerRoutes from './swagger/swagger';
 import routes from 'routes';
 import { CORS_CONFIGS } from '@constants/config';
 import { IS_STANDALONE } from './constants/config';
 
 console.log('IS_STANDALONE:', IS_STANDALONE);
+console.log('ENV:', process.env.NODE_ENV);
 
-if (!IS_STANDALONE) import('./database/mongodb-config');
+// if (!IS_STANDALONE) import('./database/mongodb-config');
 
 const app = express();
 
 /* Disable swagger-ui REST-api document in production mode */
-if (process.env.NODE_ENV !== 'production') {
-  app.use('/docs', swaggerRoutes);
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   app.use('/docs', swaggerRoutes);
+// }
 
 // body-parser
 app.use(express.json());
