@@ -5,6 +5,8 @@ import routes from 'routes';
 import { CORS_CONFIGS } from '@constants/config';
 import { IS_STANDALONE } from './constants/config';
 
+console.log('IS_STANDALONE:', IS_STANDALONE);
+
 if (!IS_STANDALONE) import('./database/mongodb-config');
 
 const app = express();
