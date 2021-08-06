@@ -12,8 +12,10 @@ export const MONGODB_SERVICE: string = process.env.MONGODB_SERVICE;
 export const MONGODB_SERVICE_PORT: string = process.env.MONGODB_SERVICE_PORT;
 export const MONGO_INITDB_DATABASE: string = process.env.MONGO_INITDB_DATABASE;
 
+export const IS_STANDALONE = process.env.IS_STANDALONE.toLowerCase() === 'true';
+
 // CORS allow
-const CORS_ORIGINS = ['http://localhost:3000', 'http://localhost:8000']
+const CORS_ORIGINS = ['http://localhost:3000', 'http://localhost:8000'];
 export const CORS_CONFIGS: cors.CorsOptions = {
   origin: CORS_ORIGINS,
   optionsSuccessStatus: 200
