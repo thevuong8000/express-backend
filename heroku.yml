@@ -1,8 +1,3 @@
-setup:
-  config:
-    NODE_ENV: production
-    JWT_SECRET_KEY: random-string
-    IS_STANDALONE: true
 build:
   docker:
     web: backend/Dockerfile.heroku.app
