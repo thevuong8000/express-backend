@@ -21,6 +21,7 @@ const CORS_ORIGINS = [
   'http://localhost:8000'
 ];
 export const CORS_CONFIGS: cors.CorsOptions = {
-  origin: CORS_ORIGINS,
+  // origin: CORS_ORIGINS,
+  origin: '*',
   optionsSuccessStatus: 200
 };
