@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  backend:
+    image: ${DOCKER_IMAGE_BACKEND?Variable not set}
+    container_name: ${DOCKER_CONTAINER_BACKEND?Variable not set}
+    restart: unless-stopped
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.development
+    env_file:
+      - ./configs/api-server/.env.development
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/backend
