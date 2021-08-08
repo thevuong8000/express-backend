@@ -7,6 +7,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { BadRequestError } from '../routes/api/responses/errors';
 import { ISubmissionResults } from '../routes/api/responses/code_executor';
+import { isCompiledLanguage, getExecuteScript } from '../utils/code-executor';
 
 /**
  * Execute the submitted code.
@@ -25,20 +26,22 @@ const executeCode = (
   const fileName = path.resolve(dir, `test.${FILE_EXTENSIONS[language]}`);
   fs.writeFileSync(fileName, typedCode);
 
-  // Only for c++
-  const executableFile = path.resolve(dir, 'test');
-  try {
-    execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
-  } catch (err) {
-    console.log('Compile Error:', Object.keys(err));
-    const errFileName = path.resolve(dir, `compile_error`);
-    fs.writeFileSync(errFileName, err.stderr, { encoding: 'utf-8' });
-    return;
+  const executableFile = isCompiledLanguage(language) ? path.resolve(dir, 'test') : fileName;
+  if (isCompiledLanguage(language)) {
+    try {
+      execSync(`g++ -std=c++17 -o ${executableFile} ${fileName}`);
+    } catch (err) {
+      console.log('Compile Error:', Object.keys(err));
+      const errFileName = path.resolve(dir, `compile_error`);
+      fs.writeFileSync(errFileName, err.stderr, { encoding: 'utf-8' });
+      return;
+    }
   }
 
   const inputFiles = fs.readdirSync(inputDir);
+  const execScript = getExecuteScript(executableFile, language);
   inputFiles.forEach((file) => {
-    exec(`${executableFile} < ${inputDir}/${file}`, (err, stdout, stderr) => {
+    exec(`${execScript} < ${inputDir}/${file}`, (err, stdout, stderr) => {
       const output = stderr ? stderr : stdout;
 
       // corresponding output would have the same name

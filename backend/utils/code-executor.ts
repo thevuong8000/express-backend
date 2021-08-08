@@ -9,6 +9,32 @@ export const getCodeExecuteScript = (language: Language) => {
     case 'python':
       return (filename: string) => `python3 ${filename}`;
     default:
-      return (filename: string) => `${filename} is not supported or valid.`
+      return (filename: string) => `${filename} is not supported or valid.`;
   }
 };
+
+/**
+ * Check if the language is compiled
+ * @param language 
+ * @returns 
+ */
+export const isCompiledLanguage = (language: Language) => {
+  return (['java', 'cpp'] as Language[]).includes(language);
+};
+
+export const getExecuteScript = (filename: string, language: Language) => {
+  switch (language){
+    case 'cpp':
+    case 'java':
+      return filename;
+    
+    case 'python':
+      return `python3 ${filename}`;
+    
+    case 'javascript':
+      return `node ${filename}`;
+
+    default:
+      return 'ThisIsNotAValidScript'
+  }
+}
