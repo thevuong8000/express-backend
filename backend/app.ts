@@ -6,10 +6,15 @@ import { CORS_CONFIGS } from '@constants/config';
 import { IS_STANDALONE } from './constants/config';
 
 console.log('IS_STANDALONE:', IS_STANDALONE);
+console.log('ENV:', process.env.NODE_ENV);
 
 if (!IS_STANDALONE) import('./database/mongodb-config');
 
 const app = express();
+
+app.get('/', (req, res, next) => {
+  res.send("Hello world");
+})
 
 /* Disable swagger-ui REST-api document in production mode */
 if (process.env.NODE_ENV !== 'production') {
