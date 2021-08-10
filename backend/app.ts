@@ -12,10 +12,6 @@ if (!IS_STANDALONE) import('./database/mongodb-config');
 
 const app = express();
 
-app.get('/', (req, res, next) => {
-  res.send("Hello world");
-})
-
 /* Disable swagger-ui REST-api document in production mode */
 if (process.env.NODE_ENV !== 'production') {
   app.use('/docs', swaggerRoutes);
@@ -27,6 +23,11 @@ app.use(express.urlencoded({ extended: true }));
 
 /* CORS allow */
 app.use(cors(CORS_CONFIGS));
+
+// root api - for testing server
+app.get('/', (req, res, next) => {
+  res.send('Hello world');
+});
 
 // Rest-API
 app.use(routes);
