@@ -15,26 +15,28 @@ export const getCodeExecuteScript = (language: Language) => {
 
 /**
  * Check if the language is compiled
- * @param language 
- * @returns 
+ * @param language
+ * @returns
  */
 export const isCompiledLanguage = (language: Language) => {
-  return (['java', 'cpp'] as Language[]).includes(language);
+  return (['cpp'] as Language[]).includes(language);
 };
 
 export const getExecuteScript = (filename: string, language: Language) => {
-  switch (language){
+  switch (language) {
     case 'cpp':
-    case 'java':
       return filename;
-    
+
+    case 'java':
+      return `java ${filename}`;
+
     case 'python':
       return `python3 ${filename}`;
-    
+
     case 'javascript':
       return `node ${filename}`;
 
     default:
-      return 'ThisIsNotAValidScript'
+      return 'ThisIsNotAValidScript';
   }
-}
+};

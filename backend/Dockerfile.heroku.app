@@ -7,8 +7,7 @@ RUN npm run build
 
 FROM node:12-alpine3.10
 RUN apk update
-RUN apk add --upgrade --no-cache g++
-RUN apk add --no-cache python3
+RUN apk add --upgrade --no-cache g++ python3 openjdk11
 
 WORKDIR /backend
 COPY package.json .
