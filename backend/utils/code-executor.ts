@@ -1,9 +1,26 @@
 import { exec } from 'child_process';
 import path from 'path';
-import { Language } from '../routes/api/requests/code_executor';
+import { ISubmission, Language } from '../routes/api/requests/code_executor';
 import fs from 'fs';
 
 export const TEMP_SUBMISSION_PARENT_DIRECTORY = path.resolve(__dirname, '../tmp');
+
+/**
+ * Create inputs directory with test file inside
+ * @param targetDir parent directory of input directory
+ * @param inputs
+ * @returns
+ */
+export const writeInputsIntoFiles = (submissionId: string, inputs: ISubmission['inputs']) => {
+  const inputDir = getSubmissionInputDirectory(submissionId);
+  return Promise.all(
+    inputs.map((testCase) => {
+      const filename = path.resolve(inputDir, testCase.id);
+      console.log(`\tWrite input ${testCase.id} successfully into ${filename}`);
+      return fs.promises.writeFile(filename, testCase.input);
+    })
+  );
+};
 
 /**
  * Check if the language is compiled

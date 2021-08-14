@@ -16,7 +16,8 @@ import {
   isCompiledLanguage,
   getExecuteScript,
   executeCodeRegularMode,
-  getRegularModeOutput
+  getRegularModeOutput,
+  writeInputsIntoFiles
 } from '../utils/code-executor';
 
 /**
@@ -72,22 +73,6 @@ const executeCode = (
 };
 
 /**
- * Create inputs directory with test file inside
- * @param targetDir parent directory of input directory
- * @param inputs
- * @returns
- */
-const setupInputs = (dir: string, inputs: ISubmission['inputs']) => {
-  return Promise.all(
-    inputs.map((testCase) => {
-      const filename = path.resolve(dir, testCase.id);
-      console.log('\tWrite input', testCase.id, 'successfully!');
-      return fs.promises.writeFile(filename, testCase.input);
-    })
-  );
-};
-
-/**
  * Process submitted code
  */
 export const submitCode: RequestHandler = async (req, res, next) => {
@@ -118,7 +103,7 @@ export const submitCode: RequestHandler = async (req, res, next) => {
   const inputDir = path.resolve(targetDir, 'input');
   fs.mkdirSync(inputDir);
   console.log('Create input directory:', inputDir);
-  await setupInputs(inputDir, inputs);
+  await writeInputsIntoFiles(submissionId, inputs);
 
   const outputDir = path.resolve(targetDir, 'output');
   fs.mkdirSync(outputDir);
