@@ -14,13 +14,28 @@ import { BadRequestError } from '../routes/api/responses/errors';
 import { ISubmissionResults } from '../routes/api/responses/code_executor';
 import { isCompiledLanguage, getExecuteScript } from '../utils/code-executor';
 
-const getRegularOutputFileName = (outputDir: string) => {
+const getSubmissionDirectory = (submissionId: string) => {
+  return path.resolve(__dirname, `../tmp/${submissionId}`);
+};
+
+const getSubmissionInputDirectory = (submissionId: string) => {
+  const submissionDir = getSubmissionDirectory(submissionId);
+  return path.resolve(submissionDir, './input');
+};
+
+const getSubmissionOutputDirectory = (submissionId: string) => {
+  const submissionDir = getSubmissionDirectory(submissionId);
+  return path.resolve(submissionDir, './output');
+};
+
+const getRegularModeOutputFileName = (submissionId: string) => {
+  const outputDir = getSubmissionOutputDirectory(submissionId);
   return path.resolve(outputDir, './output');
 };
 
-const executeCodeRegularMode = (filename: string, language: Language, outputDir: string) => {
+const executeCodeRegularMode = (submissionId: string, filename: string, language: Language) => {
   const execScript = getExecuteScript(filename, language);
-  const outputFile = getRegularOutputFileName(outputDir);
+  const outputFile = getRegularModeOutputFileName(submissionId);
 
   exec(execScript, (err, stdout, stderr) => {
     if (stderr) {
@@ -34,6 +49,11 @@ const executeCodeRegularMode = (filename: string, language: Language, outputDir:
   });
 };
 
+const getRegularModeOutput = (submissionId: string) => {
+  const outputFile = getRegularModeOutputFileName(submissionId);
+  return fs.readFileSync(outputFile, { encoding: 'utf-8' });
+};
+
 /**
  * Execute the submitted code.
  * @param dir submission directory
@@ -42,6 +62,7 @@ const executeCodeRegularMode = (filename: string, language: Language, outputDir:
  * @returns status code and result
  */
 const executeCode = (
+  submissionId: string,
   dir: string,
   typedCode: string,
   language: Language,
@@ -65,7 +86,7 @@ const executeCode = (
   }
 
   if (mode === 'Regular') {
-    executeCodeRegularMode(executableFile, language, outputDir);
+    executeCodeRegularMode(submissionId, executableFile, language);
     return;
   }
 
@@ -137,14 +158,20 @@ export const submitCode: RequestHandler = async (req, res, next) => {
   const outputDir = path.resolve(targetDir, 'output');
   fs.mkdirSync(outputDir);
   console.log('Create output directory:', outputDir);
-  executeCode(targetDir, typedCode, language, inputDir, outputDir, mode);
+  executeCode(submissionId, targetDir, typedCode, language, inputDir, outputDir, mode);
 };
 
 /**
  * Check output of specific submission ID
  */
 export const checkCodeResult: RequestHandler = (req, res, next) => {
-  const { submissionId } = <ICheckSubmission>req.body;
+  const { submissionId, mode } = <ICheckSubmission>req.body;
+  if (mode === 'Regular') {
+    // const output = 'abcdef';
+    const output = getRegularModeOutput(submissionId);
+    return res.status(200).json({ result: output });
+  }
+
   console.log('Check submission', submissionId);
   const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
 
