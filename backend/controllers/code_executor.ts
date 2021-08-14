@@ -12,26 +12,11 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { BadRequestError } from '../routes/api/responses/errors';
 import { ISubmissionResults } from '../routes/api/responses/code_executor';
-import { isCompiledLanguage, getExecuteScript } from '../utils/code-executor';
-
-const getSubmissionDirectory = (submissionId: string) => {
-  return path.resolve(__dirname, `../tmp/${submissionId}`);
-};
-
-const getSubmissionInputDirectory = (submissionId: string) => {
-  const submissionDir = getSubmissionDirectory(submissionId);
-  return path.resolve(submissionDir, './input');
-};
-
-const getSubmissionOutputDirectory = (submissionId: string) => {
-  const submissionDir = getSubmissionDirectory(submissionId);
-  return path.resolve(submissionDir, './output');
-};
-
-const getRegularModeOutputFileName = (submissionId: string) => {
-  const outputDir = getSubmissionOutputDirectory(submissionId);
-  return path.resolve(outputDir, './output');
-};
+import {
+  isCompiledLanguage,
+  getExecuteScript,
+  getRegularModeOutputFileName
+} from '../utils/code-executor';
 
 const executeCodeRegularMode = (submissionId: string, filename: string, language: Language) => {
   const execScript = getExecuteScript(filename, language);
