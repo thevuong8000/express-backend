@@ -15,7 +15,6 @@ import { ISubmissionResults } from '../routes/api/responses/code_executor';
 import {
   isCompiledLanguage,
   getExecuteScript,
-  getRegularModeOutputFileName,
   executeCodeRegularMode,
   getRegularModeOutput
 } from '../utils/code-executor';
