@@ -1,6 +1,11 @@
 import { FILE_EXTENSIONS } from './../constants/code_executor';
 import { RequestHandler } from 'express';
-import { ISubmission, Language, ICheckSubmission } from '../routes/api/requests/code_executor';
+import {
+  ISubmission,
+  Language,
+  ICheckSubmission,
+  ISubmissionMode
+} from '../routes/api/requests/code_executor';
 import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
@@ -8,6 +13,46 @@ import { v4 as uuidv4 } from 'uuid';
 import { BadRequestError } from '../routes/api/responses/errors';
 import { ISubmissionResults } from '../routes/api/responses/code_executor';
 import { isCompiledLanguage, getExecuteScript } from '../utils/code-executor';
+
+const getSubmissionDirectory = (submissionId: string) => {
+  return path.resolve(__dirname, `../tmp/${submissionId}`);
+};
+
+const getSubmissionInputDirectory = (submissionId: string) => {
+  const submissionDir = getSubmissionDirectory(submissionId);
+  return path.resolve(submissionDir, './input');
+};
+
+const getSubmissionOutputDirectory = (submissionId: string) => {
+  const submissionDir = getSubmissionDirectory(submissionId);
+  return path.resolve(submissionDir, './output');
+};
+
+const getRegularModeOutputFileName = (submissionId: string) => {
+  const outputDir = getSubmissionOutputDirectory(submissionId);
+  return path.resolve(outputDir, './output');
+};
+
+const executeCodeRegularMode = (submissionId: string, filename: string, language: Language) => {
+  const execScript = getExecuteScript(filename, language);
+  const outputFile = getRegularModeOutputFileName(submissionId);
+
+  exec(execScript, (err, stdout, stderr) => {
+    if (stderr) {
+      console.log('error', stderr);
+      return;
+    }
+
+    fs.writeFile(outputFile, stdout, (err) => {
+      if (err) console.log('Regular Submision Mode: Can not write file');
+    });
+  });
+};
+
+const getRegularModeOutput = (submissionId: string) => {
+  const outputFile = getRegularModeOutputFileName(submissionId);
+  return fs.readFileSync(outputFile, { encoding: 'utf-8' });
+};
 
 /**
  * Execute the submitted code.
@@ -17,11 +62,13 @@ import { isCompiledLanguage, getExecuteScript } from '../utils/code-executor';
  * @returns status code and result
  */
 const executeCode = (
+  submissionId: string,
   dir: string,
   typedCode: string,
   language: Language,
   inputDir: string,
-  outputDir: string
+  outputDir: string,
+  mode: ISubmissionMode
 ) => {
   const fileName = path.resolve(dir, `test.${FILE_EXTENSIONS[language]}`);
   fs.writeFileSync(fileName, typedCode);
@@ -36,6 +83,11 @@ const executeCode = (
       fs.writeFileSync(errFileName, err.stderr, { encoding: 'utf-8' });
       return;
     }
+  }
+
+  if (mode === 'Regular') {
+    executeCodeRegularMode(submissionId, executableFile, language);
+    return;
   }
 
   const inputFiles = fs.readdirSync(inputDir);
@@ -74,7 +126,7 @@ const setupInputs = (dir: string, inputs: ISubmission['inputs']) => {
  * Process submitted code
  */
 export const submitCode: RequestHandler = async (req, res, next) => {
-  const { typedCode, inputs, language } = <ISubmission>req.body;
+  const { typedCode, inputs, language, mode } = <ISubmission>req.body;
   const submissionId = uuidv4();
 
   console.log('Working directory:', __dirname);
@@ -106,14 +158,19 @@ export const submitCode: RequestHandler = async (req, res, next) => {
   const outputDir = path.resolve(targetDir, 'output');
   fs.mkdirSync(outputDir);
   console.log('Create output directory:', outputDir);
-  executeCode(targetDir, typedCode, language, inputDir, outputDir);
+  executeCode(submissionId, targetDir, typedCode, language, inputDir, outputDir, mode);
 };
 
 /**
  * Check output of specific submission ID
  */
 export const checkCodeResult: RequestHandler = (req, res, next) => {
-  const { submissionId } = <ICheckSubmission>req.body;
+  const { submissionId, mode } = <ICheckSubmission>req.body;
+  if (mode === 'Regular') {
+    const output = getRegularModeOutput(submissionId);
+    return res.status(200).json({ result: output });
+  }
+
   console.log('Check submission', submissionId);
   const submissionDir = path.resolve(__dirname, `../tmp/${submissionId}`);
 
