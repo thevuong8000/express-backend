@@ -5,6 +5,8 @@ export interface ITestInput {
   input: string;
 }
 
+export type ISubmissionMode = 'Compatitive Programming' | 'Regular';
+
 /**
  * @swagger
  * components:
@@ -26,6 +28,7 @@ export interface ISubmission {
   typedCode: string;
   language: Language;
   inputs: ITestInput[];
+  mode: ISubmissionMode;
 }
 
 /**
