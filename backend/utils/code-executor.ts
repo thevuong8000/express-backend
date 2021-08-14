@@ -103,3 +103,13 @@ export const executeCodeRegularMode = (
     });
   });
 };
+
+/**
+ * Get the output of submission in Regular Mode
+ * @param submissionId submission id
+ * @returns output of submission
+ */
+export const getRegularModeOutput = (submissionId: string) => {
+  const outputFile = getRegularModeOutputFileName(submissionId);
+  return fs.readFileSync(outputFile, { encoding: 'utf-8' });
+};

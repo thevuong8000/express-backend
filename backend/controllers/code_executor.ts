@@ -16,13 +16,9 @@ import {
   isCompiledLanguage,
   getExecuteScript,
   getRegularModeOutputFileName,
-  executeCodeRegularMode
+  executeCodeRegularMode,
+  getRegularModeOutput
 } from '../utils/code-executor';
-
-const getRegularModeOutput = (submissionId: string) => {
-  const outputFile = getRegularModeOutputFileName(submissionId);
-  return fs.readFileSync(outputFile, { encoding: 'utf-8' });
-};
 
 /**
  * Execute the submitted code.
