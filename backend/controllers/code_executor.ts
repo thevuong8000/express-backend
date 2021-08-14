@@ -167,7 +167,6 @@ export const submitCode: RequestHandler = async (req, res, next) => {
 export const checkCodeResult: RequestHandler = (req, res, next) => {
   const { submissionId, mode } = <ICheckSubmission>req.body;
   if (mode === 'Regular') {
-    // const output = 'abcdef';
     const output = getRegularModeOutput(submissionId);
     return res.status(200).json({ result: output });
   }
