@@ -1,5 +1,7 @@
+import { exec } from 'child_process';
 import path from 'path';
 import { Language } from '../routes/api/requests/code_executor';
+import fs from 'fs';
 
 export const TEMP_SUBMISSION_PARENT_DIRECTORY = path.resolve(__dirname, '../tmp');
 
@@ -74,4 +76,30 @@ export const getSubmissionOutputDirectory = (submissionId: string) => {
 export const getRegularModeOutputFileName = (submissionId: string) => {
   const outputDir = getSubmissionOutputDirectory(submissionId);
   return path.resolve(outputDir, './output');
+};
+
+/**
+ * Execute the file in Regular Mode
+ * @param submissionId submission id
+ * @param filename name of file to be executed
+ * @param language language of the file
+ */
+export const executeCodeRegularMode = (
+  submissionId: string,
+  filename: string,
+  language: Language
+) => {
+  const execScript = getExecuteScript(filename, language);
+  const outputFile = getRegularModeOutputFileName(submissionId);
+
+  exec(execScript, (err, stdout, stderr) => {
+    if (stderr) {
+      console.log('error', stderr);
+      return;
+    }
+
+    fs.writeFile(outputFile, stdout, (err) => {
+      if (err) console.log('Regular Submision Mode: Can not write file');
+    });
+  });
 };

@@ -15,24 +15,9 @@ import { ISubmissionResults } from '../routes/api/responses/code_executor';
 import {
   isCompiledLanguage,
   getExecuteScript,
-  getRegularModeOutputFileName
+  getRegularModeOutputFileName,
+  executeCodeRegularMode
 } from '../utils/code-executor';
-
-const executeCodeRegularMode = (submissionId: string, filename: string, language: Language) => {
-  const execScript = getExecuteScript(filename, language);
-  const outputFile = getRegularModeOutputFileName(submissionId);
-
-  exec(execScript, (err, stdout, stderr) => {
-    if (stderr) {
-      console.log('error', stderr);
-      return;
-    }
-
-    fs.writeFile(outputFile, stdout, (err) => {
-      if (err) console.log('Regular Submision Mode: Can not write file');
-    });
-  });
-};
 
 const getRegularModeOutput = (submissionId: string) => {
   const outputFile = getRegularModeOutputFileName(submissionId);
