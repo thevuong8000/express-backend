@@ -47,5 +47,4 @@ export interface ISubmission {
  */
 export interface ICheckSubmission {
   submissionId: string;
-  mode: ISubmissionMode;
 }

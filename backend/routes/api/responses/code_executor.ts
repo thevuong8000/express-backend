@@ -22,4 +22,16 @@ export interface ISubmissionResponse {
  *         result:
  *           type: object
  */
-export type ISubmissionResults = Record<string, string>;
+
+export interface IOutput {
+  output?: string;
+  error?: string;
+}
+
+export interface ISubmissionOutputRegular {
+  regular_mode_output: IOutput;
+}
+
+export type ISubmissionOutputCompetitive = Record<string, IOutput>;
+
+export type ISubmissionOutput = ISubmissionOutputRegular | ISubmissionOutputCompetitive;
