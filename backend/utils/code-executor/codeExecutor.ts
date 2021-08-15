@@ -96,7 +96,7 @@ export default class CodeExecutor extends SubmissionFileManager {
    * 1) Set up directory for submission, input, output
    * 2) Write data into files
    */
-  public setupSubmission: () => Promise<void>;
+  public setupSubmission: () => void;
 
   /**
    * Execute the user's code
@@ -109,12 +109,16 @@ export default class CodeExecutor extends SubmissionFileManager {
 
     this.storeSubmissionInfo = () => {
       const infoFilePath = this.getPathToSubmissionInfoFile();
+      console.info(`Writing submission information into ${infoFilePath}`);
       const info: ISubmissionInfo = {
         submissionId,
         language,
         mode
       };
-      fs.writeFileSync(infoFilePath, JSON.stringify(info));
+      fs.writeFile(infoFilePath, JSON.stringify(info), (err) => {
+        if (err) console.error('Can not write submission information', err);
+        else console.info(`Write submission ${submissionId} information successfully`);
+      });
     };
 
     this.setupSubmissionInputDirectory = () => {
@@ -134,7 +138,7 @@ export default class CodeExecutor extends SubmissionFileManager {
       console.log('Create output directory successfully:', outputDir);
     };
 
-    this.setupSubmission = async () => {
+    this.setupSubmission = () => {
       createTempSubmissionParentDirectoryIfNotExist();
 
       const submissionDir = this.getSubmissionDirectory();
