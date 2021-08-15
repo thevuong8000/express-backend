@@ -4,16 +4,19 @@ import path from 'path';
 import { TEMP_SUBMISSION_PARENT_DIRECTORY } from './index';
 import LanguageManager from './languageManager';
 
-interface ISubmissionFileManagerConstructor {
+interface ISubmissionFileManagerBaseConstructor {
   submissionId: string;
+}
+interface ISubmissionFileManagerConstructor extends ISubmissionFileManagerBaseConstructor {
   language: Language;
 }
 
-export class SubmissionFileManager {
+/**
+ * File Management without language
+ */
+export class SubmissionFileManagerBase {
   static inputDirName = 'input';
   static outputDirName = 'output';
-  static userFileName = 'user';
-  static userObjectFileName = 'user-object';
   static compileErrorFileName = 'compile-error';
   static submissionInfoFileName = 'info.json';
 
@@ -36,6 +39,60 @@ export class SubmissionFileManager {
   protected getSubmissionOutputDirectory: () => string;
 
   /**
+   * Get final executable file
+   */
+  protected getRegularModeOutputFileName: () => string;
+
+  /**
+   * Get the path to compile error file
+   */
+  protected getPathToCompileErrorFile: () => string;
+
+  /**
+   * Get the path to submission info file
+   */
+  protected getPathToSubmissionInfoFile: () => string;
+
+  constructor({ submissionId }: ISubmissionFileManagerBaseConstructor) {
+    this.getSubmissionDirectory = () => {
+      return path.resolve(TEMP_SUBMISSION_PARENT_DIRECTORY, submissionId);
+    };
+
+    this.getSubmissionInputDirectory = () => {
+      const submissionDir = this.getSubmissionDirectory();
+      return path.resolve(submissionDir, SubmissionFileManagerBase.inputDirName);
+    };
+
+    this.getSubmissionOutputDirectory = () => {
+      const submissionDir = this.getSubmissionDirectory();
+      return path.resolve(submissionDir, SubmissionFileManagerBase.outputDirName);
+    };
+
+    this.getPathToSubmissionInfoFile = () => {
+      const submissionDir = this.getSubmissionDirectory();
+      return path.resolve(submissionDir, SubmissionFileManagerBase.submissionInfoFileName);
+    };
+
+    this.getRegularModeOutputFileName = () => {
+      const outputDir = this.getSubmissionOutputDirectory();
+      return path.resolve(outputDir, './output');
+    };
+
+    this.getPathToCompileErrorFile = () => {
+      const outputDir = this.getSubmissionOutputDirectory();
+      return path.resolve(outputDir, SubmissionFileManagerBase.compileErrorFileName);
+    };
+  }
+}
+
+/**
+ * File management with specific language
+ */
+export class SubmissionFileManager extends SubmissionFileManagerBase {
+  static userObjectFileName = 'user-object';
+  static userFileName = 'user';
+
+  /**
    * Get the user's code file name
    */
   protected getCodeFileName: () => string;
@@ -44,11 +101,6 @@ export class SubmissionFileManager {
    * Get the path to object file (only if code in compiled language)
    */
   protected getCompiledCodeFileName: () => string;
-
-  /**
-   * Get final executable file
-   */
-  protected getRegularModeOutputFileName: () => string;
 
   /**
    * Get the path to output result of submission in Regular Mode
@@ -61,35 +113,8 @@ export class SubmissionFileManager {
    */
   protected getFullUserFileName: () => string;
 
-  /**
-   * Get the path to compile error file
-   */
-  protected getPathToCompileErrorFile: () => string;
-
-  /**
-   * Get the path to submission info file
-   */
-  protected getPathToSubmissionInfoFile: () => string;
-
   constructor({ submissionId, language }: ISubmissionFileManagerConstructor) {
-    this.getSubmissionDirectory = () => {
-      return path.resolve(TEMP_SUBMISSION_PARENT_DIRECTORY, submissionId);
-    };
-
-    this.getSubmissionInputDirectory = () => {
-      const submissionDir = this.getSubmissionDirectory();
-      return path.resolve(submissionDir, SubmissionFileManager.inputDirName);
-    };
-
-    this.getSubmissionOutputDirectory = () => {
-      const submissionDir = this.getSubmissionDirectory();
-      return path.resolve(submissionDir, SubmissionFileManager.outputDirName);
-    };
-
-    this.getPathToSubmissionInfoFile = () => {
-      const submissionDir = this.getSubmissionDirectory();
-      return path.resolve(submissionDir, SubmissionFileManager.submissionInfoFileName);
-    };
+    super({ submissionId });
 
     this.getCodeFileName = () => {
       const submissionDir = this.getSubmissionDirectory();
@@ -110,16 +135,6 @@ export class SubmissionFileManager {
       return LanguageManager.isCompiledLanguage(language)
         ? this.getCompiledCodeFileName()
         : this.getCodeFileName();
-    };
-
-    this.getRegularModeOutputFileName = () => {
-      const outputDir = this.getSubmissionOutputDirectory();
-      return path.resolve(outputDir, './output');
-    };
-
-    this.getPathToCompileErrorFile = () => {
-      const outputDir = this.getSubmissionOutputDirectory();
-      return path.resolve(outputDir, SubmissionFileManager.compileErrorFileName);
     };
   }
 }
