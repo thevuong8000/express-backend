@@ -19,10 +19,13 @@ export type ISubmissionMode = 'Compatitive Programming' | 'Regular';
  *           type: string
  *         inputs:
  *           type: string
+ *         mode:
+ *           type: string
  *       required:
  *         - typedCode
  *         - language
  *         - inputs
+ *         - mode
  */
 export interface ISubmission {
   typedCode: string;
