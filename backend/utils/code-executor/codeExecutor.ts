@@ -267,6 +267,7 @@ export default class CodeExecutor extends SubmissionFileManager {
         this.compileFileIfNeeded();
       } catch (err) {
         this.handleCompileError(err);
+        return;
       }
 
       switch (mode) {
