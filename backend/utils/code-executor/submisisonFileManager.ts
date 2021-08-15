@@ -39,7 +39,7 @@ export class SubmissionFileManagerBase {
   protected getSubmissionOutputDirectory: () => string;
 
   /**
-   * Get final executable file
+   * Get the path to output file Regular Mode
    */
   protected getRegularModeOutputFileName: () => string;
 
