@@ -15,6 +15,7 @@ export class SubmissionFileManager {
   static userFileName = 'user';
   static userObjectFileName = 'user-object';
   static compileErrorFileName = 'compile-error';
+  static submissionInfoFileName = 'info.json';
 
   /**
    * Get the path to target submission directory
@@ -65,6 +66,11 @@ export class SubmissionFileManager {
    */
   protected getPathToCompileErrorFile: () => string;
 
+  /**
+   * Get the path to submission info file
+   */
+  protected getPathToSubmissionInfoFile: () => string;
+
   constructor({ submissionId, language }: ISubmissionFileManagerConstructor) {
     this.getSubmissionDirectory = () => {
       return path.resolve(TEMP_SUBMISSION_PARENT_DIRECTORY, submissionId);
@@ -78,6 +84,11 @@ export class SubmissionFileManager {
     this.getSubmissionOutputDirectory = () => {
       const submissionDir = this.getSubmissionDirectory();
       return path.resolve(submissionDir, SubmissionFileManager.outputDirName);
+    };
+
+    this.getPathToSubmissionInfoFile = () => {
+      const submissionDir = this.getSubmissionDirectory();
+      return path.resolve(submissionDir, SubmissionFileManager.submissionInfoFileName);
     };
 
     this.getCodeFileName = () => {

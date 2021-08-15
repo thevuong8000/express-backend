@@ -1,5 +1,5 @@
 import { TEMP_SUBMISSION_PARENT_DIRECTORY } from './index';
-import { ISubmission } from '../../routes/api/requests/code_executor';
+import { ISubmission, Language, ISubmissionMode } from '../../routes/api/requests/code_executor';
 import { SubmissionFileManager } from './submisisonFileManager';
 import fs from 'fs';
 import { BadRequestError } from '../../routes/api/responses/errors';
@@ -18,6 +18,12 @@ const createTempSubmissionParentDirectoryIfNotExist = () => {
     console.log('Successfully created tmp directory');
   }
 };
+
+export interface ISubmissionInfo {
+  submissionId: string;
+  language: Language;
+  mode: ISubmissionMode;
+}
 
 interface ICodeExecutorConstructor extends ISubmission {
   submissionId: string;
@@ -96,9 +102,20 @@ export default class CodeExecutor extends SubmissionFileManager {
    * Execute the user's code
    */
   public execute: () => void;
+  storeSubmissionInfo: () => void;
 
   constructor({ submissionId, typedCode, language, inputs, mode }: ICodeExecutorConstructor) {
     super({ submissionId, language });
+
+    this.storeSubmissionInfo = () => {
+      const infoFilePath = this.getPathToSubmissionInfoFile();
+      const info: ISubmissionInfo = {
+        submissionId,
+        language,
+        mode
+      };
+      fs.writeFileSync(infoFilePath, JSON.stringify(info));
+    };
 
     this.setupSubmissionInputDirectory = () => {
       const inputDir = this.getSubmissionInputDirectory();
@@ -127,7 +144,11 @@ export default class CodeExecutor extends SubmissionFileManager {
         throw new BadRequestError('Submission ID duplicated, please try again!');
       }
       fs.mkdir(submissionDir, (err) => {
-        if (err) console.log('Create submission directory error:', err);
+        if (err) {
+          console.log('Create submission directory error:', err);
+          return;
+        }
+        this.storeSubmissionInfo();
         this.writeUserCodeIntoFile();
         this.setupSubmissionInputDirectory();
         this.setupSubmissionOutputDirectory();
