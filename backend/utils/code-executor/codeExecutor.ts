@@ -1,11 +1,12 @@
+import { TEMP_SUBMISSION_PARENT_DIRECTORY } from './index';
 import { ISubmission } from '../../routes/api/requests/code_executor';
 import { SubmissionFileManager } from './submisisonFileManager';
 import fs from 'fs';
-import { isCompiledLanguage, TEMP_SUBMISSION_PARENT_DIRECTORY } from '../code-executor';
 import { BadRequestError } from '../../routes/api/responses/errors';
 import path from 'path';
 import { exec, execSync } from 'child_process';
 import waitUntil from 'async-wait-until';
+import LanguageManager from './languageManager';
 
 /**
  * Create {tmp} submisison directory if not exist
@@ -22,7 +23,7 @@ interface ICodeExecutorConstructor extends ISubmission {
   submissionId: string;
 }
 
-export class CodeExecutor extends SubmissionFileManager {
+export default class CodeExecutor extends SubmissionFileManager {
   /**
    * Setup submission input directory
    */
@@ -223,7 +224,7 @@ export class CodeExecutor extends SubmissionFileManager {
 
     // TODO: currently only support c++
     this.compileFileIfNeeded = () => {
-      if (!isCompiledLanguage(language)) return;
+      if (!LanguageManager.isCompiledLanguage(language)) return;
 
       const userFilePath = this.getCodeFileName();
       const objectFileName = this.getCompiledCodeFileName();

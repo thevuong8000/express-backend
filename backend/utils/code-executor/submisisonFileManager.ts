@@ -1,7 +1,8 @@
 import { Language } from '../../routes/api/requests/code_executor';
-import { isCompiledLanguage, TEMP_SUBMISSION_PARENT_DIRECTORY } from '../code-executor';
 import { FILE_EXTENSIONS } from '../../constants/code_executor';
 import path from 'path';
+import { TEMP_SUBMISSION_PARENT_DIRECTORY } from './index';
+import LanguageManager from './languageManager';
 
 interface ISubmissionFileManagerConstructor {
   submissionId: string;
@@ -95,7 +96,9 @@ export class SubmissionFileManager {
     };
 
     this.getPathToExecutableFile = () => {
-      return isCompiledLanguage(language) ? this.getCompiledCodeFileName() : this.getCodeFileName();
+      return LanguageManager.isCompiledLanguage(language)
+        ? this.getCompiledCodeFileName()
+        : this.getCodeFileName();
     };
 
     this.getRegularModeOutputFileName = () => {
