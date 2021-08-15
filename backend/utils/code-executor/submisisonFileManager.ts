@@ -3,6 +3,7 @@ import { FILE_EXTENSIONS } from '../../constants/code_executor';
 import path from 'path';
 import { TEMP_SUBMISSION_PARENT_DIRECTORY } from './index';
 import LanguageManager from './languageManager';
+import fs from 'fs';
 
 interface ISubmissionFileManagerBaseConstructor {
   submissionId: string;
@@ -53,6 +54,11 @@ export class SubmissionFileManagerBase {
    */
   protected getPathToSubmissionInfoFile: () => string;
 
+  /**
+   * Check if submission is compiled error
+   */
+  protected isCompileError: () => boolean;
+
   constructor({ submissionId }: ISubmissionFileManagerBaseConstructor) {
     this.getSubmissionDirectory = () => {
       return path.resolve(TEMP_SUBMISSION_PARENT_DIRECTORY, submissionId);
@@ -82,6 +88,11 @@ export class SubmissionFileManagerBase {
       const outputDir = this.getSubmissionOutputDirectory();
       return path.resolve(outputDir, SubmissionFileManagerBase.compileErrorFileName);
     };
+
+    this.isCompileError = () => {
+      const compileErrorFilePath = this.getPathToCompileErrorFile();
+      return fs.existsSync(compileErrorFilePath);
+    }
   }
 }
 
