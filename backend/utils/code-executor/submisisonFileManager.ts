@@ -16,12 +16,12 @@ interface ISubmissionFileManagerConstructor extends ISubmissionFileManagerBaseCo
  * File Management without language
  */
 export class SubmissionFileManagerBase {
-  static inputDirName = 'input';
-  static outputDirName = 'output';
-  static compileErrorFileName = 'compile-error';
-  static regularOutputFileName = 'regular_output';
-  static submissionInfoFileName = 'info.json';
-  static codeErrorFileName = 'error.json';
+  static readonly inputDirName = 'input';
+  static readonly outputDirName = 'output';
+  static readonly compileErrorFileName = 'compile-error';
+  static readonly regularOutputFileName = 'regular_output';
+  static readonly submissionInfoFileName = 'info.json';
+  static readonly codeErrorFileName = 'error.json';
 
   /**
    * Get the path to target submission directory
@@ -106,7 +106,7 @@ export class SubmissionFileManagerBase {
     };
 
     this.isCompileError = () => {
-      const compileErrorFilePath = this.getPathToCompileErrorFile();
+      const compileErrorFilePath = this.getPathToCodeErrorFile();
       return fs.existsSync(compileErrorFilePath);
     };
   }
@@ -116,8 +116,8 @@ export class SubmissionFileManagerBase {
  * File management with specific language
  */
 export class SubmissionFileManager extends SubmissionFileManagerBase {
-  static userObjectFileName = 'user-object';
-  static userFileName = 'user';
+  static readonly userObjectFileName = 'user-object';
+  static readonly userFileName = 'user';
 
   /**
    * Get the user's code file name

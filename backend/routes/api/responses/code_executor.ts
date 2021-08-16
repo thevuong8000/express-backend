@@ -1,3 +1,4 @@
+import { SubmissionFileManagerBase } from '../../../utils/code-executor/submisisonFileManager';
 /**
  * @swagger
  * components:
@@ -24,7 +25,7 @@ export interface ISubmissionResponse {
  */
 
 export interface IOutput {
-  status: 'Success' | 'Error';
+  status: 'Success' | 'Error' | 'Pending';
 
   // For Error
   type?: 'Runtime Error';
@@ -35,9 +36,13 @@ export interface IOutput {
 }
 
 export interface ISubmissionOutputRegular {
-  regular_mode_output: IOutput;
+  [SubmissionFileManagerBase.regularOutputFileName]: IOutput;
 }
 
 export type ISubmissionOutputCompetitive = Record<string, IOutput>;
 
-export type ISubmissionOutput = ISubmissionOutputRegular | ISubmissionOutputCompetitive;
+export interface ISubmissionOutput {
+  status: 'Success' | 'Error';
+  error?: string;
+  result?: ISubmissionOutputRegular | ISubmissionOutputCompetitive;
+}
