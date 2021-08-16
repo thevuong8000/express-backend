@@ -3,6 +3,7 @@ import fs from 'fs';
 import waitUntil from 'async-wait-until';
 import { ISubmissionInfo } from './codeExecutor';
 import path from 'path';
+import { IOutput } from '../../routes/api/responses/code_executor';
 import {
   ISubmissionOutput,
   ISubmissionOutputRegular,
@@ -13,32 +14,57 @@ interface IResultCheckerConstructor {
   submissionId: string;
 }
 
-const EMPTY_RESULT = { result: {} };
-
 export default class ResultChecker extends SubmissionFileManagerBase {
+  /**
+   * Get the result in Regular Mode
+   * @returns submission result in Regular Mode
+   */
+  private getResultRegularMode: () => ISubmissionOutputRegular;
+
+  /**
+   * Get the result in Competitive Programming Mode
+   * @returns submission result in Competitive Programming Mode
+   */
+  private getResultCompetitiveMode: () => ISubmissionOutputCompetitive;
+
+  /**
+   * Get submission information
+   * @returns information of the submission
+   */
+  private getSubmissionInfo: () => Promise<ISubmissionInfo>;
+
+  /**
+   * Read data from output file
+   * @param path the path to output path
+   * @returns empty string if file not exist or exist but not written yet
+   */
+  private readOutputFromFile: (path: string) => string;
+
   /**
    * Get the result for submission
    */
   public getResult: () => Promise<ISubmissionOutput>;
-  private getResultRegularMode: () => ISubmissionOutputRegular;
-  private getResultCompetitiveMode: () => ISubmissionOutputCompetitive;
 
   constructor({ submissionId }: IResultCheckerConstructor) {
     super({ submissionId });
 
-    const getSubmissionInfo = async () => {
+    this.getSubmissionInfo = async () => {
       const infoFilePath = this.getPathToSubmissionInfoFile();
       await waitUntil(() => fs.existsSync(infoFilePath));
       const info = fs.readFileSync(infoFilePath, { encoding: 'utf-8' });
       return <ISubmissionInfo>JSON.parse(info);
     };
 
+    this.readOutputFromFile = (path: string) => {
+      if (!fs.existsSync(path)) return '';
+      return fs.readFileSync(path, { encoding: 'utf-8' });
+    };
+
     this.getResultRegularMode = () => {
       const outputFilePath = this.getPathToRegularOutputFile();
-      if (!fs.existsSync(outputFilePath))
-        return { [SubmissionFileManagerBase.regularOutputFileName]: { status: 'Pending' } };
-      const output = fs.readFileSync(outputFilePath, { encoding: 'utf-8' });
-      return { [SubmissionFileManagerBase.regularOutputFileName]: JSON.parse(output) };
+      const output = this.readOutputFromFile(outputFilePath);
+      const result: IOutput = output ? JSON.parse(output) : { status: 'Pending' };
+      return { [SubmissionFileManagerBase.regularOutputFileName]: result };
     };
 
     this.getResultCompetitiveMode = () => {
@@ -49,7 +75,7 @@ export default class ResultChecker extends SubmissionFileManagerBase {
       const outputFiles = fs.readdirSync(outputDir);
       outputFiles.forEach((file) => {
         const filePath = path.resolve(outputDir, file);
-        const output = fs.readFileSync(filePath, { encoding: 'utf-8' });
+        const output = this.readOutputFromFile(filePath);
         result[file] = JSON.parse(output);
       });
       return result;
@@ -59,7 +85,7 @@ export default class ResultChecker extends SubmissionFileManagerBase {
       if (this.isCompileError()) {
         return { status: 'Error', error: 'Compile Error' };
       }
-      const { mode } = await getSubmissionInfo();
+      const { mode } = await this.getSubmissionInfo();
       const result =
         mode === 'Regular' ? this.getResultRegularMode() : this.getResultCompetitiveMode();
       return { status: 'Success', result };
