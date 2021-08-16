@@ -113,8 +113,20 @@ export default class CodeExecutor extends SubmissionFileManager {
    * Write CE or RTE into error.json file
    */
   private handleCodeError: (error: any) => void;
-  handleWriteRuntimeErrorIntoFile: (outputPath: string, errorDetail: string) => void;
-  handleWriteOutputIntoFile: (filePath: string, output: string) => void;
+
+  /**
+   * Write Runtime Error into output file
+   * @param outputPath the path to output file
+   * @param errorDetail the detail of the error
+   */
+  private handleWriteRuntimeErrorIntoFile: (outputPath: string, errorDetail: string) => void;
+
+  /**
+   * Write the result into output file
+   * @param outputPath the path to output file
+   * @param output the result to be written
+   */
+  private handleWriteOutputIntoFile: (outputPath: string, output: string) => void;
 
   constructor({ submissionId, typedCode, language, inputs, mode }: ICodeExecutorConstructor) {
     super({ submissionId, language });
@@ -214,15 +226,15 @@ export default class CodeExecutor extends SubmissionFileManager {
       }
     };
 
-    this.handleWriteOutputIntoFile = (filePath: string, output: string) => {
-      console.info(`Writing output into ${filePath}`);
+    this.handleWriteOutputIntoFile = (outputPath: string, output: string) => {
+      console.info(`Writing output into ${outputPath}`);
       const obj: IOutput = {
         status: 'Success',
         output
       };
-      fs.writeFile(filePath, JSON.stringify(obj), (err) => {
-        if (err) console.log(`Can not write file into ${filePath}`);
-        else console.log(`Successfully write output into ${filePath}`);
+      fs.writeFile(outputPath, JSON.stringify(obj), (err) => {
+        if (err) console.log(`Can not write file into ${outputPath}`);
+        else console.log(`Successfully write output into ${outputPath}`);
       });
     };
 
