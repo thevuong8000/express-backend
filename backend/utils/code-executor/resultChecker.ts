@@ -41,6 +41,13 @@ export default class ResultChecker extends SubmissionFileManagerBase {
   private readOutputFromFile: (path: string) => string;
 
   /**
+   * Get compile error content
+   * @throws error if no compile error
+   * @returns content of compile error
+   */
+  private getCompileErrorContent: () => any;
+
+  /**
    * Get the result for submission
    */
   public getResult: () => Promise<ISubmissionOutput>;
@@ -58,6 +65,13 @@ export default class ResultChecker extends SubmissionFileManagerBase {
     this.readOutputFromFile = (path: string) => {
       if (!fs.existsSync(path)) return '';
       return fs.readFileSync(path, { encoding: 'utf-8' });
+    };
+
+    this.getCompileErrorContent = () => {
+      if (!this.isCompileError()) throw new Error('No compile error');
+      const compileErrorPath = this.getPathToCompileErrorFile();
+      const error = fs.readFileSync(compileErrorPath, { encoding: 'utf-8' });
+      return JSON.parse(error);
     };
 
     this.getResultRegularMode = () => {
@@ -83,7 +97,8 @@ export default class ResultChecker extends SubmissionFileManagerBase {
 
     this.getResult = async () => {
       if (this.isCompileError()) {
-        return { status: 'Error', error: 'Compile Error' };
+        const error = this.getCompileErrorContent();
+        return { status: 'Error', ...error };
       }
       const { mode } = await this.getSubmissionInfo();
       const result =
