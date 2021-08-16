@@ -19,7 +19,9 @@ export class SubmissionFileManagerBase {
   static inputDirName = 'input';
   static outputDirName = 'output';
   static compileErrorFileName = 'compile-error';
+  static regularOutputFileName = 'regular_output';
   static submissionInfoFileName = 'info.json';
+  static codeErrorFileName = 'error.json';
 
   /**
    * Get the path to target submission directory
@@ -59,6 +61,16 @@ export class SubmissionFileManagerBase {
    */
   protected isCompileError: () => boolean;
 
+  /**
+   * Get the path to CE, RTE file
+   */
+  protected getPathToCodeErrorFile: () => string;
+
+  /**
+   * Get the path to output file by test id
+   */
+  protected getPathToOutputFileById: (id: string) => string;
+
   constructor({ submissionId }: ISubmissionFileManagerBaseConstructor) {
     this.getSubmissionDirectory = () => {
       return path.resolve(TEMP_SUBMISSION_PARENT_DIRECTORY, submissionId);
@@ -80,19 +92,23 @@ export class SubmissionFileManagerBase {
     };
 
     this.getRegularModeOutputFileName = () => {
-      const outputDir = this.getSubmissionOutputDirectory();
-      return path.resolve(outputDir, './output');
+      return this.getPathToOutputFileById(SubmissionFileManagerBase.regularOutputFileName);
     };
 
-    this.getPathToCompileErrorFile = () => {
+    this.getPathToCodeErrorFile = () => {
+      const submissionDir = this.getSubmissionDirectory();
+      return path.resolve(submissionDir, SubmissionFileManagerBase.codeErrorFileName);
+    };
+
+    this.getPathToOutputFileById = (id) => {
       const outputDir = this.getSubmissionOutputDirectory();
-      return path.resolve(outputDir, SubmissionFileManagerBase.compileErrorFileName);
+      return path.resolve(outputDir, `${id}.json`);
     };
 
     this.isCompileError = () => {
       const compileErrorFilePath = this.getPathToCompileErrorFile();
       return fs.existsSync(compileErrorFilePath);
-    }
+    };
   }
 }
 

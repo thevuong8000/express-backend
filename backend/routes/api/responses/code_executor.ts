@@ -24,8 +24,14 @@ export interface ISubmissionResponse {
  */
 
 export interface IOutput {
+  status: 'Success' | 'Error';
+
+  // For Error
+  type?: 'Runtime Error';
+  errorDetail?: string;
+
+  // For Success
   output?: string;
-  error?: string;
 }
 
 export interface ISubmissionOutputRegular {

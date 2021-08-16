@@ -7,6 +7,7 @@ import path from 'path';
 import { exec, execSync } from 'child_process';
 import waitUntil from 'async-wait-until';
 import LanguageManager from './languageManager';
+import { IOutput } from '../../routes/api/responses/code_executor';
 
 /**
  * Create {tmp} submisison directory if not exist
@@ -61,11 +62,6 @@ export default class CodeExecutor extends SubmissionFileManager {
   private executeCodeRegularMode: () => void;
 
   /**
-   * Handle compile error
-   */
-  private handleCompileError: (error: any) => void;
-
-  /**
    * Compile file if the language is compiled language
    * Do nothing if the language is not compiled language
    */
@@ -102,7 +98,23 @@ export default class CodeExecutor extends SubmissionFileManager {
    * Execute the user's code
    */
   public execute: () => void;
-  storeSubmissionInfo: () => void;
+
+  /**
+   * Store submission information into json file
+   */
+  private storeSubmissionInfo: () => void;
+
+  /**
+   * Execute user's code without any test
+   */
+  private executeCodeStandalone: () => string;
+
+  /**
+   * Write CE or RTE into error.json file
+   */
+  private handleCodeError: (error: any) => void;
+  handleWriteRuntimeErrorIntoFile: (outputPath: string, errorDetail: string) => void;
+  handleWriteOutputIntoFile: (filePath: string, output: string) => void;
 
   constructor({ submissionId, typedCode, language, inputs, mode }: ICodeExecutorConstructor) {
     super({ submissionId, language });
@@ -202,22 +214,42 @@ export default class CodeExecutor extends SubmissionFileManager {
       }
     };
 
+    this.handleWriteOutputIntoFile = (filePath: string, output: string) => {
+      console.info(`Writing output into ${filePath}`);
+      const obj: IOutput = {
+        status: 'Success',
+        output
+      };
+      fs.writeFile(filePath, JSON.stringify(obj), (err) => {
+        if (err) console.log(`Can not write file into ${filePath}`);
+        else console.log(`Successfully write output into ${filePath}`);
+      });
+    };
+
+    this.handleWriteRuntimeErrorIntoFile = (outputPath: string, errorDetail: string) => {
+      console.info(`Writing runtime error into ${outputPath}`);
+      const obj: IOutput = {
+        status: 'Error',
+        type: 'Runtime Error',
+        errorDetail
+      };
+      fs.writeFile(outputPath, JSON.stringify(obj), (err) => {
+        if (err) console.error(`Can not write error information into ${outputPath}`);
+        else console.info(`Successfully write error into ${outputPath}`);
+      });
+    };
+
     this.executeCodeRegularMode = () => {
       console.log('Executing code in Regular Mode');
       const outputFile = this.getRegularModeOutputFileName();
       const execScript = this.getExecuteScript();
 
-      exec(execScript, (err, stdout, stderr) => {
-        if (stderr) {
-          console.log('error', stderr);
-          return;
-        }
-
-        fs.writeFile(outputFile, stdout, (err) => {
-          if (err) console.log('Regular Submision Mode: Can not write file');
-          else console.log('Output for Regular Mode is ready');
-        });
-      });
+      try {
+        const output = execSync(execScript, { encoding: 'utf-8' });
+        this.handleWriteOutputIntoFile(outputFile, output);
+      } catch (err) {
+        this.handleWriteRuntimeErrorIntoFile(outputFile, err.stderr);
+      }
     };
 
     this.executeCodeCompetitiveProgrammingMode = () => {
@@ -230,14 +262,9 @@ export default class CodeExecutor extends SubmissionFileManager {
       inputFiles.forEach((file) => {
         const inputFilePath = path.resolve(inputDir, file);
         exec(`${execScript} < ${inputFilePath}`, (err, stdout, stderr) => {
-          const output = stderr ? stderr : stdout;
-
-          // corresponding output would have the same name
-          const outputFilePath = path.resolve(outputDir, file);
-          fs.writeFile(outputFilePath, output, (err) => {
-            if (err) console.log('\tError write output', file, err);
-            else console.log('\tWrite output', file, 'successfully!');
-          });
+          const outputFilePath = this.getPathToOutputFileById(file);
+          if (stderr) this.handleWriteRuntimeErrorIntoFile(outputFilePath, stderr);
+          else this.handleWriteOutputIntoFile(outputFilePath, stdout);
         });
       });
     };
@@ -253,12 +280,21 @@ export default class CodeExecutor extends SubmissionFileManager {
 
       const userFilePath = this.getCodeFileName();
       const objectFileName = this.getCompiledCodeFileName();
-      execSync(`g++ -std=c++17 -o ${objectFileName} ${userFilePath}`);
+      try {
+        execSync(`g++ -std=c++17 -o ${objectFileName} ${userFilePath}`);
+      } catch (err) {
+        throw Object.assign(new Error(), err, { name: 'Compile Error' });
+      }
     };
 
-    this.handleCompileError = (error) => {
-      const compileErrorPath = this.getPathToCompileErrorFile();
-      fs.writeFileSync(compileErrorPath, error.stderr, { encoding: 'utf-8' });
+    this.handleCodeError = (error) => {
+      console.error(`${error.name} found`);
+      const codeErrorPath = this.getPathToCodeErrorFile();
+      const obj = {
+        type: error.name,
+        detail: (error.stderr as Buffer).toString()
+      };
+      fs.writeFileSync(codeErrorPath, JSON.stringify(obj), { encoding: 'utf-8' });
     };
 
     this.execute = async () => {
@@ -266,7 +302,7 @@ export default class CodeExecutor extends SubmissionFileManager {
       try {
         this.compileFileIfNeeded();
       } catch (err) {
-        this.handleCompileError(err);
+        this.handleCodeError(err);
         return;
       }
 
