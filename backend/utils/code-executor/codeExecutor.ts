@@ -184,7 +184,7 @@ export default class CodeExecutor extends SubmissionFileManager {
     };
 
     this.writeUserCodeIntoFile = () => {
-      const fileName = this.getCodeFileName();
+      const fileName = this.getPathToUserFile();
       fs.writeFile(fileName, typedCode, (err) => {
         if (err) console.log("Cannot write user's code into file");
       });
@@ -282,7 +282,7 @@ export default class CodeExecutor extends SubmissionFileManager {
     };
 
     this.isExecutorReady = () => {
-      const userFilePath = this.getCodeFileName();
+      const userFilePath = this.getPathToUserFile();
       return fs.existsSync(userFilePath);
     };
 
@@ -290,8 +290,8 @@ export default class CodeExecutor extends SubmissionFileManager {
     this.compileFileIfNeeded = () => {
       if (!LanguageManager.isCompiledLanguage(language)) return;
 
-      const userFilePath = this.getCodeFileName();
-      const objectFileName = this.getCompiledCodeFileName();
+      const userFilePath = this.getPathToUserFile();
+      const objectFileName = this.getPathToObjectFile();
       try {
         execSync(`g++ -std=c++17 -o ${objectFileName} ${userFilePath}`);
       } catch (err) {

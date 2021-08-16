@@ -117,36 +117,41 @@ export class SubmissionFileManager extends SubmissionFileManagerBase {
   static readonly userFileName = 'user';
 
   /**
-   * Get the user's code file name
+   * Get the path to file containning user's code
+   * @returns paht to user's file
    */
-  protected getCodeFileName: () => string;
+  protected getPathToUserFile: () => string;
 
   /**
    * Get the path to object file (only if code in compiled language)
+   * @returns path to object file
    */
-  protected getCompiledCodeFileName: () => string;
+  protected getPathToObjectFile: () => string;
 
   /**
-   * Get the path to output result of submission in Regular Mode
-   * @returns the path to output file Regular Mode
+   * Get the path to executable file
+   * 1) compiled language     => object file (compiled file)
+   * 2) interpreted language  => the file containing user's code
+   * @returns the path to executable file
    */
   protected getPathToExecutableFile: () => string;
 
   /**
    * Get the full user file name with file extension
+   * @returns full user's file name
    */
   protected getFullUserFileName: () => string;
 
   constructor({ submissionId, language }: ISubmissionFileManagerConstructor) {
     super({ submissionId });
 
-    this.getCodeFileName = () => {
+    this.getPathToUserFile = () => {
       const submissionDir = this.getSubmissionDirectory();
       const fileName = this.getFullUserFileName();
       return path.resolve(submissionDir, fileName);
     };
 
-    this.getCompiledCodeFileName = () => {
+    this.getPathToObjectFile = () => {
       const submissionDir = this.getSubmissionDirectory();
       return path.resolve(submissionDir, SubmissionFileManager.userObjectFileName);
     };
@@ -157,8 +162,8 @@ export class SubmissionFileManager extends SubmissionFileManagerBase {
 
     this.getPathToExecutableFile = () => {
       return LanguageManager.isCompiledLanguage(language)
-        ? this.getCompiledCodeFileName()
-        : this.getCodeFileName();
+        ? this.getPathToObjectFile()
+        : this.getPathToUserFile();
     };
   }
 }
