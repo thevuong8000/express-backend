@@ -18,10 +18,9 @@ interface ISubmissionFileManagerConstructor extends ISubmissionFileManagerBaseCo
 export class SubmissionFileManagerBase {
   static readonly inputDirName = 'input';
   static readonly outputDirName = 'output';
-  static readonly compileErrorFileName = 'compile-error';
   static readonly regularOutputFileName = 'regular_output';
   static readonly submissionInfoFileName = 'info.json';
-  static readonly codeErrorFileName = 'error.json';
+  static readonly compileErrorFileName = 'compile-error.json';
 
   /**
    * Get the path to target submission directory
@@ -30,46 +29,44 @@ export class SubmissionFileManagerBase {
   protected getSubmissionDirectory: () => string;
 
   /**
-   * Get the input directory of target submission
+   * Get the path to input directory
    * @returns the path to target input directory
    */
   protected getSubmissionInputDirectory: () => string;
 
   /**
-   * Get the output directory of target submission
+   * Get the path to output directory
    * @returns the path to target output directory
    */
   protected getSubmissionOutputDirectory: () => string;
 
   /**
    * Get the path to output file Regular Mode
+   * @returns the path to output file Regular Mode
    */
-  protected getRegularModeOutputFileName: () => string;
-
-  /**
-   * Get the path to compile error file
-   */
-  protected getPathToCompileErrorFile: () => string;
+  protected getPathToRegularOutputFile: () => string;
 
   /**
    * Get the path to submission info file
+   * @returns the path to submission information file
    */
   protected getPathToSubmissionInfoFile: () => string;
 
   /**
-   * Check if submission is compiled error
+   * Get the path to Compile Error file
    */
-  protected isCompileError: () => boolean;
-
-  /**
-   * Get the path to CE, RTE file
-   */
-  protected getPathToCodeErrorFile: () => string;
+  protected getPathToCompileErrorFile: () => string;
 
   /**
    * Get the path to output file by test id
    */
   protected getPathToOutputFileById: (id: string) => string;
+
+  /**
+   * Check if submission is compiled error
+   * @return true if user's code is Compile Error
+   */
+  protected isCompileError: () => boolean;
 
   constructor({ submissionId }: ISubmissionFileManagerBaseConstructor) {
     this.getSubmissionDirectory = () => {
@@ -91,13 +88,13 @@ export class SubmissionFileManagerBase {
       return path.resolve(submissionDir, SubmissionFileManagerBase.submissionInfoFileName);
     };
 
-    this.getRegularModeOutputFileName = () => {
+    this.getPathToRegularOutputFile = () => {
       return this.getPathToOutputFileById(SubmissionFileManagerBase.regularOutputFileName);
     };
 
-    this.getPathToCodeErrorFile = () => {
+    this.getPathToCompileErrorFile = () => {
       const submissionDir = this.getSubmissionDirectory();
-      return path.resolve(submissionDir, SubmissionFileManagerBase.codeErrorFileName);
+      return path.resolve(submissionDir, SubmissionFileManagerBase.compileErrorFileName);
     };
 
     this.getPathToOutputFileById = (id) => {
@@ -106,7 +103,7 @@ export class SubmissionFileManagerBase {
     };
 
     this.isCompileError = () => {
-      const compileErrorFilePath = this.getPathToCodeErrorFile();
+      const compileErrorFilePath = this.getPathToCompileErrorFile();
       return fs.existsSync(compileErrorFilePath);
     };
   }

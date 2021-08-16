@@ -190,7 +190,7 @@ export default class CodeExecutor extends SubmissionFileManager {
     };
 
     this.getRegularModeOutput = () => {
-      const outputFile = this.getRegularModeOutputFileName();
+      const outputFile = this.getPathToRegularOutputFile();
       return fs.readFileSync(outputFile, { encoding: 'utf-8' });
     };
 
@@ -241,7 +241,7 @@ export default class CodeExecutor extends SubmissionFileManager {
 
     this.executeCodeRegularMode = () => {
       console.log('Executing code in Regular Mode');
-      const outputFile = this.getRegularModeOutputFileName();
+      const outputFile = this.getPathToRegularOutputFile();
       const execScript = this.getExecuteScript();
 
       try {
@@ -289,7 +289,7 @@ export default class CodeExecutor extends SubmissionFileManager {
 
     this.handleCodeError = (error) => {
       console.error(`${error.name} found`);
-      const codeErrorPath = this.getPathToCodeErrorFile();
+      const codeErrorPath = this.getPathToCompileErrorFile();
       const obj = {
         type: error.name,
         detail: (error.stderr as Buffer).toString()

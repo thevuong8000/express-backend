@@ -34,7 +34,7 @@ export default class ResultChecker extends SubmissionFileManagerBase {
     };
 
     this.getResultRegularMode = () => {
-      const outputFilePath = this.getRegularModeOutputFileName();
+      const outputFilePath = this.getPathToRegularOutputFile();
       if (!fs.existsSync(outputFilePath))
         return { [SubmissionFileManagerBase.regularOutputFileName]: { status: 'Pending' } };
       const output = fs.readFileSync(outputFilePath, { encoding: 'utf-8' });
