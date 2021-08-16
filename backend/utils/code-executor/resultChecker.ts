@@ -1,4 +1,4 @@
-import { SubmissionFileManager, SubmissionFileManagerBase } from './submisisonFileManager';
+import { SubmissionFileManagerBase } from './submisisonFileManager';
 import fs from 'fs';
 import waitUntil from 'async-wait-until';
 import { ISubmissionInfo } from './codeExecutor';
