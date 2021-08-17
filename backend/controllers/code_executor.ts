@@ -33,5 +33,5 @@ export const checkCodeResult: RequestHandler = async (req, res, next) => {
   console.info('Check submission', submissionId);
 
   const result = await checker.getResult();
-  res.status(200).json({ result });
+  res.status(200).json(result);
 };
