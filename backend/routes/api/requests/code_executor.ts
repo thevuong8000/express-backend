@@ -1,10 +1,35 @@
 export type Language = 'javascript' | 'typescript' | 'cpp' | 'python' | 'java';
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ITestInput:
+ *       properties:
+ *         id:
+ *           type: string
+ *         input:
+ *           type: string
+ *       required:
+ *         - id
+ *         - input
+ */
 export interface ITestInput {
   id: string;
   input: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ISubmissionMode:
+ *       type: string
+ *       enum:
+ *         - "Regular"
+ *         - "Competitive Programming"
+ *       example: ["Regular", "Competitive Programming"]
+ */
 export type ISubmissionMode = 'Compatitive Programming' | 'Regular';
 
 /**
@@ -18,9 +43,11 @@ export type ISubmissionMode = 'Compatitive Programming' | 'Regular';
  *         language:
  *           type: string
  *         inputs:
- *           type: string
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/ITestInput'
  *         mode:
- *           type: string
+ *           $ref: '#/components/schemas/ISubmissionMode'
  *       required:
  *         - typedCode
  *         - language
