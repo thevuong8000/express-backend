@@ -54,11 +54,13 @@ export class SubmissionFileManagerBase {
 
   /**
    * Get the path to Compile Error file
+   * @returns path to Compile Error file
    */
   protected getPathToCompileErrorFile: () => string;
 
   /**
    * Get the path to output file by test id
+   * @returns path to output file by test_id
    */
   protected getPathToOutputFileById: (id: string) => string;
 
