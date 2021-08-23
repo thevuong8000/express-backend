@@ -30,7 +30,7 @@ export interface ITestInput {
  *         - "Competitive Programming"
  *       example: ["Regular", "Competitive Programming"]
  */
-export type ISubmissionMode = 'Compatitive Programming' | 'Regular';
+export type ISubmissionMode = 'Competitive Programming' | 'Regular';
 
 /**
  * @swagger

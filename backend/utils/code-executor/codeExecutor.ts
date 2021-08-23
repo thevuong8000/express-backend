@@ -322,7 +322,7 @@ export default class CodeExecutor extends SubmissionFileManager {
         case 'Regular':
           return this.executeCodeRegularMode();
 
-        case 'Compatitive Programming':
+        case 'Competitive Programming':
           return this.executeCodeCompetitiveProgrammingMode();
 
         default:
