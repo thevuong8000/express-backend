@@ -90,7 +90,8 @@ export default class ResultChecker extends SubmissionFileManagerBase {
       outputFiles.forEach((file) => {
         const filePath = path.resolve(outputDir, file);
         const output = this.readOutputFromFile(filePath);
-        result[file] = JSON.parse(output);
+        const testId = path.parse(file).name;
+        result[testId] = JSON.parse(output);
       });
       return result;
     };
