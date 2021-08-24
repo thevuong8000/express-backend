@@ -38,7 +38,7 @@ export default class ResultChecker extends SubmissionFileManagerBase {
    * @param path the path to output path
    * @returns empty string if file not exist or exist but not written yet
    */
-  private readOutputFromFile: (path: string) => string;
+  private readOutputFromFile: (path: string) => IOutput;
 
   /**
    * Get compile error content
@@ -55,6 +55,10 @@ export default class ResultChecker extends SubmissionFileManagerBase {
   constructor({ submissionId }: IResultCheckerConstructor) {
     super({ submissionId });
 
+    const PENDING_OUTPUT: IOutput = {
+      status: 'Pending'
+    };
+
     this.getSubmissionInfo = async () => {
       const infoFilePath = this.getPathToSubmissionInfoFile();
       await waitUntil(() => fs.existsSync(infoFilePath));
@@ -63,8 +67,9 @@ export default class ResultChecker extends SubmissionFileManagerBase {
     };
 
     this.readOutputFromFile = (path: string) => {
-      if (!fs.existsSync(path)) return '';
-      return fs.readFileSync(path, { encoding: 'utf-8' });
+      if (!fs.existsSync(path)) return PENDING_OUTPUT;
+      const dataText = fs.readFileSync(path, { encoding: 'utf-8' });
+      return dataText ? JSON.parse(dataText) : PENDING_OUTPUT;
     };
 
     this.getCompileErrorContent = () => {
@@ -76,8 +81,7 @@ export default class ResultChecker extends SubmissionFileManagerBase {
 
     this.getResultRegularMode = () => {
       const outputFilePath = this.getPathToRegularOutputFile();
-      const output = this.readOutputFromFile(outputFilePath);
-      const result: IOutput = output ? JSON.parse(output) : { status: 'Pending' };
+      const result = this.readOutputFromFile(outputFilePath);
       return { [SubmissionFileManagerBase.regularOutputFileName]: result };
     };
 
@@ -91,7 +95,7 @@ export default class ResultChecker extends SubmissionFileManagerBase {
         const filePath = path.resolve(outputDir, file);
         const output = this.readOutputFromFile(filePath);
         const testId = path.parse(file).name;
-        result[testId] = JSON.parse(output);
+        result[testId] = output;
       });
       return result;
     };
