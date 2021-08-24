@@ -50,14 +50,14 @@ export interface ISubmissionResponse {
  *         - $ref: '#/components/schemas/IOutputFailure'
  */
 export interface IOutput {
-  status: 'Success' | 'Error' | 'Pending';
+  readonly status: 'Success' | 'Error' | 'Pending';
 
   // For Error
-  type?: 'Runtime Error';
-  errorDetail?: string;
+  readonly type?: 'Runtime Error';
+  readonly errorDetail?: string;
 
   // For Success
-  output?: string;
+  readonly output?: string;
 }
 
 /**
@@ -70,7 +70,7 @@ export interface IOutput {
  *           $ref: '#/components/schemas/IOutput'
  */
 export interface ISubmissionOutputRegular {
-  [SubmissionFileManagerBase.regularOutputFileName]: IOutput;
+  readonly [SubmissionFileManagerBase.regularOutputFileName]: IOutput;
 }
 
 /**
@@ -97,8 +97,8 @@ export type ISubmissionOutputCompetitiveResult = Record<string, IOutput>;
  *           $ref: '#/components/schemas/ISubmissionOutputCompetitiveResult'
  */
 export interface ISubmissionOutputCompetitiveSuccess {
-  status: 'Success';
-  result: ISubmissionOutputCompetitiveResult;
+  readonly status: 'Success';
+  readonly result: ISubmissionOutputCompetitiveResult;
 }
 
 /**
@@ -117,9 +117,9 @@ export interface ISubmissionOutputCompetitiveSuccess {
  *           type: string
  */
 export interface ISubmissionOutputCompileError {
-  status: 'Error';
-  type: 'Compile Error';
-  detail: string;
+  readonly status: 'Error';
+  readonly type: 'Compile Error';
+  readonly detail: string;
 }
 
 /**
@@ -135,8 +135,8 @@ export interface ISubmissionOutputCompileError {
  *           $ref: '#/components/schemas/ISubmissionOutputRegular'
  */
 export interface ISubmissionOutputRegularSuccess {
-  status: 'Success';
-  result: ISubmissionOutputRegular;
+  readonly status: 'Success';
+  readonly result: ISubmissionOutputRegular;
 }
 
 /**
@@ -150,7 +150,7 @@ export interface ISubmissionOutputRegularSuccess {
  *         - $ref: '#/components/schemas/ISubmissionOutputCompileError'
  */
 export interface ISubmissionOutput {
-  status: 'Success' | 'Error';
-  error?: string;
-  result?: ISubmissionOutputRegular | ISubmissionOutputCompetitiveResult;
+  readonly status: 'Success' | 'Error';
+  readonly error?: string;
+  readonly result?: ISubmissionOutputRegular | ISubmissionOutputCompetitiveResult;
 }
