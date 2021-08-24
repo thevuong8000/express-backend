@@ -7,7 +7,7 @@ import { IOutput } from '../../routes/api/responses/code_executor';
 import {
   ISubmissionOutput,
   ISubmissionOutputRegular,
-  ISubmissionOutputCompetitive
+  ISubmissionOutputCompetitiveResult
 } from '../../routes/api/responses/code_executor';
 
 interface IResultCheckerConstructor {
@@ -25,7 +25,7 @@ export default class ResultChecker extends SubmissionFileManagerBase {
    * Get the result in Competitive Programming Mode
    * @returns submission result in Competitive Programming Mode
    */
-  private getResultCompetitiveMode: () => ISubmissionOutputCompetitive;
+  private getResultCompetitiveMode: () => ISubmissionOutputCompetitiveResult;
 
   /**
    * Get submission information
@@ -85,7 +85,7 @@ export default class ResultChecker extends SubmissionFileManagerBase {
       const outputDir = this.getSubmissionOutputDirectory();
       if (!fs.existsSync(outputDir)) return {};
 
-      const result: ISubmissionOutputCompetitive = {};
+      const result: ISubmissionOutputCompetitiveResult = {};
       const outputFiles = fs.readdirSync(outputDir);
       outputFiles.forEach((file) => {
         const filePath = path.resolve(outputDir, file);

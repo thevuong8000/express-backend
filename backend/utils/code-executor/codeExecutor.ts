@@ -32,6 +32,18 @@ interface ICodeExecutorConstructor extends ISubmission {
 
 export default class CodeExecutor extends SubmissionFileManager {
   /**
+   * Set up submission
+   * 1) Set up directory for submission, input, output
+   * 2) Write data into files
+   */
+  public setupSubmission: () => void;
+
+  /**
+   * Execute the user's code
+   */
+  public execute: () => void;
+
+  /**
    * Setup submission input directory
    */
   private setupSubmissionInputDirectory: () => void;
@@ -88,26 +100,9 @@ export default class CodeExecutor extends SubmissionFileManager {
   private isExecutorReady: () => boolean;
 
   /**
-   * Set up submission
-   * 1) Set up directory for submission, input, output
-   * 2) Write data into files
-   */
-  public setupSubmission: () => void;
-
-  /**
-   * Execute the user's code
-   */
-  public execute: () => void;
-
-  /**
    * Store submission information into json file
    */
   private storeSubmissionInfo: () => void;
-
-  /**
-   * Execute user's code without any test
-   */
-  private executeCodeStandalone: () => string;
 
   /**
    * Write CE or RTE into error.json file
@@ -128,6 +123,12 @@ export default class CodeExecutor extends SubmissionFileManager {
    */
   private handleWriteOutputIntoFile: (outputPath: string, output: string) => void;
 
+  /**
+   * Check if submission needs inputs
+   * @returns True if submission needs inputs
+   */
+  private needInputs: () => boolean;
+
   constructor({ submissionId, typedCode, language, inputs, mode }: ICodeExecutorConstructor) {
     super({ submissionId, language });
 
@@ -146,6 +147,9 @@ export default class CodeExecutor extends SubmissionFileManager {
     };
 
     this.setupSubmissionInputDirectory = () => {
+      // Do not write inputs if not needed
+      if (!this.needInputs()) return;
+
       const inputDir = this.getSubmissionInputDirectory();
       console.log('Creating input directory...');
       fs.mkdir(inputDir, (err) => {
@@ -284,6 +288,10 @@ export default class CodeExecutor extends SubmissionFileManager {
     this.isExecutorReady = () => {
       const userFilePath = this.getPathToUserFile();
       return fs.existsSync(userFilePath);
+    };
+
+    this.needInputs = () => {
+      return mode === 'Competitive Programming';
     };
 
     // TODO: currently only support c++
