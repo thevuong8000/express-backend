@@ -103,12 +103,17 @@ export default class ResultChecker extends SubmissionFileManagerBase {
     this.getResult = async () => {
       if (this.isCompileError()) {
         const error = this.getCompileErrorContent();
-        return { status: 'Error', ...error };
+        return { status: 'Error', isFinished: true, ...error };
       }
-      const { mode } = await this.getSubmissionInfo();
+      const { mode, numTests } = await this.getSubmissionInfo();
       const result =
         mode === 'Regular' ? this.getResultRegularMode() : this.getResultCompetitiveMode();
-      return { status: 'Success', result };
+
+      // Only finish when all tests are done
+      const isFinished =
+        Object.values(result).length === numTests &&
+        Object.values(result).every((output) => (output as IOutput).status !== 'Pending');
+      return { status: 'Success', isFinished, result };
     };
   }
 }

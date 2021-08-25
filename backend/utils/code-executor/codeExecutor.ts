@@ -22,6 +22,7 @@ const createTempSubmissionParentDirectoryIfNotExist = () => {
 
 export interface ISubmissionInfo {
   submissionId: string;
+  numTests: number;
   language: Language;
   mode: ISubmissionMode;
 }
@@ -137,6 +138,7 @@ export default class CodeExecutor extends SubmissionFileManager {
       console.info(`Writing submission information into ${infoFilePath}`);
       const info: ISubmissionInfo = {
         submissionId,
+        numTests: inputs.length,
         language,
         mode
       };

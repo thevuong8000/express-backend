@@ -151,6 +151,7 @@ export interface ISubmissionOutputRegularSuccess {
  */
 export interface ISubmissionOutput {
   readonly status: 'Success' | 'Error';
+  readonly isFinished?: boolean;
   readonly error?: string;
   readonly result?: ISubmissionOutputRegular | ISubmissionOutputCompetitiveResult;
 }
