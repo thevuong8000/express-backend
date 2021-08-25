@@ -55,7 +55,7 @@ router.post('/', submitCode);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ISubmissionResults'
+ *             $ref: '#/components/schemas/ISubmissionOutput'
  *     400:
  *       description: Can not achieve output.
  */

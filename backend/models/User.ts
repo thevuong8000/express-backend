@@ -5,7 +5,7 @@ import { NextFunction } from 'express';
 import { IUserAuthJSON, UserID } from '@api/responses/users';
 import { IUserUpdatable } from '@api/requests/users';
 import { IUserDocument, IUserModel } from '@schemas/user';
-import uniqueValidator from 'mongoose-unique-validator';
+// import uniqueValidator from 'mongoose-unique-validator';
 
 const UserSchema = new Schema<IUserDocument, IUserModel>(
   {
@@ -19,7 +19,8 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
   { timestamps: true, minimize: false }
 );
 
-UserSchema.plugin(uniqueValidator);
+// TODO: need fix later
+// UserSchema.plugin(uniqueValidator);
 
 UserSchema.methods.toAuthJSON = function (): IUserAuthJSON {
   return {
