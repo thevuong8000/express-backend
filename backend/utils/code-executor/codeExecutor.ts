@@ -136,12 +136,16 @@ export default class CodeExecutor extends SubmissionFileManager {
     this.storeSubmissionInfo = () => {
       const infoFilePath = this.getPathToSubmissionInfoFile();
       console.info(`Writing submission information into ${infoFilePath}`);
+
+      // Only 1 test in Regular mode
+      const numTests = mode === 'Regular' ? 1 : inputs.length;
       const info: ISubmissionInfo = {
         submissionId,
-        numTests: inputs.length,
+        numTests,
         language,
         mode
       };
+
       fs.writeFile(infoFilePath, JSON.stringify(info), (err) => {
         if (err) console.error('Can not write submission information', err);
         else console.info(`Write submission ${submissionId} information successfully`);
